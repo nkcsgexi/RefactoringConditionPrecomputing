@@ -25,6 +25,7 @@ public class MethodDeclarationAnalyzer {
 		TreeBuilder<ASTNode> builder = new TreeBuilder<ASTNode>(statements, creatIsAncestor());
 		return builder.createTree();
 	}
+	
 
 	private static IPredicate<Pair<ASTNode, ASTNode>> creatIsAncestor() 
 	{
