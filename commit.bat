@@ -1,4 +1,4 @@
-CALL cd "C:\programming\Eclipse_Workspace\ConditionPreComputing"
-CALL git add *.java *.xml *.jar *.bat
-CALL git commit -a -m "auto batch commit"
+cd "C:\programming\Eclipse_Workspace\ConditionPreComputing"
+git add *.java *.xml *.jar *.bat
+git commit -a -m "auto batch commit"
 git push origin 
