@@ -26,7 +26,8 @@ public class MethodDeclarationAnalyzer {
 		return builder.createTree();
 	}
 
-	private static IPredicate<Pair<ASTNode, ASTNode>> creatIsAncestor() {
+	private static IPredicate<Pair<ASTNode, ASTNode>> creatIsAncestor() 
+	{
 		IPredicate<Pair<ASTNode, ASTNode>> isAncestor = new IPredicate<Pair<ASTNode, ASTNode>>(){
 			@Override
 			public boolean IsTrue(Pair<ASTNode, ASTNode> t) throws Exception {
