@@ -25,15 +25,7 @@ public class TreeBuilder<T> {
 	public Tree<T> createTree() throws Exception
 	{
 		List<T> roots = getRoots(elements);
-		Tree<T> tree;
-		if(roots.size() == 1)
-		{
-			 tree = new Tree<T>(roots.get(0));
-		}
-		else
-		{
-			throw new Exception("Tree has multiple roots.");
-		}
+		Tree<T> tree = initializeTree(roots);
 		
 		for(elements.removeAll(roots); elements.size() != 0; elements.removeAll(roots))
 		{
@@ -47,7 +39,22 @@ public class TreeBuilder<T> {
 		return tree;
 	}
 
-	private void addNode2Leaves(Tree<T> tree, List<T> leafs, T node) throws Exception {
+	private Tree<T> initializeTree(List<T> roots)
+			throws Exception {
+		Tree<T> tree;
+		if(roots.size() == 1)
+		{
+			 tree = new Tree<T>(roots.get(0));
+		}
+		else
+		{
+			throw new Exception("Tree has multiple roots.");
+		}
+		return tree;
+	}
+
+	private void addNode2Leaves(Tree<T> tree, List<T> leafs, T node) throws Exception 
+	{
 		List<T> parents = getAncestors(node, leafs);
 		if(parents.size() == 1)
 		{
@@ -93,7 +100,6 @@ public class TreeBuilder<T> {
 		return operations.Select(list, new IPredicate<T>(){
 			@Override
 			public boolean IsTrue(T l) throws Exception {
-				// TODO Auto-generated method stub
 				return l != t;
 			}});
 	}

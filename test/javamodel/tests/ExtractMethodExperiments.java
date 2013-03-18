@@ -15,6 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import util.ExpandCollection;
+import util.IConvertor;
 import util.IMapper;
 import util.Parser;
 import util.XLoggerFactory;
@@ -42,20 +43,17 @@ public class ExtractMethodExperiments extends RefactoringExperiment{
 		this.logger = XLoggerFactory.GetLogger(this.getClass());
 	}
 	
-	
 	private List<ASTNode> parseIUs(List<IJavaElement> ius) throws Exception
 	{
 		ExpandCollection<IJavaElement, ASTNode> expand = new ExpandCollection<IJavaElement, 
 				ASTNode>();
-		return expand.expand(ius, new IMapper<IJavaElement, ASTNode>(){
+		return expand.convert(ius, new IConvertor<IJavaElement, ASTNode>(){
 			@Override
-			public List<ASTNode> map(IJavaElement t) throws Exception {
-				ASTNode element = Parser.Parse2ComilationUnit((ICompilationUnit)t);
-				ArrayList<ASTNode> list = new ArrayList<ASTNode>();
-				list.add(element);
-				return list;
+			public ASTNode convert(IJavaElement t) {
+				return Parser.Parse2ComilationUnit((ICompilationUnit)t);
 			}});
 	}
+	
 	private List<ASTNode> getTypes(List<ASTNode> cus) throws Exception
 	{
 		return ASTNodeExpand.expand(cus, new IMapper<ASTNode, ASTNode>(){
