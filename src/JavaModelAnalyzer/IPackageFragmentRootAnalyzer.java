@@ -9,7 +9,7 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
 
 import util.IPredicate;
-import util.XSelector;
+import util.ListOperations;
 
 public class IPackageFragmentRootAnalyzer {
 	
@@ -44,7 +44,7 @@ public class IPackageFragmentRootAnalyzer {
 	
 	private static List<IJavaElement> getChildrenByType(IPackageFragmentRoot root, final int type) 
 			throws Exception {
-		XSelector<IJavaElement> selector = new XSelector<IJavaElement>();
+		ListOperations<IJavaElement> selector = new ListOperations<IJavaElement>();
 		return selector.Select(IJavaElementUtils.convertArray2List(root.getChildren()), new 
 			IPredicate<IJavaElement>(){
 				@Override

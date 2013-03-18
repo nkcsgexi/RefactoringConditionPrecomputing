@@ -14,4 +14,14 @@ public class ExpandCollection<I, T> {
 		}
 		return results;
 	}
+	
+	public List<T> convert(List<I> input, IConvertor<I, T> convertor)
+	{
+		List<T> results = new ArrayList<T>();
+		for(I i : input)
+		{
+			results.add(convertor.convert(i));
+		}
+		return results;
+	}
 }

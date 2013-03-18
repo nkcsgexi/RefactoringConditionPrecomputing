@@ -23,4 +23,9 @@ public class IPackageFragmentAnalyzer {
 		}
 		return elements;
 	}
+	
+	public static String getName(IJavaElement p)
+	{
+		return p.getElementName();
+	}
 }

@@ -13,5 +13,4 @@ public class IMethodAnalyzer {
 		IMethod method = (IMethod)m;
 		return IJavaElementUtils.convertArray2List(method.getParameters());
 	}
-	
 }

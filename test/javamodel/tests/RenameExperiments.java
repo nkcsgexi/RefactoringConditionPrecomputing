@@ -3,7 +3,9 @@ package javamodel.tests;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
+import java.util.PriorityQueue;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.Assert;
@@ -19,12 +21,14 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.corext.refactoring.rename.JavaRenameProcessor;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.ltk.core.refactoring.participants.CheckConditionsContext;
+import org.eclipse.ltk.core.refactoring.participants.RenameRefactoring;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import util.ExpandCollection;
 import util.IMapper;
+import util.IPredicate;
 import util.XLoggerFactory;
 
 import JDTRefactoring.RenameAPIs;
@@ -90,28 +94,89 @@ public class RenameExperiments {
 		Assert.isTrue(!compilationUnits.isEmpty());
 	}
 	
-	private void RenameOnElements(Collection<IJavaElement> elements, String newName) throws 
-		Exception
+	@SuppressWarnings("unchecked")
+	private void RenameOnElements(Collection<IJavaElement> elements, String newName, int maxCount) 
+			throws Exception
 	{
-		long longestTime = 0;
+		PriorityQueue<RenamableEntity> queue = new PriorityQueue<RenamableEntity>(maxCount, new 
+				Comparator<RenamableEntity>(){
+			@Override
+			public int compare(RenamableEntity arg0, RenamableEntity arg1) {
+				return (int)(arg0.timeInMilli - arg1.timeInMilli);
+			}});
+		
+		
 		for(IJavaElement element : elements)
 		{
+			// Measure the time of 
 			long startTime = System.currentTimeMillis();
 			JavaRenameProcessor processor = RenameAPIs.getRenameProcessor(element);
 			processor.setNewElementName(newName);
-			// processor.isApplicable();
-			RefactoringStatus results = processor.checkNewElementName(newName);
-			results = processor.checkInitialConditions(new NullProgressMonitor());
+			RenameRefactoring refactoring = RenameAPIs.getRenameRefactoring(processor);
+			RefactoringStatus results = refactoring.checkAllConditions(new NullProgressMonitor());
 			long endTime = System.currentTimeMillis();
 			long time = endTime - startTime;
-			if(time > longestTime)
+			
+			// Create a renamable enetity to memorize related information.
+			RenamableEntity entity = new RenamableEntity();
+			entity.element = element;
+			entity.timeInMilli = time;
+			
+			// Add the enetity to the queue and remove the currently smallest one if the size is 
+			// larger than maximum.
+			queue.add(entity);
+			if(queue.size() == maxCount)
 			{
-				longestTime = time;
-			}
-			logger.info("Checking " + element.getElementName() + ":" + time + "/" + longestTime);
+				queue.remove();
+			}	
 		}
-		logger.info("Element count:" + elements.size());
+		
+		logRenamableEntities(queue);
 	}
+	
+	private void logRenamableEntities(PriorityQueue<RenamableEntity> queue) throws Exception
+	{
+		for(;!queue.isEmpty();)
+		{
+			RenamableEntity entity = queue.remove();
+			String packageName = getPackageName(entity.element);
+			String compilationUnitName = getCompilationUnitName(entity.element);
+			logger.info("Check " + entity.element.getElementName() + " in " + packageName + " " + 
+					compilationUnitName + ":" + entity.timeInMilli);
+		}
+	}
+	
+
+	private class RenamableEntity
+	{
+		IJavaElement element;
+		long timeInMilli;
+	}
+	
+	
+	private String getPackageName(IJavaElement element) throws Exception
+	{
+		List<IJavaElement> packs = IJavaElementUtils.getAncestors(element, new IPredicate
+				<IJavaElement>(){
+			@Override
+			public boolean IsTrue(IJavaElement t) throws Exception {
+				return t.getElementType() == IJavaElement.PACKAGE_FRAGMENT;
+			}});
+		return packs.get(0).getElementName();
+	}
+	
+	
+	private String getCompilationUnitName(IJavaElement element) throws Exception {
+		List<IJavaElement> units = IJavaElementUtils.getAncestors(element, new IPredicate
+				<IJavaElement>(){
+			@Override
+			public boolean IsTrue(IJavaElement t) throws Exception {
+				return t.getElementType() == IJavaElement.COMPILATION_UNIT;
+			}});
+		return units.get(0).getElementName();
+	}
+
+	
 	
 	private List<IJavaElement> getAllTypes(List<IJavaElement> units) throws Exception
 	{
@@ -155,36 +220,44 @@ public class RenameExperiments {
 	}
 	
 	
-	@Test
+	//@Test
 	public void renameTypes() throws Exception
 	{
+		logger.info("Starting type names");
 		List<IJavaElement> allTypes = getAllTypes(this.compilationUnits);
-		RenameOnElements(allTypes, "RandomTypeName");	
+		RenameOnElements(allTypes, "RandomTypeName", 30);
+		logger.info("Finishing type names");
 	}
 	
-	@Test
+	//@Test
 	public void renameFields() throws Exception
 	{
+		logger.info("Starting field names");
 		List<IJavaElement> allTypes = getAllTypes(this.compilationUnits);
 		List<IJavaElement> allFields = getAllFields(allTypes);
-		RenameOnElements(allFields, "RandomFieldName");
+		RenameOnElements(allFields, "RandomFieldName", 30);
+		logger.info("Finishing field names");
 	}
 	
 	@Test
 	public void renameMethods() throws Exception
 	{
+		logger.info("Starting method name.");
 		List<IJavaElement> allTypes = getAllTypes(this.compilationUnits);
 		List<IJavaElement> allMethods = getAllMethods(allTypes);
-		RenameOnElements(allMethods, "RandomMethodName");
+		RenameOnElements(allMethods, "RandomMethodName", 30);
+		logger.info("Finishing method name");
 	}
 	
-	@Test
+	//@Test
 	public void renameParameters() throws Exception
 	{
+		logger.info("Starting parameter names.");
 		List<IJavaElement> allTypes = getAllTypes(compilationUnits);
 		List<IJavaElement> allMethods = getAllMethods(allTypes);
 		List<IJavaElement> allParameters = getAllParameters(allMethods);
-		RenameOnElements(allParameters, "RandomParameterName");
+		RenameOnElements(allParameters, "RandomParameterName", 30);
+		logger.info("Finishing parameter names.");
 	}
 
 

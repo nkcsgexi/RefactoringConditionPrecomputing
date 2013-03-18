@@ -26,6 +26,8 @@ import org.eclipse.jdt.internal.corext.refactoring.rename.RenameTypeProcessor;
 import org.eclipse.jdt.internal.corext.refactoring.rename.RenameVirtualMethodProcessor;
 import org.eclipse.jdt.internal.corext.util.JdtFlags;
 import org.eclipse.jdt.ui.refactoring.RenameSupport;
+import org.eclipse.ltk.core.refactoring.participants.RenameRefactoring;
+
 
 @SuppressWarnings("restriction")
 public class RenameAPIs {
@@ -33,9 +35,16 @@ public class RenameAPIs {
 	private static final int flag = RenameSupport.UPDATE_REFERENCES|
 			RenameSupport.UPDATE_GETTER_METHOD|RenameSupport.UPDATE_SETTER_METHOD;
 
+	
+	public static RenameRefactoring getRenameRefactoring(JavaRenameProcessor processor)
+	{
+		return new RenameRefactoring(processor);
+	}
+	
+	
 	public static JavaRenameProcessor getRenameProcessor(IJavaElement element) throws Exception
 	 {
-	         int eleType = element.getElementType();                         
+			 int eleType = element.getElementType();                         
 	         
 	         switch(eleType)
 	         {

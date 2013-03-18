@@ -32,7 +32,7 @@ import org.junit.Test;
 
 import util.IPredicate;
 import util.XLoggerFactory;
-import util.XSelector;
+import util.ListOperations;
 
 import JDTRefactoring.RenameAPIs;
 import JDTRefactoring.StructuralRefactoringAPIs;
@@ -46,7 +46,10 @@ import JavaModelAnalyzer.ITypeAnalyzer;
 public class JavaModelTests {
 
 	private final Logger logger;
+	
 	private ICompilationUnit[] units;
+	private List<IJavaElement> packages;
+	private List<IJavaElement> sourcePackages;
 	
 	public JavaModelTests()
 	{
@@ -70,12 +73,12 @@ public class JavaModelTests {
 		
 		// Get the first package for source code and asserts it contains at least one instance of
 		// ICompilationUnit.
-		List<IJavaElement> packages = IPackageFragmentRootAnalyzer.getSourcePackages
+		this.packages = IPackageFragmentRootAnalyzer.getSourcePackages
 			((IPackageFragmentRoot) sourcePackageRoots.get(1));
 		Assert.isTrue(packages.size() > 0);
 		
 		// Get the packages containing source files.
-		List<IJavaElement> sourcePackages = TestUtils.getPackagesWithCompilationUnits (packages);
+		this.sourcePackages = TestUtils.getPackagesWithCompilationUnits (packages);
 		Assert.isTrue(sourcePackages.size() == 1);
 		units = ((IPackageFragment) sourcePackages.get(0)).getCompilationUnits();
 	}
@@ -138,10 +141,4 @@ public class JavaModelTests {
 		String message = results.getMessageMatchingSeverity(RefactoringStatus.FATAL);
 		logger.fatal(message);
 	}
-	
-	
-
-	
-	
-	
 }

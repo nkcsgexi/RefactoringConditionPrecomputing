@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class XSelector<T> {
+public class ListOperations<T> {
 	
 	public List<T> Select(List<T> array, IPredicate<T> predicate) throws Exception
 	{
@@ -17,5 +17,24 @@ public class XSelector<T> {
 			}
 		}	
 		return selected;
+	}
+	
+	public boolean Has(List<T> list, IPredicate<T> isIt) throws Exception
+	{
+		for(T t : list)
+		{
+			if(isIt.IsTrue(t))
+			{
+				return true;
+			}
+		}
+		return false;	
+	}
+	
+	public List<T> clone(List<T> list)
+	{
+		List<T> newList = new ArrayList<T>();
+		newList.addAll(list);
+		return newList;
 	}
 }

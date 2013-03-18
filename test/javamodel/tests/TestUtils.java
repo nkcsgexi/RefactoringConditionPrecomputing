@@ -7,7 +7,7 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 
 import util.IPredicate;
-import util.XSelector;
+import util.ListOperations;
 import JavaModelAnalyzer.IPackageFragmentRootAnalyzer;
 
 
@@ -17,7 +17,7 @@ public class TestUtils {
 	public static List<IJavaElement> getPackagesWithCompilationUnits(List<IJavaElement> 
 			allPacks) throws Exception
 	{
-		XSelector<IJavaElement> selector = new XSelector<IJavaElement>();
+		ListOperations<IJavaElement> selector = new ListOperations<IJavaElement>();
 		return selector.Select(allPacks, new IPredicate<IJavaElement>(){
 			@Override
 			public boolean IsTrue(IJavaElement t) throws Exception {
@@ -29,7 +29,7 @@ public class TestUtils {
 	public static List<IJavaElement> getSourcePackageRoots(List<IJavaElement> packages) 
 			throws Exception
 	{
-		XSelector<IJavaElement> selector = new XSelector<IJavaElement>();
+		ListOperations<IJavaElement> selector = new ListOperations<IJavaElement>();
 		return selector.Select(packages, new IPredicate<IJavaElement>(){
 			@Override
 			public boolean IsTrue(IJavaElement t) throws Exception {

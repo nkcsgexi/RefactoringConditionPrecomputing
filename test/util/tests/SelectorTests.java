@@ -7,7 +7,7 @@ import org.eclipse.core.runtime.Assert;
 import org.junit.Test;
 
 import util.IPredicate;
-import util.XSelector;
+import util.ListOperations;
 
 public class SelectorTests {
 
@@ -19,7 +19,7 @@ public class SelectorTests {
 		num.add(1);
 		num.add(2);
 		num.add(3);
-		XSelector<Integer> selector = new XSelector<Integer>();
+		ListOperations<Integer> selector = new ListOperations<Integer>();
 		List<Integer> selected = selector.Select(num, new IPredicate<Integer>() {
 			@Override
 			public boolean IsTrue(Integer t) {
