@@ -11,6 +11,6 @@ public class IMethodAnalyzer {
 	public static List<IJavaElement> getParameters(IJavaElement m) throws Exception
 	{
 		IMethod method = (IMethod)m;
-		return IJavaElementUtils.convertArray2List(method.getParameters());
+		return IJavaElementAnalyzers.convertArray2List(method.getParameters());
 	}
 }

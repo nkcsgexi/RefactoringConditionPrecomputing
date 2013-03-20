@@ -6,6 +6,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IOperation;
+import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IPredicate;
+
 public class ListOperations<T> {
 	
 	public List<T> Select(List<T> array, IPredicate<T> predicate) throws Exception
@@ -38,5 +41,27 @@ public class ListOperations<T> {
 		List<T> newList = new ArrayList<T>();
 		newList.addAll(list);
 		return newList;
-	}	
+	}
+	
+	public List<List<T>> getAllSublists(List<T> list)
+	{
+		ArrayList<List<T>> result = new ArrayList<List<T>>();
+		for(int sublistLen = 1; sublistLen <= list.size() ; sublistLen ++)
+		{
+			for(int start = 0; start <= list.size() - sublistLen ; start ++)
+			{
+				// the toindex in the following method is exclusive.
+				result.add(list.subList(start, start + sublistLen));
+			}
+		}
+		return result;
+	}
+	
+	public void operationOnElements(List<T> list, IOperation<T> d)
+	{
+		for(T t : list)
+		{
+			d.perform(t);
+		}
+	}
 }

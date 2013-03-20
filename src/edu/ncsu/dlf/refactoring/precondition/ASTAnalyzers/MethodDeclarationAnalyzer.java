@@ -1,5 +1,6 @@
 package edu.ncsu.dlf.refactoring.precondition.ASTAnalyzers;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -7,10 +8,14 @@ import org.eclipse.core.internal.dtree.IComparator;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Statement;
 
-import edu.ncsu.dlf.refactoring.precondition.util.IPredicate;
+import edu.ncsu.dlf.refactoring.precondition.util.ExpandCollection;
+import edu.ncsu.dlf.refactoring.precondition.util.ListOperations;
 import edu.ncsu.dlf.refactoring.precondition.util.Pair;
 import edu.ncsu.dlf.refactoring.precondition.util.Tree;
 import edu.ncsu.dlf.refactoring.precondition.util.TreeBuilder;
+import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IConvertor;
+import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IMapper;
+import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IPredicate;
 
 
 public class MethodDeclarationAnalyzer {
@@ -25,13 +30,6 @@ public class MethodDeclarationAnalyzer {
 			}});
 	}
 
-	public static Tree<ASTNode> createStatementsTree(ASTNode m) throws Exception
-	{		
-		List<ASTNode> statements = getAllStatements(m);
-		TreeBuilder<ASTNode> builder = new TreeBuilder<ASTNode>(statements, creatIsAncestor());
-		return builder.createTree();
-	}
-
 	public static List<ASTNode> getAllStatements(ASTNode m) {
 		List<ASTNode> statements = ASTNodeAnalyzer.getDecendent(m, new IPredicate<ASTNode>(){
 			@Override
@@ -41,13 +39,39 @@ public class MethodDeclarationAnalyzer {
 		return statements;
 	}
 	
-	private static IPredicate<Pair<ASTNode, ASTNode>> creatIsAncestor() 
+	public static List<List<ASTNode>> getStatementGroups(ASTNode m) throws Exception
 	{
-		IPredicate<Pair<ASTNode, ASTNode>> isAncestor = new IPredicate<Pair<ASTNode, ASTNode>>(){
-			@Override
-			public boolean IsTrue(Pair<ASTNode, ASTNode> t) throws Exception {
-				return ASTNodeAnalyzer.isOneNodeEnclosingAnother(t.getFirst(), t.getSecond());
-			}};
-		return isAncestor;
+		List<ASTNode> statements = getAllStatements(m);
+		Tree<ASTNode> tree = ASTNodesAnalyzer.createASTNodesTree(statements);
+		ArrayList<Tree<ASTNode>> subTrees = new ArrayList<Tree<ASTNode>>(tree.getSubTrees());
+		List<List<ASTNode>> childrenGroups = getFirstLevelSubNodes(subTrees); 
+		return getAllSubGroups(childrenGroups);
 	}
+
+	private static List<List<ASTNode>> getFirstLevelSubNodes(ArrayList<Tree<ASTNode>> subTrees) 
+			throws Exception {
+		ExpandCollection<Tree<ASTNode>, List<ASTNode>> expand = new ExpandCollection<Tree<ASTNode>, 
+			List<ASTNode>>(){};
+		return expand.convert(subTrees, new IConvertor<Tree<ASTNode>, List<ASTNode>>(){
+			@Override
+			public List<ASTNode> convert(Tree<ASTNode> t) {
+				return new ArrayList<ASTNode>(t.getSuccessors(t.getHead()));
+		}});
+	}
+	
+	private static List<List<ASTNode>> getAllSubGroups(List<List<ASTNode>> nodeGroups) throws 
+		Exception
+	{
+		ExpandCollection<List<ASTNode>, List<ASTNode>> expand = new ExpandCollection<List<ASTNode>, 
+				List<ASTNode>>();
+		return expand.expand(nodeGroups, new IMapper<List<ASTNode>, List<ASTNode>>(){
+			@Override
+			public List<List<ASTNode>> map(List<ASTNode> t) throws Exception {
+				ListOperations<ASTNode> operation = new ListOperations<ASTNode>();
+				return operation.getAllSublists(t);
+			}});
+	}
+	
+	
+	
 }

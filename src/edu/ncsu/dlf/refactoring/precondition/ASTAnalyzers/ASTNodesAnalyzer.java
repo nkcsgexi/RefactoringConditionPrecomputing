@@ -6,6 +6,11 @@ import java.util.List;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 
+import edu.ncsu.dlf.refactoring.precondition.util.Pair;
+import edu.ncsu.dlf.refactoring.precondition.util.Tree;
+import edu.ncsu.dlf.refactoring.precondition.util.TreeBuilder;
+import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IPredicate;
+
 public class ASTNodesAnalyzer {
 	
 	public static int getNodesStartPosition(List<ASTNode> nodes)
@@ -33,6 +38,23 @@ public class ASTNodesAnalyzer {
 		int start = getNodesStartPosition(nodes);
 		int end = getNodesEndPosition(nodes);
 		return end - start;
+	}
+	
+	public static Tree<ASTNode> createASTNodesTree(List<ASTNode> nodes) throws Exception
+	{
+		TreeBuilder<ASTNode> builder = new TreeBuilder<ASTNode>(nodes, creatIsAncestor());
+		return builder.createTree();
+	}
+	
+	
+	private static IPredicate<Pair<ASTNode, ASTNode>> creatIsAncestor() 
+	{
+		IPredicate<Pair<ASTNode, ASTNode>> isAncestor = new IPredicate<Pair<ASTNode, ASTNode>>(){
+			@Override
+			public boolean IsTrue(Pair<ASTNode, ASTNode> t) throws Exception {
+				return ASTNodeAnalyzer.isOneNodeEnclosingAnother(t.getFirst(), t.getSecond());
+			}};
+		return isAncestor;
 	}
 	
 }

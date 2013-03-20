@@ -7,8 +7,8 @@ import org.apache.log4j.Logger;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 
-import edu.ncsu.dlf.refactoring.precondition.util.IPredicate;
 import edu.ncsu.dlf.refactoring.precondition.util.XLoggerFactory;
+import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IPredicate;
 
 
 public class ASTNodeAnalyzer {
@@ -64,7 +64,4 @@ public class ASTNodeAnalyzer {
 				node2.getLength();
 		return startOk && endOk && !same;
 	}
-	
-	
-	
 }

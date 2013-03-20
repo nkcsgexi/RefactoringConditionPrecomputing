@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IConvertor;
+import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IMapper;
+
 public class ExpandCollection<I, T> {
 	public List<T> expand(List<I> input, IMapper<I,T> mapper) throws Exception
 	{

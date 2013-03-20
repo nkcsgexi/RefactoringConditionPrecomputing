@@ -7,8 +7,8 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 
 import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentRootAnalyzer;
-import edu.ncsu.dlf.refactoring.precondition.util.IPredicate;
 import edu.ncsu.dlf.refactoring.precondition.util.ListOperations;
+import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IPredicate;
 
 
 

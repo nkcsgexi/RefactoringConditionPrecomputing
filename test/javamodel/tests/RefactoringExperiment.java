@@ -12,13 +12,13 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 
 import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.ICompilationUnitAnalyzer;
-import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IJavaElementUtils;
+import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IJavaElementAnalyzers;
 import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IJavaModelAnalyzer;
 import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentAnalyzer;
 import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentRootAnalyzer;
 import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IProjectAnalyzer;
 import edu.ncsu.dlf.refactoring.precondition.util.ExpandCollection;
-import edu.ncsu.dlf.refactoring.precondition.util.IMapper;
+import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IMapper;
 
 
 public class RefactoringExperiment {
@@ -38,7 +38,7 @@ public class RefactoringExperiment {
 		this.project = IJavaModelAnalyzer.getCurrentJavaProjects()[projectIndex];
 		IPackageFragmentRoot[] packageRoots = IProjectAnalyzer.getPackageFragmentRoots
 				((IJavaProject) project);
-		this.sourcePackageRoots = TestUtils.getSourcePackageRoots(IJavaElementUtils.
+		this.sourcePackageRoots = TestUtils.getSourcePackageRoots(IJavaElementAnalyzers.
 				convertArray2List(packageRoots));
 		for(IJavaElement fragment : sourcePackageRoots)
 		{
@@ -60,7 +60,7 @@ public class RefactoringExperiment {
 	
 	protected List<IJavaElement> getAllTypes(List<IJavaElement> units) throws Exception
 	{
-		return IJavaElementUtils.expandJavaElement(units, new IMapper<IJavaElement, IJavaElement>(){
+		return IJavaElementAnalyzers.expandJavaElement(units, new IMapper<IJavaElement, IJavaElement>(){
 			@Override
 			public List<IJavaElement> map(IJavaElement t)
 					throws Exception {

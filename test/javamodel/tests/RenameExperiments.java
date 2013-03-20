@@ -28,7 +28,7 @@ import org.junit.Test;
 
 import edu.ncsu.dlf.refactoring.RenameAPIs;
 import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.ICompilationUnitAnalyzer;
-import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IJavaElementUtils;
+import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IJavaElementAnalyzers;
 import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IJavaModelAnalyzer;
 import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IMethodAnalyzer;
 import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentAnalyzer;
@@ -36,9 +36,9 @@ import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragment
 import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IProjectAnalyzer;
 import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.ITypeAnalyzer;
 import edu.ncsu.dlf.refactoring.precondition.util.ExpandCollection;
-import edu.ncsu.dlf.refactoring.precondition.util.IMapper;
-import edu.ncsu.dlf.refactoring.precondition.util.IPredicate;
 import edu.ncsu.dlf.refactoring.precondition.util.XLoggerFactory;
+import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IMapper;
+import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IPredicate;
 
 
 
@@ -64,7 +64,7 @@ public class RenameExperiments {
 		this.project = IJavaModelAnalyzer.getCurrentJavaProjects()[projectIndex];
 		IPackageFragmentRoot[] packageRoots = IProjectAnalyzer.getPackageFragmentRoots
 				((IJavaProject) project);
-		sourcePackageRoots = TestUtils.getSourcePackageRoots(IJavaElementUtils.convertArray2List
+		sourcePackageRoots = TestUtils.getSourcePackageRoots(IJavaElementAnalyzers.convertArray2List
 				(packageRoots));
 		for(IJavaElement fragment : sourcePackageRoots)
 		{
@@ -157,7 +157,7 @@ public class RenameExperiments {
 	
 	private String getPackageName(IJavaElement element) throws Exception
 	{
-		List<IJavaElement> packs = IJavaElementUtils.getAncestors(element, new IPredicate
+		List<IJavaElement> packs = IJavaElementAnalyzers.getAncestors(element, new IPredicate
 				<IJavaElement>(){
 			@Override
 			public boolean IsTrue(IJavaElement t) throws Exception {
@@ -168,7 +168,7 @@ public class RenameExperiments {
 	
 	
 	private String getCompilationUnitName(IJavaElement element) throws Exception {
-		List<IJavaElement> units = IJavaElementUtils.getAncestors(element, new IPredicate
+		List<IJavaElement> units = IJavaElementAnalyzers.getAncestors(element, new IPredicate
 				<IJavaElement>(){
 			@Override
 			public boolean IsTrue(IJavaElement t) throws Exception {
@@ -181,7 +181,7 @@ public class RenameExperiments {
 	
 	private List<IJavaElement> getAllTypes(List<IJavaElement> units) throws Exception
 	{
-		return IJavaElementUtils.expandJavaElement(units, new IMapper<IJavaElement, IJavaElement>(){
+		return IJavaElementAnalyzers.expandJavaElement(units, new IMapper<IJavaElement, IJavaElement>(){
 			@Override
 			public List<IJavaElement> map(IJavaElement t)
 					throws Exception {
@@ -191,7 +191,7 @@ public class RenameExperiments {
 	
 	private List<IJavaElement> getAllFields(List<IJavaElement> types) throws Exception
 	{
-		return IJavaElementUtils.expandJavaElement(types, new IMapper<IJavaElement, IJavaElement>(){
+		return IJavaElementAnalyzers.expandJavaElement(types, new IMapper<IJavaElement, IJavaElement>(){
 			@Override
 			public List<IJavaElement> map(IJavaElement t)
 					throws Exception {
@@ -202,7 +202,7 @@ public class RenameExperiments {
 	
 	private List<IJavaElement> getAllMethods(List<IJavaElement> types) throws Exception
 	{
-		return IJavaElementUtils.expandJavaElement(types, new IMapper<IJavaElement, IJavaElement>(){
+		return IJavaElementAnalyzers.expandJavaElement(types, new IMapper<IJavaElement, IJavaElement>(){
 			@Override
 			public List<IJavaElement> map(IJavaElement t)
 					throws Exception {
@@ -212,7 +212,7 @@ public class RenameExperiments {
 	
 
 	private List<IJavaElement> getAllParameters(List<IJavaElement> methods) throws Exception {
-		return IJavaElementUtils.expandJavaElement(methods, new IMapper<IJavaElement, 
+		return IJavaElementAnalyzers.expandJavaElement(methods, new IMapper<IJavaElement, 
 				IJavaElement>(){
 			@Override
 			public List<IJavaElement> map(IJavaElement t) throws Exception {

@@ -1,4 +1,4 @@
-package edu.ncsu.dlf.refactoring.precondition.util;
+package edu.ncsu.dlf.refactoring.precondition.util.interfaces;
 
 import java.util.List;
 

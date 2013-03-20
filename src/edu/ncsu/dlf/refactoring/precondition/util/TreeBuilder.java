@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IPredicate;
+
 
 public class TreeBuilder<T> {
 	

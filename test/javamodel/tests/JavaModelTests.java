@@ -32,15 +32,15 @@ import org.junit.Test;
 
 import edu.ncsu.dlf.refactoring.RenameAPIs;
 import edu.ncsu.dlf.refactoring.StructuralRefactoringAPIs;
-import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IJavaElementUtils;
+import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IJavaElementAnalyzers;
 import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IJavaModelAnalyzer;
 import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentAnalyzer;
 import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentRootAnalyzer;
 import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IProjectAnalyzer;
 import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.ITypeAnalyzer;
-import edu.ncsu.dlf.refactoring.precondition.util.IPredicate;
 import edu.ncsu.dlf.refactoring.precondition.util.ListOperations;
 import edu.ncsu.dlf.refactoring.precondition.util.XLoggerFactory;
+import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IPredicate;
 
 
 
@@ -68,7 +68,7 @@ public class JavaModelTests {
 		
 		// Get the packages for source code and assert there is at least one.
 		List<IJavaElement> sourcePackageRoots = TestUtils.getSourcePackageRoots
-				(IJavaElementUtils.convertArray2List(packageRoots));
+				(IJavaElementAnalyzers.convertArray2List(packageRoots));
 		Assert.isTrue(sourcePackageRoots.size() > 0);
 		
 		

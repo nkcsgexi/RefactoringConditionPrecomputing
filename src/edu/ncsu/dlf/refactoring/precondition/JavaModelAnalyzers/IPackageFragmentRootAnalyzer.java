@@ -8,8 +8,8 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
 
-import edu.ncsu.dlf.refactoring.precondition.util.IPredicate;
 import edu.ncsu.dlf.refactoring.precondition.util.ListOperations;
+import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IPredicate;
 
 
 public class IPackageFragmentRootAnalyzer {
@@ -46,7 +46,7 @@ public class IPackageFragmentRootAnalyzer {
 	private static List<IJavaElement> getChildrenByType(IPackageFragmentRoot root, final int type) 
 			throws Exception {
 		ListOperations<IJavaElement> selector = new ListOperations<IJavaElement>();
-		return selector.Select(IJavaElementUtils.convertArray2List(root.getChildren()), new 
+		return selector.Select(IJavaElementAnalyzers.convertArray2List(root.getChildren()), new 
 			IPredicate<IJavaElement>(){
 				@Override
 				public boolean IsTrue(IJavaElement t) {

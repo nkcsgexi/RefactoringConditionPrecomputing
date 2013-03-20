@@ -14,21 +14,22 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.ncsu.dlf.refactoring.precondition.ASTAnalyzers.ASTNodesAnalyzer;
 import edu.ncsu.dlf.refactoring.precondition.ASTAnalyzers.CompilationUnitAnalyzer;
 import edu.ncsu.dlf.refactoring.precondition.ASTAnalyzers.MethodDeclarationAnalyzer;
 import edu.ncsu.dlf.refactoring.precondition.ASTAnalyzers.TypeDeclarationAnalyzer;
 import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.ICompilationUnitAnalyzer;
-import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IJavaElementUtils;
+import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IJavaElementAnalyzers;
 import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IJavaModelAnalyzer;
 import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentAnalyzer;
 import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentRootAnalyzer;
 import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IProjectAnalyzer;
 import edu.ncsu.dlf.refactoring.precondition.util.ExpandCollection;
-import edu.ncsu.dlf.refactoring.precondition.util.IConvertor;
-import edu.ncsu.dlf.refactoring.precondition.util.IMapper;
 import edu.ncsu.dlf.refactoring.precondition.util.Parser;
 import edu.ncsu.dlf.refactoring.precondition.util.Tree;
 import edu.ncsu.dlf.refactoring.precondition.util.XLoggerFactory;
+import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IConvertor;
+import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IMapper;
 
 
 public class ExtractMethodExperiments extends RefactoringExperiment{
@@ -115,10 +116,10 @@ public class ExtractMethodExperiments extends RefactoringExperiment{
 		{
 			if(MethodDeclarationAnalyzer.hasStatements(method))
 			{
-				Tree<ASTNode> tree = MethodDeclarationAnalyzer.createStatementsTree(method);
+				List<ASTNode> statements = MethodDeclarationAnalyzer.getAllStatements(method);
+				Tree<ASTNode> tree = ASTNodesAnalyzer.createASTNodesTree(statements);
 				logger.info(tree);
 			}
-		
 		}
 	}
 

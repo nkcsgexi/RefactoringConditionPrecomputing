@@ -10,12 +10,12 @@ import org.eclipse.jdt.core.IParent;
 import org.eclipse.jdt.core.JavaModelException;
 
 import edu.ncsu.dlf.refactoring.precondition.util.ExpandCollection;
-import edu.ncsu.dlf.refactoring.precondition.util.IMapper;
-import edu.ncsu.dlf.refactoring.precondition.util.IPredicate;
 import edu.ncsu.dlf.refactoring.precondition.util.ListOperations;
+import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IMapper;
+import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IPredicate;
 
 
-public class IJavaElementUtils {
+public class IJavaElementAnalyzers {
 
 	public static List<IJavaElement> convertArray2List(IJavaElement[] elements)
 	{
@@ -53,5 +53,17 @@ public class IJavaElementUtils {
 		}
 		return results;
 	}
+	
+	public static List<IJavaElement> getAncestorsByType(IJavaElement element, final int type) throws 
+		Exception
+	{
+		return getAncestors(element, new IPredicate<IJavaElement>(){
+			@Override
+			public boolean IsTrue(IJavaElement t) throws Exception {
+				return type == t.getElementType();
+			}});
+	}
+	
+	
 	
 }
