@@ -15,6 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.ncsu.dlf.refactoring.precondition.ASTAnalyzers.CompilationUnitAnalyzer;
+import edu.ncsu.dlf.refactoring.precondition.ASTAnalyzers.MethodDeclarationAnalyzer;
 import edu.ncsu.dlf.refactoring.precondition.ASTAnalyzers.TypeDeclarationAnalyzer;
 import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.ICompilationUnitAnalyzer;
 import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IJavaElementUtils;
@@ -26,15 +27,16 @@ import edu.ncsu.dlf.refactoring.precondition.util.ExpandCollection;
 import edu.ncsu.dlf.refactoring.precondition.util.IConvertor;
 import edu.ncsu.dlf.refactoring.precondition.util.IMapper;
 import edu.ncsu.dlf.refactoring.precondition.util.Parser;
+import edu.ncsu.dlf.refactoring.precondition.util.Tree;
 import edu.ncsu.dlf.refactoring.precondition.util.XLoggerFactory;
 
 
 public class ExtractMethodExperiments extends RefactoringExperiment{
 
-	List<ASTNode> cus;
-	List<ASTNode> types;
-	List<ASTNode> methods;
-	ExpandCollection<ASTNode, ASTNode> ASTNodeExpand;
+	private List<ASTNode> cus;
+	private List<ASTNode> types;
+	private List<ASTNode> methods;
+	private ExpandCollection<ASTNode, ASTNode> ASTNodeExpand;
 	
 	
 	public ExtractMethodExperiments()
@@ -86,7 +88,8 @@ public class ExtractMethodExperiments extends RefactoringExperiment{
 		Assert.isTrue(!sourcePackages.isEmpty());
 		Assert.isTrue(!compilationUnits.isEmpty());
 		
-		cus = parseIUs(compilationUnits.subList(0, 9));
+		// only parse 10 compilation units.
+		cus = parseIUs(compilationUnits.subList(0, 15));
 		types = getTypes(cus);
 		methods = getMethods(types);
 		
@@ -95,12 +98,31 @@ public class ExtractMethodExperiments extends RefactoringExperiment{
 		Assert.isTrue(methods.size() > 0);
 	}
 	
-	@Test
-	public void method2()
-	{
-		
+	private void printStatements(ASTNode method) {
+		List<ASTNode> statements = MethodDeclarationAnalyzer.getAllStatements(method);
+		Assert.isTrue(statements.size() > 0);
+		for(ASTNode s : statements)
+		{
+			logger.info(s.toString());
+		}
 	}
 	
+	
+	@Test
+	public void method2() throws Exception
+	{
+		for(ASTNode method : methods)
+		{
+			if(MethodDeclarationAnalyzer.hasStatements(method))
+			{
+				Tree<ASTNode> tree = MethodDeclarationAnalyzer.createStatementsTree(method);
+				logger.info(tree);
+			}
+		
+		}
+	}
+
+
 	
 	
 	

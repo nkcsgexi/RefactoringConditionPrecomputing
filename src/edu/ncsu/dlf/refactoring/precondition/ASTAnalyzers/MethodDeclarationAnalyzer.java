@@ -14,32 +14,39 @@ import edu.ncsu.dlf.refactoring.precondition.util.TreeBuilder;
 
 
 public class MethodDeclarationAnalyzer {
+	
+	
+	public static boolean hasStatements(ASTNode m)
+	{
+		return ASTNodeAnalyzer.hasDecendent(m,new IPredicate<ASTNode>(){
+			@Override
+			public boolean IsTrue(ASTNode t) throws Exception {
+				return t instanceof Statement;
+			}});
+	}
 
-	public static Tree<ASTNode> createStatementTree(ASTNode m) throws Exception
+	public static Tree<ASTNode> createStatementsTree(ASTNode m) throws Exception
 	{		
+		List<ASTNode> statements = getAllStatements(m);
+		TreeBuilder<ASTNode> builder = new TreeBuilder<ASTNode>(statements, creatIsAncestor());
+		return builder.createTree();
+	}
+
+	public static List<ASTNode> getAllStatements(ASTNode m) {
 		List<ASTNode> statements = ASTNodeAnalyzer.getDecendent(m, new IPredicate<ASTNode>(){
 			@Override
 			public boolean IsTrue(ASTNode t) throws Exception {
 				return t instanceof Statement;
 			}});
-			
-		TreeBuilder<ASTNode> builder = new TreeBuilder<ASTNode>(statements, creatIsAncestor());
-		return builder.createTree();
+		return statements;
 	}
 	
-
 	private static IPredicate<Pair<ASTNode, ASTNode>> creatIsAncestor() 
 	{
 		IPredicate<Pair<ASTNode, ASTNode>> isAncestor = new IPredicate<Pair<ASTNode, ASTNode>>(){
 			@Override
 			public boolean IsTrue(Pair<ASTNode, ASTNode> t) throws Exception {
-				boolean startOk = t.getFirst().getStartPosition() <= t.getSecond().
-						getStartPosition();
-				boolean endOk = t.getFirst().getStartPosition() + t.getFirst().getLength() >= 
-						t.getSecond().getStartPosition() + t.getSecond().getLength();
-				boolean notSame = t.getFirst().getStartPosition() == t.getSecond().
-						getStartPosition() && t.getFirst().getLength() == t.getSecond().getLength();
-				return startOk && endOk && notSame;
+				return ASTNodeAnalyzer.isOneNodeEnclosingAnother(t.getFirst(), t.getSecond());
 			}};
 		return isAncestor;
 	}

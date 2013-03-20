@@ -35,6 +35,12 @@ public class ASTNodeAnalyzer {
 		return targets;
 	}
 	
+	public static boolean hasDecendent(ASTNode parent, final IPredicate<ASTNode> predicate)
+	{
+		return !getDecendent(parent, predicate).isEmpty();
+	}
+	
+	
 	public static List<ASTNode> getDecendentByType(ASTNode parent, final int type)
 	{
 		return getDecendent(parent, new IPredicate<ASTNode>(){
@@ -46,6 +52,17 @@ public class ASTNodeAnalyzer {
 
 	public static int getEndPosition(ASTNode node) {
 		return node.getStartPosition() + node.getLength();
+	}
+	
+	
+	public static boolean isOneNodeEnclosingAnother(ASTNode node1, ASTNode node2)
+	{
+		boolean startOk = node1.getStartPosition() <= node2.getStartPosition();
+		boolean endOk = node1.getStartPosition() + node1.getLength() >= node2.getStartPosition() + 
+				node2.getLength();
+		boolean same = node1.getStartPosition() == node2.getStartPosition() && node1.getLength() == 
+				node2.getLength();
+		return startOk && endOk && !same;
 	}
 	
 	
