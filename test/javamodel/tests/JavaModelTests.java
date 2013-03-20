@@ -30,18 +30,19 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import util.IPredicate;
-import util.XLoggerFactory;
-import util.ListOperations;
+import edu.ncsu.dlf.refactoring.RenameAPIs;
+import edu.ncsu.dlf.refactoring.StructuralRefactoringAPIs;
+import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IJavaElementUtils;
+import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IJavaModelAnalyzer;
+import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentAnalyzer;
+import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentRootAnalyzer;
+import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IProjectAnalyzer;
+import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.ITypeAnalyzer;
+import edu.ncsu.dlf.refactoring.precondition.util.IPredicate;
+import edu.ncsu.dlf.refactoring.precondition.util.ListOperations;
+import edu.ncsu.dlf.refactoring.precondition.util.XLoggerFactory;
 
-import JDTRefactoring.RenameAPIs;
-import JDTRefactoring.StructuralRefactoringAPIs;
-import JavaModelAnalyzer.IJavaElementUtils;
-import JavaModelAnalyzer.IJavaModelAnalyzer;
-import JavaModelAnalyzer.IPackageFragmentAnalyzer;
-import JavaModelAnalyzer.IPackageFragmentRootAnalyzer;
-import JavaModelAnalyzer.IProjectAnalyzer;
-import JavaModelAnalyzer.ITypeAnalyzer;
+
 
 public class JavaModelTests {
 

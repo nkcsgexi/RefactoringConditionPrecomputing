@@ -2,7 +2,8 @@ package util.tests;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 
-import util.XLoggerFactory;
+import edu.ncsu.dlf.refactoring.precondition.util.XLoggerFactory;
+
 
 
 public class LoggerTests {

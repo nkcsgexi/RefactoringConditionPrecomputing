@@ -8,11 +8,12 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.Assert;
 import org.junit.Test;
 
-import util.IPredicate;
-import util.Pair;
-import util.Tree;
-import util.TreeBuilder;
-import util.XLoggerFactory;
+import edu.ncsu.dlf.refactoring.precondition.util.IPredicate;
+import edu.ncsu.dlf.refactoring.precondition.util.Pair;
+import edu.ncsu.dlf.refactoring.precondition.util.Tree;
+import edu.ncsu.dlf.refactoring.precondition.util.TreeBuilder;
+import edu.ncsu.dlf.refactoring.precondition.util.XLoggerFactory;
+
 
 public class TreeTests {
 

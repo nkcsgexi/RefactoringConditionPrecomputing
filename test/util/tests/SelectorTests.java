@@ -6,8 +6,9 @@ import java.util.List;
 import org.eclipse.core.runtime.Assert;
 import org.junit.Test;
 
-import util.IPredicate;
-import util.ListOperations;
+import edu.ncsu.dlf.refactoring.precondition.util.IPredicate;
+import edu.ncsu.dlf.refactoring.precondition.util.ListOperations;
+
 
 public class SelectorTests {
 

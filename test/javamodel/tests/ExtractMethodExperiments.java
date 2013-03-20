@@ -14,19 +14,20 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.junit.Before;
 import org.junit.Test;
 
-import util.ExpandCollection;
-import util.IConvertor;
-import util.IMapper;
-import util.Parser;
-import util.XLoggerFactory;
-import ASTAnalyzers.CompilationUnitAnalyzer;
-import ASTAnalyzers.TypeDeclarationAnalyzer;
-import JavaModelAnalyzer.ICompilationUnitAnalyzer;
-import JavaModelAnalyzer.IJavaElementUtils;
-import JavaModelAnalyzer.IJavaModelAnalyzer;
-import JavaModelAnalyzer.IPackageFragmentAnalyzer;
-import JavaModelAnalyzer.IPackageFragmentRootAnalyzer;
-import JavaModelAnalyzer.IProjectAnalyzer;
+import edu.ncsu.dlf.refactoring.precondition.ASTAnalyzers.CompilationUnitAnalyzer;
+import edu.ncsu.dlf.refactoring.precondition.ASTAnalyzers.TypeDeclarationAnalyzer;
+import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.ICompilationUnitAnalyzer;
+import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IJavaElementUtils;
+import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IJavaModelAnalyzer;
+import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentAnalyzer;
+import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentRootAnalyzer;
+import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IProjectAnalyzer;
+import edu.ncsu.dlf.refactoring.precondition.util.ExpandCollection;
+import edu.ncsu.dlf.refactoring.precondition.util.IConvertor;
+import edu.ncsu.dlf.refactoring.precondition.util.IMapper;
+import edu.ncsu.dlf.refactoring.precondition.util.Parser;
+import edu.ncsu.dlf.refactoring.precondition.util.XLoggerFactory;
+
 
 public class ExtractMethodExperiments extends RefactoringExperiment{
 

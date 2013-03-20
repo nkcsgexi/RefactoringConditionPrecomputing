@@ -11,14 +11,15 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
-import util.ExpandCollection;
-import util.IMapper;
-import JavaModelAnalyzer.ICompilationUnitAnalyzer;
-import JavaModelAnalyzer.IJavaElementUtils;
-import JavaModelAnalyzer.IJavaModelAnalyzer;
-import JavaModelAnalyzer.IPackageFragmentAnalyzer;
-import JavaModelAnalyzer.IPackageFragmentRootAnalyzer;
-import JavaModelAnalyzer.IProjectAnalyzer;
+import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.ICompilationUnitAnalyzer;
+import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IJavaElementUtils;
+import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IJavaModelAnalyzer;
+import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentAnalyzer;
+import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentRootAnalyzer;
+import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IProjectAnalyzer;
+import edu.ncsu.dlf.refactoring.precondition.util.ExpandCollection;
+import edu.ncsu.dlf.refactoring.precondition.util.IMapper;
+
 
 public class RefactoringExperiment {
 

@@ -3,8 +3,9 @@ package util.tests;
 import org.eclipse.core.runtime.Assert;
 import org.junit.Test;
 
-import util.XBox;
-import util.XWorkQueue;
+import edu.ncsu.dlf.refactoring.precondition.util.XBox;
+import edu.ncsu.dlf.refactoring.precondition.util.XWorkQueue;
+
 
 
 public class WorkQueueTests {
