@@ -11,9 +11,11 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.internal.corext.refactoring.code.ExtractMethodRefactoring;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.ncsu.dlf.refactoring.StructuralRefactoringAPIs;
 import edu.ncsu.dlf.refactoring.precondition.ASTAnalyzers.ASTNodesAnalyzer;
 import edu.ncsu.dlf.refactoring.precondition.ASTAnalyzers.CompilationUnitAnalyzer;
 import edu.ncsu.dlf.refactoring.precondition.ASTAnalyzers.MethodDeclarationAnalyzer;
@@ -38,7 +40,15 @@ public class ExtractMethodExperiments extends RefactoringExperiment{
 	private List<ASTNode> types;
 	private List<ASTNode> methods;
 	private ExpandCollection<ASTNode, ASTNode> ASTNodeExpand;
+	private List<ICompilationUnitInformation> unitInformations;
 	
+	private class ICompilationUnitInformation
+	{
+		IJavaElement unit;
+		ASTNode unitRoot;
+		List<ASTNode> types;
+		List<ASTNode> methods;
+	}
 	
 	public ExtractMethodExperiments()
 	{
@@ -76,6 +86,20 @@ public class ExtractMethodExperiments extends RefactoringExperiment{
 			}});
 	}
 	
+	private ICompilationUnitInformation getInformation(IJavaElement t) throws Exception
+	{
+		ICompilationUnitInformation info = new ICompilationUnitInformation();
+		info.unit = t;
+		info.unitRoot = Parser.Parse2ComilationUnit((ICompilationUnit)t);
+		info.types = CompilationUnitAnalyzer.getTypes(info.unitRoot);
+		info.methods = ASTNodeExpand.expand(info.types,new IMapper<ASTNode, ASTNode>(){
+			@Override
+			public List<ASTNode> map(ASTNode t) throws Exception {
+				return TypeDeclarationAnalyzer.getMethodDeclarations(t);
+			}});
+		return null;
+	}
+	
 	
 	@Before
 	public void method1() throws Exception
@@ -90,13 +114,15 @@ public class ExtractMethodExperiments extends RefactoringExperiment{
 		Assert.isTrue(!compilationUnits.isEmpty());
 		
 		// only parse 10 compilation units.
-		cus = parseIUs(compilationUnits.subList(0, 15));
-		types = getTypes(cus);
-		methods = getMethods(types);
+		ExpandCollection<IJavaElement, ICompilationUnitInformation> compilationUnitExpand = 
+				new ExpandCollection<IJavaElement, ICompilationUnitInformation>();
 		
-		Assert.isTrue(cus.size() > 0);
-		Assert.isTrue(types.size() > 0);
-		Assert.isTrue(methods.size() > 0);
+		this.unitInformations = compilationUnitExpand.convert(compilationUnits.subList(0, 10), 
+			new IConvertor<IJavaElement,ICompilationUnitInformation>(){
+			@Override
+			public ICompilationUnitInformation convert(IJavaElement t) throws Exception {
+				return getInformation(t);
+			}});		
 	}
 	
 	private void printStatements(ASTNode method) {
@@ -112,15 +138,23 @@ public class ExtractMethodExperiments extends RefactoringExperiment{
 	@Test
 	public void method2() throws Exception
 	{
-		for(ASTNode method : methods)
+		for(ICompilationUnitInformation info : unitInformations)
 		{
-			if(MethodDeclarationAnalyzer.hasStatements(method))
+			for(ASTNode method : info.methods)
 			{
-				List<ASTNode> statements = MethodDeclarationAnalyzer.getAllStatements(method);
-				Tree<ASTNode> tree = ASTNodesAnalyzer.createASTNodesTree(statements);
-				logger.info(tree);
+				List<List<ASTNode>> statementGroups = MethodDeclarationAnalyzer.getStatementGroups
+						(method);
+				for(List<ASTNode> statements : statementGroups)
+				{
+					int start = ASTNodesAnalyzer.getNodesStartPosition(statements);
+					int length = ASTNodesAnalyzer.getNodesLength(statements);
+					ExtractMethodRefactoring refactoring = StructuralRefactoringAPIs.
+							createExtractMethodRefactoring((ICompilationUnit)info.unit, start, 
+									length);
+				
+				}
 			}
-		}
+		}		
 	}
 
 
