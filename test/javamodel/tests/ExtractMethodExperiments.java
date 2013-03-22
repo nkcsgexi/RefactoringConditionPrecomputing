@@ -6,12 +6,19 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.internal.corext.refactoring.code.ExtractMethodRefactoring;
+import org.eclipse.jdt.internal.corext.refactoring.structure.ExtractInterfaceProcessor;
+import org.eclipse.ltk.core.refactoring.RefactoringStatus;
+import org.eclipse.ltk.core.refactoring.participants.ProcessorBasedRefactoring;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,11 +34,14 @@ import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragment
 import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentRootAnalyzer;
 import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IProjectAnalyzer;
 import edu.ncsu.dlf.refactoring.precondition.util.ExpandCollection;
+import edu.ncsu.dlf.refactoring.precondition.util.ListOperations;
 import edu.ncsu.dlf.refactoring.precondition.util.Parser;
 import edu.ncsu.dlf.refactoring.precondition.util.Tree;
 import edu.ncsu.dlf.refactoring.precondition.util.XLoggerFactory;
 import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IConvertor;
 import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IMapper;
+import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IOperation;
+import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IPredicate;
 
 
 public class ExtractMethodExperiments extends RefactoringExperiment{
@@ -39,8 +49,18 @@ public class ExtractMethodExperiments extends RefactoringExperiment{
 	private List<ASTNode> cus;
 	private List<ASTNode> types;
 	private List<ASTNode> methods;
-	private ExpandCollection<ASTNode, ASTNode> ASTNodeExpand;
+	
+	private final ExpandCollection<ASTNode, ASTNode> ASTNodeExpand;
+	private final ExpandCollection<IJavaElement, IJavaElement> JavaElementExpand;
+	
+	private final ListOperations<ASTNode> ASTNodeListOperations;
+	private final ListOperations<IJavaElement> JavaElementListOperations;
+	
 	private List<ICompilationUnitInformation> unitInformations;
+	
+	private final NullProgressMonitor monitor;
+	private final String newMethodName = "RandomExtractedMethodName";
+	
 	
 	private class ICompilationUnitInformation
 	{
@@ -53,8 +73,13 @@ public class ExtractMethodExperiments extends RefactoringExperiment{
 	public ExtractMethodExperiments()
 	{
 		this.ASTNodeExpand = new ExpandCollection<ASTNode, ASTNode>();
+		this.JavaElementExpand = new ExpandCollection<IJavaElement, IJavaElement>();
+		this.ASTNodeListOperations = new ListOperations<ASTNode>();
+		this.JavaElementListOperations = new ListOperations<IJavaElement>();
+		
 		this.projectIndex = 0;
 		this.logger = XLoggerFactory.GetLogger(this.getClass());
+		this.monitor = new NullProgressMonitor();
 	}
 	
 	private List<ASTNode> parseIUs(List<IJavaElement> ius) throws Exception
@@ -97,7 +122,7 @@ public class ExtractMethodExperiments extends RefactoringExperiment{
 			public List<ASTNode> map(ASTNode t) throws Exception {
 				return TypeDeclarationAnalyzer.getMethodDeclarations(t);
 			}});
-		return null;
+		return info;
 	}
 	
 	
@@ -117,7 +142,7 @@ public class ExtractMethodExperiments extends RefactoringExperiment{
 		ExpandCollection<IJavaElement, ICompilationUnitInformation> compilationUnitExpand = 
 				new ExpandCollection<IJavaElement, ICompilationUnitInformation>();
 		
-		this.unitInformations = compilationUnitExpand.convert(compilationUnits.subList(0, 10), 
+		this.unitInformations = compilationUnitExpand.convert(compilationUnits.subList(0, 20), 
 			new IConvertor<IJavaElement,ICompilationUnitInformation>(){
 			@Override
 			public ICompilationUnitInformation convert(IJavaElement t) throws Exception {
@@ -135,26 +160,84 @@ public class ExtractMethodExperiments extends RefactoringExperiment{
 	}
 	
 	
-	@Test
-	public void method2() throws Exception
+	//@Test
+	public void method3() throws Exception
 	{
+		
 		for(ICompilationUnitInformation info : unitInformations)
 		{
 			for(ASTNode method : info.methods)
 			{
-				List<List<ASTNode>> statementGroups = MethodDeclarationAnalyzer.getStatementGroups
+				List<List<ASTNode>> statementGroups;
+				try{
+					statementGroups = MethodDeclarationAnalyzer.getStatementGroups
 						(method);
+				}catch(Exception e)
+				{
+					continue;
+				}
 				for(List<ASTNode> statements : statementGroups)
 				{
-					int start = ASTNodesAnalyzer.getNodesStartPosition(statements);
-					int length = ASTNodesAnalyzer.getNodesLength(statements);
-					ExtractMethodRefactoring refactoring = StructuralRefactoringAPIs.
-							createExtractMethodRefactoring((ICompilationUnit)info.unit, start, 
-									length);
-				
+					ExtractMethodRefactoring refactoring = createRefactoring((ICompilationUnit) info.
+							unit, statements);
+					performChecking(refactoring);
 				}
 			}
 		}		
+	}
+
+	private ExtractMethodRefactoring createRefactoring(
+			ICompilationUnit unit, List<ASTNode> statements) {
+		int start = ASTNodesAnalyzer.getNodesStartPosition(statements);
+		int length = ASTNodesAnalyzer.getNodesLength(statements); 	
+		logger.info("start: " + start + "; length: " + length);
+		ExtractMethodRefactoring refactoring = StructuralRefactoringAPIs.
+				createExtractMethodRefactoring(unit, start, length);
+		return refactoring;
+	}
+
+	private void performChecking(ExtractMethodRefactoring refactoring)
+			throws CoreException {
+		
+		refactoring.setMethodName(newMethodName);
+		refactoring.setReplaceDuplicates(true);
+		long startTime = System.currentTimeMillis();
+		try{
+		RefactoringStatus result = refactoring.checkInitialConditions(monitor);
+		result = refactoring.checkFinalConditions(monitor);
+		}catch(Exception e)
+		{
+			return;
+		}
+		long endTime = System.currentTimeMillis();
+		logger.info("Checking time:" + (endTime - startTime));
+	}
+	
+	
+	@Test
+	public void method4() throws Exception
+	{
+		 List<IJavaElement> allTypes = this.getAllTypes(this.compilationUnits);
+		 this.JavaElementListOperations.operationOnElements(allTypes, new IOperation
+				 <IJavaElement>(){
+			@Override
+			public void perform(IJavaElement t) throws Exception {
+				ExtractInterfaceProcessor processor = StructuralRefactoringAPIs.
+						createExtractInterfaceProcessor((IType)t);
+				ProcessorBasedRefactoring refactoring = new ProcessorBasedRefactoring(processor);
+				long start;
+				long end;
+				try{
+					start = System.currentTimeMillis();
+					refactoring.checkInitialConditions(monitor);
+					refactoring.checkFinalConditions(monitor);
+					end = System.currentTimeMillis();
+				}catch(Exception e)
+				{
+					return;
+				}
+				logger.info("Time in checking: " + t.getElementName() + " " + (end - start));
+			}});
 	}
 
 

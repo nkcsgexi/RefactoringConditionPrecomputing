@@ -1,5 +1,5 @@
 package edu.ncsu.dlf.refactoring.precondition.util.interfaces;
 
 public interface IOperation<T> {
-	void perform(T t);
+	void perform(T t) throws Exception;
 }

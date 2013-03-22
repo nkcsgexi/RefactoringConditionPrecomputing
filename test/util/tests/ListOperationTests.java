@@ -17,7 +17,7 @@ public class ListOperationTests {
 
 	
 	@Test
-	public void method1()
+	public void method1() throws Exception
 	{
 		list.add(1);
 		list.add(2);

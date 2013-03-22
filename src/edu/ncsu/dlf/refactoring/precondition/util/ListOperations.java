@@ -57,7 +57,7 @@ public class ListOperations<T> {
 		return result;
 	}
 	
-	public void operationOnElements(List<T> list, IOperation<T> d)
+	public void operationOnElements(List<T> list, IOperation<T> d) throws Exception
 	{
 		for(T t : list)
 		{
