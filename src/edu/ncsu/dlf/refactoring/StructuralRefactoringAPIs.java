@@ -1,14 +1,24 @@
 package edu.ncsu.dlf.refactoring;
 
+import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.corext.codemanipulation.CodeGenerationSettings;
+import org.eclipse.jdt.internal.corext.refactoring.JavaRefactoringArguments;
 import org.eclipse.jdt.internal.corext.refactoring.code.ExtractMethodRefactoring;
 import org.eclipse.jdt.internal.corext.refactoring.structure.PullUpRefactoringProcessor;
 import org.eclipse.jdt.internal.corext.refactoring.structure.PushDownRefactoringProcessor;
 import org.eclipse.jdt.internal.corext.refactoring.structure.ExtractInterfaceProcessor;
-
+import org.eclipse.jdt.internal.corext.refactoring.reorg.IConfirmQuery;
+import org.eclipse.jdt.internal.corext.refactoring.reorg.IReorgPolicy.IMovePolicy;
+import org.eclipse.jdt.internal.corext.refactoring.reorg.IReorgQueries;
+import org.eclipse.jdt.internal.corext.refactoring.reorg.JavaMoveProcessor;
+import org.eclipse.jdt.internal.corext.refactoring.reorg.ReorgDestinationFactory;
+import org.eclipse.jdt.internal.corext.refactoring.reorg.ReorgPolicyFactory;
+import org.eclipse.ltk.core.refactoring.participants.MoveRefactoring;
 
 public class StructuralRefactoringAPIs {
 	
@@ -41,6 +51,20 @@ public class StructuralRefactoringAPIs {
 	{
 		return new ExtractInterfaceProcessor(type, createCodeGenerationSettings());
 	}
+	
+	public static MoveRefactoring createMoveRefactoring(IJavaElement element, IJavaElement 
+			destination) throws Exception
+	{
+		IMovePolicy movePolicy= ReorgPolicyFactory.createMovePolicy(new IResource[]{element.
+				getResource()}, new IJavaElement[]{element});
+		JavaMoveProcessor moveProcessor = new JavaMoveProcessor(movePolicy);
+		moveProcessor.setDestination(ReorgDestinationFactory.createDestination(destination));
+		moveProcessor.setReorgQueries(new MockReorgQueries());
+		MoveRefactoring refactoring = new MoveRefactoring(moveProcessor);
+		return refactoring;
+	}
+
+	
 	
 	
 

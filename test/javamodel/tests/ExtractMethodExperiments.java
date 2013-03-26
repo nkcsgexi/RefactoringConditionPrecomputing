@@ -18,6 +18,7 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.internal.corext.refactoring.code.ExtractMethodRefactoring;
 import org.eclipse.jdt.internal.corext.refactoring.structure.ExtractInterfaceProcessor;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
+import org.eclipse.ltk.core.refactoring.participants.MoveRefactoring;
 import org.eclipse.ltk.core.refactoring.participants.ProcessorBasedRefactoring;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,6 +34,7 @@ import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IJavaModelAnalyz
 import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentAnalyzer;
 import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentRootAnalyzer;
 import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IProjectAnalyzer;
+import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.ITypeAnalyzer;
 import edu.ncsu.dlf.refactoring.precondition.util.ExpandCollection;
 import edu.ncsu.dlf.refactoring.precondition.util.ListOperations;
 import edu.ncsu.dlf.refactoring.precondition.util.Parser;
@@ -214,8 +216,7 @@ public class ExtractMethodExperiments extends RefactoringExperiment{
 	}
 	
 	
-	@Test
-	public void method4() throws Exception
+	public void extractMethodExperiment() throws Exception
 	{
 		 List<IJavaElement> allTypes = this.getAllTypes(this.compilationUnits);
 		 this.JavaElementListOperations.operationOnElements(allTypes, new IOperation
@@ -239,14 +240,36 @@ public class ExtractMethodExperiments extends RefactoringExperiment{
 				logger.info("Time in checking: " + t.getElementName() + " " + (end - start));
 			}});
 	}
+	
+	
+	@Test
+	public void moveExperiment() throws Exception
+	{
+		List<IJavaElement> types = this.getAllTypes(this.compilationUnits.subList(0, 10));
+		for(int fromI = 0; fromI < types.size() - 1; fromI ++)
+		{
+			int toI = fromI + 1;
+			List<IJavaElement> movedMethods = ITypeAnalyzer.getMethods(types.get(fromI));
+			IJavaElement toType = types.get(toI);
+			
+			for (IJavaElement m : movedMethods)
+			{
+					MoveRefactoring refactoring = StructuralRefactoringAPIs.createMoveRefactoring(
+							m, toType);
+					long startMilli = System.currentTimeMillis();
+					refactoring.checkInitialConditions(monitor);
+					refactoring.checkFinalConditions(monitor);
+					long endMilli = System.currentTimeMillis();
+					logger.info(m.getElementName() + " to " + toType.getElementName() + " : " + 
+							(endMilli - startMilli));
+			}
+		}
+	}
 
-
-	
-	
-	
-	
-	
-	
-	
-	
 }
+
+
+	
+	
+	
+	
