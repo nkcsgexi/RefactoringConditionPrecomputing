@@ -55,8 +55,8 @@ public class StructuralRefactoringAPIs {
 	public static MoveRefactoring createMoveRefactoring(IJavaElement element, IJavaElement 
 			destination) throws Exception
 	{
-		IMovePolicy movePolicy= ReorgPolicyFactory.createMovePolicy(new IResource[]{element.
-				getResource()}, new IJavaElement[]{element});
+		IMovePolicy movePolicy= ReorgPolicyFactory.createMovePolicy(new IResource[]{}, 
+				new IJavaElement[]{element});
 		JavaMoveProcessor moveProcessor = new JavaMoveProcessor(movePolicy);
 		moveProcessor.setDestination(ReorgDestinationFactory.createDestination(destination));
 		moveProcessor.setReorgQueries(new MockReorgQueries());

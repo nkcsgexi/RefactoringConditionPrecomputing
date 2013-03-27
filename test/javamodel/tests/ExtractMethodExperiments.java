@@ -242,30 +242,58 @@ public class ExtractMethodExperiments extends RefactoringExperiment{
 	}
 	
 	
-	@Test
-	public void moveExperiment() throws Exception
+	private void moveTest(List<IJavaElement> elements, List<IJavaElement> destinations) throws 
+		Exception
 	{
-		List<IJavaElement> types = this.getAllTypes(this.compilationUnits.subList(0, 10));
-		for(int fromI = 0; fromI < types.size() - 1; fromI ++)
+		for(IJavaElement element : elements)
 		{
-			int toI = fromI + 1;
-			List<IJavaElement> movedMethods = ITypeAnalyzer.getMethods(types.get(fromI));
-			IJavaElement toType = types.get(toI);
-			
-			for (IJavaElement m : movedMethods)
+			for(IJavaElement dest : destinations)
 			{
-					MoveRefactoring refactoring = StructuralRefactoringAPIs.createMoveRefactoring(
-							m, toType);
-					long startMilli = System.currentTimeMillis();
-					refactoring.checkInitialConditions(monitor);
-					refactoring.checkFinalConditions(monitor);
-					long endMilli = System.currentTimeMillis();
-					logger.info(m.getElementName() + " to " + toType.getElementName() + " : " + 
-							(endMilli - startMilli));
+				MoveRefactoring refactoring = StructuralRefactoringAPIs.createMoveRefactoring
+						(element, dest);
+				long startMilli = System.currentTimeMillis();
+				refactoring.checkInitialConditions(monitor);
+				refactoring.checkFinalConditions(monitor);
+				long endMilli = System.currentTimeMillis();
+				logger.info(element.getElementName() + " to " + dest.getElementName() + " : " + 
+						(endMilli - startMilli));
 			}
 		}
 	}
-
+	
+//	@Test
+	public void moveMethods2Types() throws Exception
+	{
+		List<IJavaElement> types = this.getAllTypes(this.compilationUnits.subList(0, 10));
+		List<IJavaElement> methods = this.JavaElementExpand.expand(types, new IMapper<IJavaElement,
+				IJavaElement>(){
+					@Override
+					public List<IJavaElement> map(IJavaElement t)
+							throws Exception {
+						return ITypeAnalyzer.getMethods(t);
+					}});
+		this.moveTest(methods, types);
+	}
+	
+	@Test
+	public void moveTypes2Packages() throws Exception
+	{
+		List<IJavaElement> types = this.getAllTypes(this.compilationUnits.subList(0, 10));
+		this.moveTest(types, this.sourcePackages);
+	}
+	
+	public void moveFields2Types() throws Exception
+	{
+		List<IJavaElement> types = this.getAllTypes(this.compilationUnits.subList(0, 10));
+		List<IJavaElement> fields = this.JavaElementExpand.expand(types, new IMapper<IJavaElement,
+				IJavaElement>(){
+					@Override
+					public List<IJavaElement> map(IJavaElement t)
+							throws Exception {
+						return ITypeAnalyzer.getFields(t);
+					}});
+		this.moveTest(fields, types);
+	}
 }
 
 
