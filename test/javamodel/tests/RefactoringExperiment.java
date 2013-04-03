@@ -18,6 +18,7 @@ import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragment
 import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentRootAnalyzer;
 import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IProjectAnalyzer;
 import edu.ncsu.dlf.refactoring.precondition.util.ExpandCollection;
+import edu.ncsu.dlf.refactoring.precondition.util.MathUtils;
 import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IMapper;
 
 
@@ -67,5 +68,15 @@ public class RefactoringExperiment {
 				return ICompilationUnitAnalyzer.getTypes(t);
 			}});
 	}
+	
+	protected List<IJavaElement> getRandomUnits(int count)
+	{
+		int start = MathUtils.getRondomInteger(0, this.compilationUnits.size() - count);
+		return this.compilationUnits.subList(start, start + count);
+	}
+	
+	
+	
+	
 	
 }

@@ -18,7 +18,9 @@ import org.eclipse.jdt.internal.corext.refactoring.reorg.IReorgQueries;
 import org.eclipse.jdt.internal.corext.refactoring.reorg.JavaMoveProcessor;
 import org.eclipse.jdt.internal.corext.refactoring.reorg.ReorgDestinationFactory;
 import org.eclipse.jdt.internal.corext.refactoring.reorg.ReorgPolicyFactory;
+import org.eclipse.ltk.core.refactoring.Refactoring;
 import org.eclipse.ltk.core.refactoring.participants.MoveRefactoring;
+import org.eclipse.ltk.core.refactoring.participants.ProcessorBasedRefactoring;
 
 public class StructuralRefactoringAPIs {
 	
@@ -28,10 +30,11 @@ public class StructuralRefactoringAPIs {
 		return new ExtractMethodRefactoring(iu, start, length);
 	}
 	
-	public static PullUpRefactoringProcessor createPullUpRefactoringProcessor(IMember[] members)
+	public static Refactoring createPullUpRefactoring(IMember[] members)
 	{
 		CodeGenerationSettings settings = createCodeGenerationSettings();
-		return new PullUpRefactoringProcessor(members, settings);
+		PullUpRefactoringProcessor processor = new PullUpRefactoringProcessor(members, settings);
+		return new ProcessorBasedRefactoring(processor);
 	}
 
 	private static CodeGenerationSettings createCodeGenerationSettings() {
@@ -42,9 +45,10 @@ public class StructuralRefactoringAPIs {
 		return settings;
 	}
 	
-	public static PushDownRefactoringProcessor createPushDownRefactoringProcessor(IMember[] members)
+	public static Refactoring createPushDownRefactoring(IMember[] members)
 	{
-		return new PushDownRefactoringProcessor(members); 
+		PushDownRefactoringProcessor processor = new PushDownRefactoringProcessor(members);
+		return new ProcessorBasedRefactoring(processor);
 	}
 	
 	public static ExtractInterfaceProcessor createExtractInterfaceProcessor(IType type)
