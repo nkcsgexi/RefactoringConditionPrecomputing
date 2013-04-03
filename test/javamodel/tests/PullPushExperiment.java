@@ -2,6 +2,9 @@ package javamodel.tests;
 
 import java.util.List;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.ltk.core.refactoring.Refactoring;
@@ -21,6 +24,7 @@ public class PullPushExperiment extends RefactoringExperiment {
 	
 	private List<IJavaElement> methods;
 	private List<IJavaElement> fields;
+	
 	private final ListOperations<IJavaElement> javaElementListOperations;
 	private final ExpandCollection<IJavaElement, IJavaElement> javaElementExpandOperations;
 	
@@ -50,13 +54,23 @@ public class PullPushExperiment extends RefactoringExperiment {
 			}}); 
 	}
 	
-	private void pullUpExperiment(Refactoring refactoring) {
-		
+	
+	
+	
+	private void pullUpExperiment(String name, Refactoring refactoring) throws Exception {
+		try {
+			long time = this.timeRefactoringChecking(refactoring);
+			logger.info("Pulling up " + name + ": " + time);
+		} catch(Exception e)
+		{}
 	}
 	
-	private void pushDownExperiment(Refactoring refactoring)
-	{
-		
+	private void pushDownExperiment(String name, Refactoring refactoring) throws Exception {
+		try {
+			long time = this.timeRefactoringChecking(refactoring);
+			logger.info("Pushing down " + name + ": " + time);
+		}catch(Exception e)
+		{}
 	}
 	
 	private void pullUpElements(List<IJavaElement> elements) throws Exception
@@ -66,7 +80,7 @@ public class PullPushExperiment extends RefactoringExperiment {
 			public void perform(IJavaElement t) throws Exception {
 				Refactoring refactoring = StructuralRefactoringAPIs.createPullUpRefactoring(new 
 						IMember[]{(IMember) t});
-				pullUpExperiment(refactoring);
+				pullUpExperiment(t.getElementName(), refactoring);
 			}
 		});
 	}
@@ -78,7 +92,7 @@ public class PullPushExperiment extends RefactoringExperiment {
 			public void perform(IJavaElement t) throws Exception {
 				Refactoring refactoring = StructuralRefactoringAPIs.createPushDownRefactoring(new 
 						IMember[]{(IMember) t});
-				pushDownExperiment(refactoring);
+				pushDownExperiment(t.getElementName(), refactoring);
 			}
 		});
 	}

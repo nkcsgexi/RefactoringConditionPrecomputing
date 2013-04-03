@@ -5,9 +5,11 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.ltk.core.refactoring.Refactoring;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
@@ -23,7 +25,9 @@ import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IMapper;
 
 
 public class RefactoringExperiment {
-
+	
+	protected final NullProgressMonitor monitor;
+	
 	protected Logger logger;
 	protected int projectIndex;
 	protected IJavaElement project;
@@ -31,6 +35,12 @@ public class RefactoringExperiment {
 	protected List<IJavaElement> sourcePackages;
 	protected List<IJavaElement> compilationUnits;
 	protected List<IJavaElement> types;
+	
+	public RefactoringExperiment()
+	{
+		this.monitor = new NullProgressMonitor();
+	}
+	
 	
 	@Before
 	public void createEnvironment() throws Exception
@@ -75,6 +85,13 @@ public class RefactoringExperiment {
 		return this.compilationUnits.subList(start, start + count);
 	}
 	
+	protected long timeRefactoringChecking(Refactoring refactoring) throws Exception
+	{
+		long start = System.currentTimeMillis();
+		refactoring.checkAllConditions(monitor);
+		refactoring.createChange(this.monitor);
+		return System.currentTimeMillis() - start;
+	}
 	
 	
 	
