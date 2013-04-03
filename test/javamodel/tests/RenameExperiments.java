@@ -221,7 +221,7 @@ public class RenameExperiments {
 	}
 	
 	
-	//@Test
+	@Test
 	public void renameTypes() throws Exception
 	{
 		logger.info("Starting type names");
@@ -230,7 +230,7 @@ public class RenameExperiments {
 		logger.info("Finishing type names");
 	}
 	
-	//@Test
+	@Test
 	public void renameFields() throws Exception
 	{
 		logger.info("Starting field names");

@@ -89,7 +89,7 @@ public class RefactoringExperiment {
 	{
 		long start = System.currentTimeMillis();
 		refactoring.checkAllConditions(monitor);
-		refactoring.createChange(this.monitor);
+		refactoring.createChange(monitor);
 		return System.currentTimeMillis() - start;
 	}
 	

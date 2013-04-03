@@ -9,6 +9,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.corext.codemanipulation.CodeGenerationSettings;
 import org.eclipse.jdt.internal.corext.refactoring.JavaRefactoringArguments;
 import org.eclipse.jdt.internal.corext.refactoring.code.ExtractMethodRefactoring;
+import org.eclipse.jdt.internal.corext.refactoring.code.InlineMethodRefactoring;
 import org.eclipse.jdt.internal.corext.refactoring.structure.PullUpRefactoringProcessor;
 import org.eclipse.jdt.internal.corext.refactoring.structure.PushDownRefactoringProcessor;
 import org.eclipse.jdt.internal.corext.refactoring.structure.ExtractInterfaceProcessor;
@@ -29,6 +30,12 @@ public class StructuralRefactoringAPIs {
 	{
 		return new ExtractMethodRefactoring(iu, start, length);
 	}
+	
+	public static Refactoring createInlineMethodRefactoring(ICompilationUnit iu)
+	{
+		return InlineMethodRefactoring.create(iu, null, 0, 0);
+	}
+	
 	
 	public static Refactoring createPullUpRefactoring(IMember[] members)
 	{
