@@ -61,8 +61,11 @@ public class ConditionThreeExperiments {
 	@Test
 	public void verifyIdentifiers()
 	{
-		for(int i = 0; i< 10000; i ++)
+		long start = System.currentTimeMillis();
+		for(int i = 0; i< 1000; i ++)
 			verifyIdentifier();
+		long time = System.currentTimeMillis() - start;
+		System.out.println(time);
 	}
 
 
