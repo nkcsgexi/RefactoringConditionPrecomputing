@@ -6,6 +6,7 @@ import java.util.List;
 import edu.ncsu.dlf.refactoring.precondition.checker.environments.IRefactoringInput;
 import edu.ncsu.dlf.refactoring.precondition.checker.environments.RefactoringEnvironment;
 import edu.ncsu.dlf.refactoring.precondition.util.ListOperations;
+import edu.ncsu.dlf.refactoring.precondition.util.XArrayList;
 import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IPredicate;
 
 public class CheckingResultsRepository {
@@ -13,12 +14,12 @@ public class CheckingResultsRepository {
 	private class RefactoringEnvironmentResults {
 
 		private final RefactoringEnvironment environment;
-		private final List<ICheckingResult> results;
+		private final XArrayList<ICheckingResult> results;
 		
 		protected RefactoringEnvironmentResults(RefactoringEnvironment environment)
 		{
 			this.environment = environment;
-			results = new ArrayList<ICheckingResult>();
+			results = new XArrayList<ICheckingResult>();
 		}
 		
 		protected void addCheckingResult(ICheckingResult result)
@@ -33,21 +34,20 @@ public class CheckingResultsRepository {
 	}
 	
 	
-	private final List<RefactoringEnvironmentResults> results;
-	private final ListOperations<RefactoringEnvironmentResults> resultOperations;
+	private final XArrayList<RefactoringEnvironmentResults> results;
 	
 	private CheckingResultsRepository()
 	{
-		this.results = new ArrayList<RefactoringEnvironmentResults>();
-		this.resultOperations = new ListOperations<RefactoringEnvironmentResults>();
+		this.results = new XArrayList<RefactoringEnvironmentResults>();
 	}
 	
-	private List<RefactoringEnvironmentResults> getCheckingResults(final RefactoringEnvironment 
+	private RefactoringEnvironmentResults getCheckingResults(final RefactoringEnvironment 
 			environment) throws Exception
 	{
-		return resultOperations.Select(results, new IPredicate<RefactoringEnvironmentResults>(){
+		return results.first(new IPredicate<RefactoringEnvironmentResults>(){
 			@Override
-			public boolean IsTrue(RefactoringEnvironmentResults t) throws Exception {
+			public boolean IsTrue(RefactoringEnvironmentResults t)
+					throws Exception {
 				return t.isEnvironmentCorrect(environment);
 			}});
 	}
@@ -55,11 +55,21 @@ public class CheckingResultsRepository {
 	
 	public boolean isResultsAvailable(final RefactoringEnvironment environment) throws Exception
 	{
-		return getCheckingResults(environment).size() > 0;
+		return getCheckingResults(environment) != null;
 	}
 
-	public boolean isC1ConditionOK()
+	public boolean isC1ConditionOK(final RefactoringEnvironment environment) throws Exception
 	{
+		if(isResultsAvailable(environment))
+		{
+			getCheckingResults(environment).results.where(new IPredicate<ICheckingResult>(){
+			@Override
+			public boolean IsTrue(ICheckingResult t) throws Exception {
+				return t instanceof C1CheckingResult;
+			}});
+		
+		}
+		
 		return false;
 	}
 	

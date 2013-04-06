@@ -39,6 +39,15 @@ public class XArrayList<T> extends ArrayList<T> {
 		return listOp.exist(this, predicate);
 	}
 	
+	public boolean all(final IPredicate<T> predicate) throws Exception
+	{
+		return !listOp.exist(this, new IPredicate<T>(){
+			@Override
+			public boolean IsTrue(T t) throws Exception {
+				return !predicate.IsTrue(t);
+			}});
+	}
+	
 	public void operateOnElement(IOperation<T> op) throws Exception
 	{
 		listOp.operationOnElements(this, op);
@@ -81,6 +90,26 @@ public class XArrayList<T> extends ArrayList<T> {
 	public T min(Comparator<T> comparator)
 	{
 		return Collections.min(this, comparator);
+	}
+
+	public T first(IPredicate<T> predicate) throws Exception 
+	{
+		List<T> tempList = this.where(predicate);
+		if(tempList.size() > 0)
+		{
+			return tempList.get(0);
+		}
+		return null;
+	}
+	
+	public T last(IPredicate<T> predicate) throws Exception
+	{
+		List<T> tempList = this.where(predicate);
+		if(tempList.size() > 0)
+		{
+			return tempList.get(tempList.size() - 1);
+		}
+		return null;
 	}
 }
 

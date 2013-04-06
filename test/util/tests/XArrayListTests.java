@@ -71,5 +71,20 @@ public class XArrayListTests {
 		 Assert.isTrue(list2.contains("5"));
 	}
 	
+	@Test
+	public void method4() throws Exception 
+	{
+		Assert.isTrue(list.all(new IPredicate<Integer>(){
+			@Override
+			public boolean IsTrue(Integer t) throws Exception {
+				return t > -1;
+			}}));
+		
+		Assert.isTrue(list.exist(new IPredicate<Integer>(){
+			@Override
+			public boolean IsTrue(Integer t) throws Exception {
+				return t > 3;
+			}}));
+	}
 	
 }
