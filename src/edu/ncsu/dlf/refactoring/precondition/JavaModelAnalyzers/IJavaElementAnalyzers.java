@@ -9,7 +9,7 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IParent;
 import org.eclipse.jdt.core.JavaModelException;
 
-import edu.ncsu.dlf.refactoring.precondition.util.ExpandCollection;
+import edu.ncsu.dlf.refactoring.precondition.util.ExpandOperations;
 import edu.ncsu.dlf.refactoring.precondition.util.ListOperations;
 import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IMapper;
 import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IPredicate;
@@ -27,7 +27,7 @@ public class IJavaElementAnalyzers {
 	public static List<IJavaElement> expandJavaElement(List<IJavaElement> input, 
 			IMapper<IJavaElement, IJavaElement> mapper) throws Exception
 	{
-		ExpandCollection<IJavaElement, IJavaElement> expand = new ExpandCollection<IJavaElement, 
+		ExpandOperations<IJavaElement, IJavaElement> expand = new ExpandOperations<IJavaElement, 
 				IJavaElement>();
 		return expand.expand(input, mapper);
 	}

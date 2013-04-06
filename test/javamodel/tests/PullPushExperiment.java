@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import edu.ncsu.dlf.refactoring.StructuralRefactoringAPIs;
 import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.ITypeAnalyzer;
-import edu.ncsu.dlf.refactoring.precondition.util.ExpandCollection;
+import edu.ncsu.dlf.refactoring.precondition.util.ExpandOperations;
 import edu.ncsu.dlf.refactoring.precondition.util.ListOperations;
 import edu.ncsu.dlf.refactoring.precondition.util.XLoggerFactory;
 import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IMapper;
@@ -26,14 +26,14 @@ public class PullPushExperiment extends RefactoringExperiment {
 	private List<IJavaElement> fields;
 	
 	private final ListOperations<IJavaElement> javaElementListOperations;
-	private final ExpandCollection<IJavaElement, IJavaElement> javaElementExpandOperations;
+	private final ExpandOperations<IJavaElement, IJavaElement> javaElementExpandOperations;
 	
 	public PullPushExperiment()
 	{
 		this.logger = XLoggerFactory.GetLogger(this.getClass());
 		this.projectIndex = 0;
 		this.javaElementListOperations = new ListOperations<IJavaElement>();
-		this.javaElementExpandOperations = new ExpandCollection<IJavaElement, IJavaElement>();
+		this.javaElementExpandOperations = new ExpandOperations<IJavaElement, IJavaElement>();
 	}
 	
 	@Before

@@ -81,7 +81,7 @@ public class TreeBuilder<T> {
 	
 	private boolean hasAncestors(final T t, List<T> list) throws Exception
 	{
-		return operations.Has(list, new IPredicate<T>(){
+		return operations.exist(list, new IPredicate<T>(){
 			@Override
 			public boolean IsTrue(T l) throws Exception {
 				return isAncestor.IsTrue(new Pair<T,T>(l, t));

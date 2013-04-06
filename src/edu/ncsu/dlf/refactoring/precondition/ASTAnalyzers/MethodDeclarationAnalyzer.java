@@ -8,7 +8,7 @@ import org.eclipse.core.internal.dtree.IComparator;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Statement;
 
-import edu.ncsu.dlf.refactoring.precondition.util.ExpandCollection;
+import edu.ncsu.dlf.refactoring.precondition.util.ExpandOperations;
 import edu.ncsu.dlf.refactoring.precondition.util.ListOperations;
 import edu.ncsu.dlf.refactoring.precondition.util.Pair;
 import edu.ncsu.dlf.refactoring.precondition.util.Tree;
@@ -50,7 +50,7 @@ public class MethodDeclarationAnalyzer {
 
 	private static List<List<ASTNode>> getFirstLevelSubNodes(ArrayList<Tree<ASTNode>> subTrees) 
 			throws Exception {
-		ExpandCollection<Tree<ASTNode>, List<ASTNode>> expand = new ExpandCollection<Tree<ASTNode>, 
+		ExpandOperations<Tree<ASTNode>, List<ASTNode>> expand = new ExpandOperations<Tree<ASTNode>, 
 			List<ASTNode>>(){};
 		return expand.convert(subTrees, new IConvertor<Tree<ASTNode>, List<ASTNode>>(){
 			@Override
@@ -62,7 +62,7 @@ public class MethodDeclarationAnalyzer {
 	private static List<List<ASTNode>> getAllSubGroups(List<List<ASTNode>> nodeGroups) throws 
 		Exception
 	{
-		ExpandCollection<List<ASTNode>, List<ASTNode>> expand = new ExpandCollection<List<ASTNode>, 
+		ExpandOperations<List<ASTNode>, List<ASTNode>> expand = new ExpandOperations<List<ASTNode>, 
 				List<ASTNode>>();
 		return expand.expand(nodeGroups, new IMapper<List<ASTNode>, List<ASTNode>>(){
 			@Override

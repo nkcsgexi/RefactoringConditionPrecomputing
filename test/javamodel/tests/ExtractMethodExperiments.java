@@ -35,7 +35,7 @@ import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragment
 import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentRootAnalyzer;
 import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IProjectAnalyzer;
 import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.ITypeAnalyzer;
-import edu.ncsu.dlf.refactoring.precondition.util.ExpandCollection;
+import edu.ncsu.dlf.refactoring.precondition.util.ExpandOperations;
 import edu.ncsu.dlf.refactoring.precondition.util.ListOperations;
 import edu.ncsu.dlf.refactoring.precondition.util.Parser;
 import edu.ncsu.dlf.refactoring.precondition.util.Tree;
@@ -52,8 +52,8 @@ public class ExtractMethodExperiments extends RefactoringExperiment{
 	private List<ASTNode> types;
 	private List<ASTNode> methods;
 	
-	private final ExpandCollection<ASTNode, ASTNode> ASTNodeExpand;
-	private final ExpandCollection<IJavaElement, IJavaElement> JavaElementExpand;
+	private final ExpandOperations<ASTNode, ASTNode> ASTNodeExpand;
+	private final ExpandOperations<IJavaElement, IJavaElement> JavaElementExpand;
 	
 	private final ListOperations<ASTNode> ASTNodeListOperations;
 	private final ListOperations<IJavaElement> JavaElementListOperations;
@@ -74,8 +74,8 @@ public class ExtractMethodExperiments extends RefactoringExperiment{
 	
 	public ExtractMethodExperiments()
 	{
-		this.ASTNodeExpand = new ExpandCollection<ASTNode, ASTNode>();
-		this.JavaElementExpand = new ExpandCollection<IJavaElement, IJavaElement>();
+		this.ASTNodeExpand = new ExpandOperations<ASTNode, ASTNode>();
+		this.JavaElementExpand = new ExpandOperations<IJavaElement, IJavaElement>();
 		this.ASTNodeListOperations = new ListOperations<ASTNode>();
 		this.JavaElementListOperations = new ListOperations<IJavaElement>();
 		
@@ -86,7 +86,7 @@ public class ExtractMethodExperiments extends RefactoringExperiment{
 	
 	private List<ASTNode> parseIUs(List<IJavaElement> ius) throws Exception
 	{
-		ExpandCollection<IJavaElement, ASTNode> expand = new ExpandCollection<IJavaElement, 
+		ExpandOperations<IJavaElement, ASTNode> expand = new ExpandOperations<IJavaElement, 
 				ASTNode>();
 		return expand.convert(ius, new IConvertor<IJavaElement, ASTNode>(){
 			@Override
@@ -141,8 +141,8 @@ public class ExtractMethodExperiments extends RefactoringExperiment{
 		Assert.isTrue(!compilationUnits.isEmpty());
 		
 		// only parse 10 compilation units.
-		ExpandCollection<IJavaElement, ICompilationUnitInformation> compilationUnitExpand = 
-				new ExpandCollection<IJavaElement, ICompilationUnitInformation>();
+		ExpandOperations<IJavaElement, ICompilationUnitInformation> compilationUnitExpand = 
+				new ExpandOperations<IJavaElement, ICompilationUnitInformation>();
 		
 		this.unitInformations = compilationUnitExpand.convert(compilationUnits.subList(0, 20), 
 			new IConvertor<IJavaElement,ICompilationUnitInformation>(){

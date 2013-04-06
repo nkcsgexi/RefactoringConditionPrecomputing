@@ -24,7 +24,7 @@ public class ListOperations<T> {
 		return selected;
 	}
 	
-	public boolean Has(List<T> list, IPredicate<T> isIt) throws Exception
+	public boolean exist(List<T> list, IPredicate<T> isIt) throws Exception
 	{
 		for(T t : list)
 		{

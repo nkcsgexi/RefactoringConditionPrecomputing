@@ -35,7 +35,7 @@ import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragment
 import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentRootAnalyzer;
 import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IProjectAnalyzer;
 import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.ITypeAnalyzer;
-import edu.ncsu.dlf.refactoring.precondition.util.ExpandCollection;
+import edu.ncsu.dlf.refactoring.precondition.util.ExpandOperations;
 import edu.ncsu.dlf.refactoring.precondition.util.XLoggerFactory;
 import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IMapper;
 import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IPredicate;
@@ -73,7 +73,7 @@ public class RenameExperiments {
 			sourcePackages.addAll(packages);
 		}
 		
-		compilationUnits = (new ExpandCollection<IJavaElement, IJavaElement>()).expand
+		compilationUnits = (new ExpandOperations<IJavaElement, IJavaElement>()).expand
 			(sourcePackages, new IMapper<IJavaElement, IJavaElement>(){
 				@Override
 				public List<IJavaElement> map(IJavaElement t) throws Exception {
