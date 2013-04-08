@@ -5,7 +5,7 @@ import edu.ncsu.dlf.refactoring.RefactoringType;
 
 public class RefactoringInputFactory {
 	
-	private static abstract class NewNameInput extends IRefactoringInput
+	private static abstract class NewNameInput extends RefactoringInput
 	{
 		private final String newName;
 		
@@ -20,17 +20,17 @@ public class RefactoringInputFactory {
 		}
 
 		@Override
-		protected boolean isInputInforSame(IRefactoringInput input) {
+		public int compareTo(Object input) {
 			if(input instanceof NewNameInput)
 			{
 				String newName = ((NewNameInput)input).newName;
-				return newName == this.newName;
+				return this.newName.compareTo(newName);
 			}
-			return false;
+			return Integer.MIN_VALUE;
 		}
 	}
 	
-	public static IRefactoringInput createRenameClassNewNameInput(final String newName)
+	public static RefactoringInput createRenameClassNewNameInput(final String newName)
 	{
 		return new NewNameInput(newName){
 			@Override
@@ -39,8 +39,7 @@ public class RefactoringInputFactory {
 			}};
 	}
 	
-	
-	public static IRefactoringInput createRenameMethodNewNameInput(final String newName)
+	public static RefactoringInput createRenameMethodNewNameInput(final String newName)
 	{
 		return new NewNameInput(newName){
 			@Override
@@ -48,6 +47,4 @@ public class RefactoringInputFactory {
 				return RefactoringType.RENAME_METHOD;
 			}};
 	}
-	
-	
 }

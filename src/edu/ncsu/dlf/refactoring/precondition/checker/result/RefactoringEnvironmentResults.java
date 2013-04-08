@@ -51,16 +51,16 @@ public class RefactoringEnvironmentResults implements IHasRefactoringType{
 		}
 		
 		private <C> XArrayList<C> extractCheckingResults(final XArrayList<ICheckingResult> 
-		results, final Class C) throws Exception {
-		return results.where (new IPredicate<ICheckingResult>(){
-		@Override
-		public boolean IsTrue(ICheckingResult t) throws Exception {
-			return t.equals(C);
-		}}).convert(new IConvertor<ICheckingResult, C>(){
+			results, final Class C) throws Exception {
+			return results.where (new IPredicate<ICheckingResult>(){
 			@Override
-			public C convert(ICheckingResult m) throws Exception {
-				return (C)m;
-			}});
+			public boolean IsTrue(ICheckingResult t) throws Exception {
+				return t.equals(C);
+			}}).convert(new IConvertor<ICheckingResult, C>(){
+				@Override
+				public C convert(ICheckingResult m) throws Exception {
+					return (C)m;
+				}});
 	}
 }
 

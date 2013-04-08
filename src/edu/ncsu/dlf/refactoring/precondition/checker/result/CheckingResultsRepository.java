@@ -3,7 +3,7 @@ package edu.ncsu.dlf.refactoring.precondition.checker.result;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.ncsu.dlf.refactoring.precondition.checker.environments.IRefactoringInput;
+import edu.ncsu.dlf.refactoring.precondition.checker.environments.RefactoringInput;
 import edu.ncsu.dlf.refactoring.precondition.checker.environments.IRefactoringEnvironment;
 import edu.ncsu.dlf.refactoring.precondition.util.ListOperations;
 import edu.ncsu.dlf.refactoring.precondition.util.XArrayList;
@@ -85,7 +85,7 @@ public class CheckingResultsRepository {
 	 * Given an environment, check its category II conditions and return whether the refactoring
 	 * is doable.
 	 * */
-	public boolean isC2ConditionOK(IRefactoringEnvironment environment, final IRefactoringInput 
+	public boolean isC2ConditionOK(IRefactoringEnvironment environment, final RefactoringInput 
 			input) throws Exception
 	{
 		RefactoringEnvironmentResults envResults = getCheckingResults(environment);
