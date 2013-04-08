@@ -3,7 +3,8 @@ package javamodel.tests;
 import org.eclipse.core.runtime.Assert;
 import org.junit.Test;
 
-import edu.ncsu.dlf.refactoring.precondition.util.MathUtils;
+import dlf.refactoring.precondition.util.MathUtils;
+
 
 public class ConditionThreeExperiments {
 	

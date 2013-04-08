@@ -11,13 +11,14 @@ import org.eclipse.ltk.core.refactoring.Refactoring;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.ncsu.dlf.refactoring.StructuralRefactoringAPIs;
-import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.ITypeAnalyzer;
-import edu.ncsu.dlf.refactoring.precondition.util.ExpandOperations;
-import edu.ncsu.dlf.refactoring.precondition.util.ListOperations;
-import edu.ncsu.dlf.refactoring.precondition.util.XLoggerFactory;
-import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IMapper;
-import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IOperation;
+import dlf.refactoring.StructuralRefactoringAPIs;
+import dlf.refactoring.precondition.JavaModelAnalyzers.ITypeAnalyzer;
+import dlf.refactoring.precondition.util.ExpandOperations;
+import dlf.refactoring.precondition.util.ListOperations;
+import dlf.refactoring.precondition.util.XLoggerFactory;
+import dlf.refactoring.precondition.util.interfaces.IMapper;
+import dlf.refactoring.precondition.util.interfaces.IOperation;
+
 
 public class PullPushExperiment extends RefactoringExperiment {
 	

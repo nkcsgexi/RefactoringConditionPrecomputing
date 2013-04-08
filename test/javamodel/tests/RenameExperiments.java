@@ -26,19 +26,20 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import edu.ncsu.dlf.refactoring.RenameAPIs;
-import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.ICompilationUnitAnalyzer;
-import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IJavaElementAnalyzers;
-import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IJavaModelAnalyzer;
-import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IMethodAnalyzer;
-import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentAnalyzer;
-import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentRootAnalyzer;
-import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IProjectAnalyzer;
-import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.ITypeAnalyzer;
-import edu.ncsu.dlf.refactoring.precondition.util.ExpandOperations;
-import edu.ncsu.dlf.refactoring.precondition.util.XLoggerFactory;
-import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IMapper;
-import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IPredicate;
+import dlf.refactoring.RenameAPIs;
+import dlf.refactoring.precondition.JavaModelAnalyzers.ICompilationUnitAnalyzer;
+import dlf.refactoring.precondition.JavaModelAnalyzers.IJavaElementAnalyzers;
+import dlf.refactoring.precondition.JavaModelAnalyzers.IJavaModelAnalyzer;
+import dlf.refactoring.precondition.JavaModelAnalyzers.IMethodAnalyzer;
+import dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentAnalyzer;
+import dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentRootAnalyzer;
+import dlf.refactoring.precondition.JavaModelAnalyzers.IProjectAnalyzer;
+import dlf.refactoring.precondition.JavaModelAnalyzers.ITypeAnalyzer;
+import dlf.refactoring.precondition.util.ExpandOperations;
+import dlf.refactoring.precondition.util.XLoggerFactory;
+import dlf.refactoring.precondition.util.interfaces.IMapper;
+import dlf.refactoring.precondition.util.interfaces.IPredicate;
+
 
 
 

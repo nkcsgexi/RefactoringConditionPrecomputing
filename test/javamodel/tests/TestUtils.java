@@ -6,9 +6,10 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 
-import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentRootAnalyzer;
-import edu.ncsu.dlf.refactoring.precondition.util.ListOperations;
-import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IPredicate;
+import dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentRootAnalyzer;
+import dlf.refactoring.precondition.util.ListOperations;
+import dlf.refactoring.precondition.util.interfaces.IPredicate;
+
 
 
 

@@ -23,27 +23,28 @@ import org.eclipse.ltk.core.refactoring.participants.ProcessorBasedRefactoring;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.ncsu.dlf.refactoring.StructuralRefactoringAPIs;
-import edu.ncsu.dlf.refactoring.precondition.ASTAnalyzers.ASTNodesAnalyzer;
-import edu.ncsu.dlf.refactoring.precondition.ASTAnalyzers.CompilationUnitAnalyzer;
-import edu.ncsu.dlf.refactoring.precondition.ASTAnalyzers.MethodDeclarationAnalyzer;
-import edu.ncsu.dlf.refactoring.precondition.ASTAnalyzers.TypeDeclarationAnalyzer;
-import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.ICompilationUnitAnalyzer;
-import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IJavaElementAnalyzers;
-import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IJavaModelAnalyzer;
-import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentAnalyzer;
-import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentRootAnalyzer;
-import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IProjectAnalyzer;
-import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.ITypeAnalyzer;
-import edu.ncsu.dlf.refactoring.precondition.util.ExpandOperations;
-import edu.ncsu.dlf.refactoring.precondition.util.ListOperations;
-import edu.ncsu.dlf.refactoring.precondition.util.Parser;
-import edu.ncsu.dlf.refactoring.precondition.util.Tree;
-import edu.ncsu.dlf.refactoring.precondition.util.XLoggerFactory;
-import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IConvertor;
-import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IMapper;
-import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IOperation;
-import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IPredicate;
+import dlf.refactoring.StructuralRefactoringAPIs;
+import dlf.refactoring.precondition.ASTAnalyzers.ASTNodesAnalyzer;
+import dlf.refactoring.precondition.ASTAnalyzers.CompilationUnitAnalyzer;
+import dlf.refactoring.precondition.ASTAnalyzers.MethodDeclarationAnalyzer;
+import dlf.refactoring.precondition.ASTAnalyzers.TypeDeclarationAnalyzer;
+import dlf.refactoring.precondition.JavaModelAnalyzers.ICompilationUnitAnalyzer;
+import dlf.refactoring.precondition.JavaModelAnalyzers.IJavaElementAnalyzers;
+import dlf.refactoring.precondition.JavaModelAnalyzers.IJavaModelAnalyzer;
+import dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentAnalyzer;
+import dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentRootAnalyzer;
+import dlf.refactoring.precondition.JavaModelAnalyzers.IProjectAnalyzer;
+import dlf.refactoring.precondition.JavaModelAnalyzers.ITypeAnalyzer;
+import dlf.refactoring.precondition.util.ExpandOperations;
+import dlf.refactoring.precondition.util.ListOperations;
+import dlf.refactoring.precondition.util.Parser;
+import dlf.refactoring.precondition.util.Tree;
+import dlf.refactoring.precondition.util.XLoggerFactory;
+import dlf.refactoring.precondition.util.interfaces.IConvertor;
+import dlf.refactoring.precondition.util.interfaces.IMapper;
+import dlf.refactoring.precondition.util.interfaces.IOperation;
+import dlf.refactoring.precondition.util.interfaces.IPredicate;
+
 
 
 public class ExtractMethodExperiments extends RefactoringExperiment{

@@ -4,7 +4,8 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.junit.Test;
 
-import edu.ncsu.dlf.refactoring.precondition.util.Parser;
+import dlf.refactoring.precondition.util.Parser;
+
 
 
 

@@ -8,9 +8,10 @@ import org.eclipse.core.runtime.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.ncsu.dlf.refactoring.precondition.util.XArrayList;
-import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IMapper;
-import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IPredicate;
+import dlf.refactoring.precondition.util.XArrayList;
+import dlf.refactoring.precondition.util.interfaces.IMapper;
+import dlf.refactoring.precondition.util.interfaces.IPredicate;
+
 
 public class XArrayListTests {
 

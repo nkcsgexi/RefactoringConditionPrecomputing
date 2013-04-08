@@ -13,15 +13,16 @@ import org.eclipse.ltk.core.refactoring.Refactoring;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
-import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.ICompilationUnitAnalyzer;
-import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IJavaElementAnalyzers;
-import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IJavaModelAnalyzer;
-import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentAnalyzer;
-import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentRootAnalyzer;
-import edu.ncsu.dlf.refactoring.precondition.JavaModelAnalyzers.IProjectAnalyzer;
-import edu.ncsu.dlf.refactoring.precondition.util.ExpandOperations;
-import edu.ncsu.dlf.refactoring.precondition.util.MathUtils;
-import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IMapper;
+import dlf.refactoring.precondition.JavaModelAnalyzers.ICompilationUnitAnalyzer;
+import dlf.refactoring.precondition.JavaModelAnalyzers.IJavaElementAnalyzers;
+import dlf.refactoring.precondition.JavaModelAnalyzers.IJavaModelAnalyzer;
+import dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentAnalyzer;
+import dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentRootAnalyzer;
+import dlf.refactoring.precondition.JavaModelAnalyzers.IProjectAnalyzer;
+import dlf.refactoring.precondition.util.ExpandOperations;
+import dlf.refactoring.precondition.util.MathUtils;
+import dlf.refactoring.precondition.util.interfaces.IMapper;
+
 
 
 public class RefactoringExperiment {

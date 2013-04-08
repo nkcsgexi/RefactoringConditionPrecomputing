@@ -7,8 +7,9 @@ import org.eclipse.core.runtime.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.ncsu.dlf.refactoring.precondition.util.ListOperations;
-import edu.ncsu.dlf.refactoring.precondition.util.interfaces.IOperation;
+import dlf.refactoring.precondition.util.ListOperations;
+import dlf.refactoring.precondition.util.interfaces.IOperation;
+
 
 public class ListOperationTests {
 
