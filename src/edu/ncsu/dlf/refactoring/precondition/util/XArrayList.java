@@ -111,6 +111,16 @@ public class XArrayList<T> extends ArrayList<T> {
 		}
 		return null;
 	}
+	
+	public boolean empty()
+	{
+		return this.size() == 0;
+	}
+
+	public boolean any()
+	{
+		return this.size() > 0;
+	}
 }
 
 
