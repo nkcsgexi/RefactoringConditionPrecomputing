@@ -1,15 +1,15 @@
-package edu.ncsu.dlf.refactoring.precondition.checker;
+package edu.ncsu.dlf.refactoring.precondition.checker.result;
 
 import edu.ncsu.dlf.refactoring.ConditionType;
 import edu.ncsu.dlf.refactoring.RefactoringType;
-import edu.ncsu.dlf.refactoring.precondition.checker.environments.RefactoringEnvironment;
+import edu.ncsu.dlf.refactoring.precondition.checker.environments.IRefactoringEnvironment;
 
 public abstract class C1CheckingResult implements ICheckingResult {
 	
 	private final boolean isOK;
-	private final RefactoringEnvironment environment;
+	private final IRefactoringEnvironment environment;
 	
-	public C1CheckingResult(boolean isOK, RefactoringEnvironment environment)
+	public C1CheckingResult(boolean isOK, IRefactoringEnvironment environment)
 	{
 		this.isOK = isOK;
 		this.environment = environment;

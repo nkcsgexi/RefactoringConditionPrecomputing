@@ -1,10 +1,11 @@
-package edu.ncsu.dlf.refactoring.precondition.checker;
+package edu.ncsu.dlf.refactoring.precondition.checker.result;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import edu.ncsu.dlf.refactoring.precondition.checker.environments.IRefactoringInput;
 
-public class C2CheckingResult implements ICheckingResult {
+public abstract class C2CheckingResult implements ICheckingResult {
 	
 	private final List<IRefactoringInput> illegalInputs;
 	
