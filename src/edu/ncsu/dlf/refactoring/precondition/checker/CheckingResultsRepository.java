@@ -41,6 +41,17 @@ public class CheckingResultsRepository {
 	{
 		this.environmentResultsRepo = new XArrayList<RefactoringEnvironmentResults>();
 	}
+	
+	
+	private static CheckingResultsRepository instance;
+	
+	public static CheckingResultsRepository getInstance()
+	{
+		if(instance == null)
+			instance = new CheckingResultsRepository();
+		return instance;
+	}
+	
 
 	private RefactoringEnvironmentResults getCheckingResults(final RefactoringEnvironment 
 			environment) throws Exception
