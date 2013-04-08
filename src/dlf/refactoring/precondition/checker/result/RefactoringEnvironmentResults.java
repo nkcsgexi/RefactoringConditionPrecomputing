@@ -22,9 +22,9 @@ public class RefactoringEnvironmentResults implements IHasRefactoringType{
 			results = new XArrayList<ICheckingResult>();
 		}
 		
-		public void addCheckingResult(ICheckingResult result)
+		public void addCheckingResult(ICheckingResult r)
 		{
-			results.add(result);
+			results.add(r);
 		}
 
 		public boolean isEnvironmentCorrect(IRefactoringEnvironment environment)

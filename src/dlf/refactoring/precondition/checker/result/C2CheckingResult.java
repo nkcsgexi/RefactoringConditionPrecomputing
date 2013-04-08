@@ -17,6 +17,15 @@ public abstract class C2CheckingResult implements ICheckingResult {
 	
 	public void addIllegalInput(RefactoringInput input)
 	{
+		for (int i = 0; i < illegalInputs.size(); i++) 
+		 {
+	        if (illegalInputs.get(i).compareTo(input) < 0) 
+	        	continue;
+	        if (illegalInputs.get(i).compareTo(input) == 0) 
+	        	return;
+	        illegalInputs.add(i, input);
+	        return;
+	     }
 		this.illegalInputs.add(input);
 	}
 	
