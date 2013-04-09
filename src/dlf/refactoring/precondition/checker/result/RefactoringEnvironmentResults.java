@@ -2,10 +2,12 @@ package dlf.refactoring.precondition.checker.result;
 
 import java.util.Collection;
 
-import dlf.refactoring.ConditionType;
-import dlf.refactoring.RefactoringType;
-import dlf.refactoring.interfaces.IHasConditionType;
-import dlf.refactoring.interfaces.IHasRefactoringType;
+import dlf.refactoring.enums.ConditionType;
+import dlf.refactoring.enums.InputType;
+import dlf.refactoring.enums.RefactoringType;
+import dlf.refactoring.enums.interfaces.IHasConditionType;
+import dlf.refactoring.enums.interfaces.IHasRefactoringType;
+import dlf.refactoring.enums.maps.InputConditionType2Map;
 import dlf.refactoring.precondition.checker.environments.IRefactoringEnvironment;
 import dlf.refactoring.precondition.util.XArrayList;
 import dlf.refactoring.precondition.util.interfaces.IConvertor;
@@ -41,15 +43,23 @@ public class RefactoringEnvironmentResults implements IHasRefactoringType{
 			results.addAll(results);
 		}
 		
+		public XArrayList<C2CheckingResult> getC2ResultByInputType(final InputType it) throws 
+			Exception
+		{
+			XArrayList<C2CheckingResult> C2Results = extractCheckingResults(results, 
+					C2CheckingResult.class);
+			return C2Results.where(new IPredicate<C2CheckingResult>(){
+				@Override
+				public boolean IsTrue(C2CheckingResult t) throws Exception {
+					return InputConditionType2Map.getInstance().isExisting(it, t.getConditionType());
+				}});
+		}
+		
 		public XArrayList<C1CheckingResult> getC1Results() throws Exception
 		{
 			return extractCheckingResults(results, C1CheckingResult.class);
 		}
-		
-		public XArrayList<C2CheckingResult> getC2Results() throws Exception
-		{
-			return extractCheckingResults(results, C2CheckingResult.class);
-		}
+	
 		
 		private <C> XArrayList<C> extractCheckingResults(final XArrayList<ICheckingResult> 
 			results, final Class C) throws Exception {

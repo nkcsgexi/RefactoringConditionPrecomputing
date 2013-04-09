@@ -1,4 +1,4 @@
-package dlf.refactoring;
+package dlf.refactoring.enums;
 
 public enum ConditionType {
 	NAME_COLLISION,

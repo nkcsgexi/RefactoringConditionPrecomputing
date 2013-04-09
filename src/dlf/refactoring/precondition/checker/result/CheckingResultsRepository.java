@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dlf.refactoring.precondition.checker.environments.IRefactoringEnvironment;
-import dlf.refactoring.precondition.checker.environments.RefactoringInput;
+import dlf.refactoring.precondition.checker.environments.IRefactoringInput;
 import dlf.refactoring.precondition.util.ListOperations;
 import dlf.refactoring.precondition.util.XArrayList;
 import dlf.refactoring.precondition.util.interfaces.IConvertor;
@@ -86,20 +86,18 @@ public class CheckingResultsRepository {
 	 * Given an environment, check its category II conditions and return whether the refactoring
 	 * is doable.
 	 * */
-	public boolean isC2ConditionOK(IRefactoringEnvironment environment, final RefactoringInput 
-			input) throws Exception
+	public boolean isC2ConditionOK(IRefactoringEnvironment environment, final IRefactoringInput 
+		input) throws Exception
 	{
 		RefactoringEnvironmentResults envResults = getCheckingResults(environment);
 		if(envResults != null)
 		{
-			XArrayList<C2CheckingResult> c2results = envResults.getC2Results();
-			if(c2results.any()){
-				return !c2results.exist(new IPredicate<C2CheckingResult>(){
-					@Override
-					public boolean IsTrue(C2CheckingResult t) throws Exception {
-						return t.isIllegalInput(input);
+			envResults.getC2ResultByInputType(input.getInputType()).all(new IPredicate
+					<C2CheckingResult>(){
+				@Override
+				public boolean IsTrue(C2CheckingResult t) throws Exception {
+					return !t.isIllegalInput(input);
 				}});
-			}
 		}
 		return false;
 	}

@@ -1,4 +1,4 @@
-package dlf.refactoring;
+package dlf.refactoring.enums;
 
 public enum RefactoringType {
 	RENAME_CLASS,
@@ -7,3 +7,4 @@ public enum RefactoringType {
 	RENAME_METHOD,
 	EXTRACT_METHOD,
 }
+

@@ -15,7 +15,7 @@ public abstract class RefactoringCheckerSet{
 	protected abstract XArrayList<IConditionChecker> getAllConditionCheckers();
 	
 	public abstract XArrayList<IRefactoringEnvironment> getAllRefactoringEnvironments(
-			RefactoringContext context);
+			RefactoringContext context) throws Exception;
 	
 	
 	public final XArrayList<ICheckingResult> performAllChecking(final IRefactoringEnvironment 

@@ -3,19 +3,19 @@ package dlf.refactoring.precondition.checker.result;
 import java.util.ArrayList;
 import java.util.List;
 
-import dlf.refactoring.precondition.checker.environments.RefactoringInput;
+import dlf.refactoring.precondition.checker.environments.IRefactoringInput;
 
 
 public abstract class C2CheckingResult implements ICheckingResult {
 	
-	private final List<RefactoringInput> illegalInputs;
+	private final List<IRefactoringInput> illegalInputs;
 	
 	public C2CheckingResult()
 	{
-		this.illegalInputs = new ArrayList<RefactoringInput>();
+		this.illegalInputs = new ArrayList<IRefactoringInput>();
 	}
 	
-	public void addIllegalInput(RefactoringInput input)
+	public void addIllegalInput(IRefactoringInput input)
 	{
 		for (int i = 0; i < illegalInputs.size(); i++) 
 		 {
@@ -29,7 +29,7 @@ public abstract class C2CheckingResult implements ICheckingResult {
 		this.illegalInputs.add(input);
 	}
 	
-	public boolean isIllegalInput(RefactoringInput input)
+	public boolean isIllegalInput(IRefactoringInput input)
 	{
 		return this.illegalInputs.contains(input);
 	}

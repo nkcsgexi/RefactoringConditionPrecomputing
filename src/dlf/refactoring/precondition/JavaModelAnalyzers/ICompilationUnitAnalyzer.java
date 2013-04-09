@@ -10,15 +10,16 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.ASTNode;
 
 import dlf.refactoring.precondition.util.Parser;
+import dlf.refactoring.precondition.util.XArrayList;
 
 
 
 public class ICompilationUnitAnalyzer {
 
-	public static List<IJavaElement> getTypes(IJavaElement cu) throws Exception
+	public static XArrayList<IJavaElement> getTypes(IJavaElement cu) throws Exception
 	{
 		ICompilationUnit unit = (ICompilationUnit) cu;
-		ArrayList<IJavaElement> list = new ArrayList<IJavaElement>();
+		XArrayList<IJavaElement> list = new XArrayList<IJavaElement>();
 		list.addAll(Arrays.asList(unit.getTypes()));
 		return list;
 	}

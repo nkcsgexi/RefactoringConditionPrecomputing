@@ -1,8 +1,8 @@
 package dlf.refactoring.precondition.checker.result;
-import dlf.refactoring.ConditionType;
-import dlf.refactoring.RefactoringType;
-import dlf.refactoring.interfaces.IHasConditionType;
-import dlf.refactoring.interfaces.IHasRefactoringType;
+import dlf.refactoring.enums.ConditionType;
+import dlf.refactoring.enums.RefactoringType;
+import dlf.refactoring.enums.interfaces.IHasConditionType;
+import dlf.refactoring.enums.interfaces.IHasRefactoringType;
 
-public interface ICheckingResult extends IHasRefactoringType, IHasConditionType{
+public interface ICheckingResult extends IHasConditionType{
 }
