@@ -12,7 +12,11 @@ import com.google.common.util.concurrent.Service;
 import com.google.common.util.concurrent.Service.State;
 import com.google.common.util.concurrent.ServiceManager;
 import com.google.common.util.concurrent.AbstractService;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+
 import dlf.refactoring.precondition.util.WorkQueue;
+
 
 public class GoogleCuncurrent {
 
@@ -45,4 +49,10 @@ public class GoogleCuncurrent {
 			}});
 	}
 	
+	@Test
+	public void method3()
+	{
+		CacheBuilder<Object, Object> builder = CacheBuilder.newBuilder();
+		
+	}
 }

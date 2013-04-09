@@ -28,7 +28,7 @@ import org.junit.Test;
 
 import dlf.refactoring.RenameAPIs;
 import dlf.refactoring.precondition.JavaModelAnalyzers.ICompilationUnitAnalyzer;
-import dlf.refactoring.precondition.JavaModelAnalyzers.IJavaElementAnalyzers;
+import dlf.refactoring.precondition.JavaModelAnalyzers.IJavaElementAnalyzer;
 import dlf.refactoring.precondition.JavaModelAnalyzers.IJavaModelAnalyzer;
 import dlf.refactoring.precondition.JavaModelAnalyzers.IMethodAnalyzer;
 import dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentAnalyzer;
@@ -65,7 +65,7 @@ public class RenameExperiments {
 		this.project = IJavaModelAnalyzer.getCurrentJavaProjects()[projectIndex];
 		IPackageFragmentRoot[] packageRoots = IProjectAnalyzer.getPackageFragmentRoots
 				((IJavaProject) project);
-		sourcePackageRoots = TestUtils.getSourcePackageRoots(IJavaElementAnalyzers.convertArray2List
+		sourcePackageRoots = TestUtils.getSourcePackageRoots(IJavaElementAnalyzer.convertArray2List
 				(packageRoots));
 		for(IJavaElement fragment : sourcePackageRoots)
 		{
@@ -158,7 +158,7 @@ public class RenameExperiments {
 	
 	private String getPackageName(IJavaElement element) throws Exception
 	{
-		List<IJavaElement> packs = IJavaElementAnalyzers.getAncestors(element, new IPredicate
+		List<IJavaElement> packs = IJavaElementAnalyzer.getAncestors(element, new IPredicate
 				<IJavaElement>(){
 			@Override
 			public boolean IsTrue(IJavaElement t) throws Exception {
@@ -169,7 +169,7 @@ public class RenameExperiments {
 	
 	
 	private String getCompilationUnitName(IJavaElement element) throws Exception {
-		List<IJavaElement> units = IJavaElementAnalyzers.getAncestors(element, new IPredicate
+		List<IJavaElement> units = IJavaElementAnalyzer.getAncestors(element, new IPredicate
 				<IJavaElement>(){
 			@Override
 			public boolean IsTrue(IJavaElement t) throws Exception {
@@ -182,7 +182,7 @@ public class RenameExperiments {
 	
 	private List<IJavaElement> getAllTypes(List<IJavaElement> units) throws Exception
 	{
-		return IJavaElementAnalyzers.expandJavaElement(units, new IMapper<IJavaElement, IJavaElement>(){
+		return IJavaElementAnalyzer.expandJavaElement(units, new IMapper<IJavaElement, IJavaElement>(){
 			@Override
 			public List<IJavaElement> map(IJavaElement t)
 					throws Exception {
@@ -192,7 +192,7 @@ public class RenameExperiments {
 	
 	private List<IJavaElement> getAllFields(List<IJavaElement> types) throws Exception
 	{
-		return IJavaElementAnalyzers.expandJavaElement(types, new IMapper<IJavaElement, IJavaElement>(){
+		return IJavaElementAnalyzer.expandJavaElement(types, new IMapper<IJavaElement, IJavaElement>(){
 			@Override
 			public List<IJavaElement> map(IJavaElement t)
 					throws Exception {
@@ -203,7 +203,7 @@ public class RenameExperiments {
 	
 	private List<IJavaElement> getAllMethods(List<IJavaElement> types) throws Exception
 	{
-		return IJavaElementAnalyzers.expandJavaElement(types, new IMapper<IJavaElement, IJavaElement>(){
+		return IJavaElementAnalyzer.expandJavaElement(types, new IMapper<IJavaElement, IJavaElement>(){
 			@Override
 			public List<IJavaElement> map(IJavaElement t)
 					throws Exception {
@@ -213,7 +213,7 @@ public class RenameExperiments {
 	
 
 	private List<IJavaElement> getAllParameters(List<IJavaElement> methods) throws Exception {
-		return IJavaElementAnalyzers.expandJavaElement(methods, new IMapper<IJavaElement, 
+		return IJavaElementAnalyzer.expandJavaElement(methods, new IMapper<IJavaElement, 
 				IJavaElement>(){
 			@Override
 			public List<IJavaElement> map(IJavaElement t) throws Exception {

@@ -47,7 +47,7 @@ public class IPackageFragmentRootAnalyzer {
 	private static List<IJavaElement> getChildrenByType(IPackageFragmentRoot root, final int type) 
 			throws Exception {
 		ListOperations<IJavaElement> selector = new ListOperations<IJavaElement>();
-		return selector.Select(IJavaElementAnalyzers.convertArray2List(root.getChildren()), new 
+		return selector.Select(IJavaElementAnalyzer.convertArray2List(root.getChildren()), new 
 			IPredicate<IJavaElement>(){
 				@Override
 				public boolean IsTrue(IJavaElement t) {

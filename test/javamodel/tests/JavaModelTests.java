@@ -32,7 +32,7 @@ import org.junit.Test;
 
 import dlf.refactoring.RenameAPIs;
 import dlf.refactoring.StructuralRefactoringAPIs;
-import dlf.refactoring.precondition.JavaModelAnalyzers.IJavaElementAnalyzers;
+import dlf.refactoring.precondition.JavaModelAnalyzers.IJavaElementAnalyzer;
 import dlf.refactoring.precondition.JavaModelAnalyzers.IJavaModelAnalyzer;
 import dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentAnalyzer;
 import dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentRootAnalyzer;
@@ -69,7 +69,7 @@ public class JavaModelTests {
 		
 		// Get the packages for source code and assert there is at least one.
 		List<IJavaElement> sourcePackageRoots = TestUtils.getSourcePackageRoots
-				(IJavaElementAnalyzers.convertArray2List(packageRoots));
+				(IJavaElementAnalyzer.convertArray2List(packageRoots));
 		Assert.isTrue(sourcePackageRoots.size() > 0);
 		
 		

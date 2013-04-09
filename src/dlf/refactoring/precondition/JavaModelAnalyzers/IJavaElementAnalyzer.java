@@ -16,7 +16,7 @@ import dlf.refactoring.precondition.util.interfaces.IPredicate;
 
 
 
-public class IJavaElementAnalyzers {
+public class IJavaElementAnalyzer {
 
 	public static List<IJavaElement> convertArray2List(IJavaElement[] elements)
 	{

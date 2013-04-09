@@ -14,7 +14,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 
 import dlf.refactoring.precondition.JavaModelAnalyzers.ICompilationUnitAnalyzer;
-import dlf.refactoring.precondition.JavaModelAnalyzers.IJavaElementAnalyzers;
+import dlf.refactoring.precondition.JavaModelAnalyzers.IJavaElementAnalyzer;
 import dlf.refactoring.precondition.JavaModelAnalyzers.IJavaModelAnalyzer;
 import dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentAnalyzer;
 import dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentRootAnalyzer;
@@ -50,7 +50,7 @@ public class RefactoringExperiment {
 		this.project = IJavaModelAnalyzer.getCurrentJavaProjects()[projectIndex];
 		IPackageFragmentRoot[] packageRoots = IProjectAnalyzer.getPackageFragmentRoots
 				((IJavaProject) project);
-		this.sourcePackageRoots = TestUtils.getSourcePackageRoots(IJavaElementAnalyzers.
+		this.sourcePackageRoots = TestUtils.getSourcePackageRoots(IJavaElementAnalyzer.
 				convertArray2List(packageRoots));
 		for(IJavaElement fragment : sourcePackageRoots)
 		{
@@ -72,7 +72,7 @@ public class RefactoringExperiment {
 	
 	protected List<IJavaElement> getAllTypes(List<IJavaElement> units) throws Exception
 	{
-		return IJavaElementAnalyzers.expandJavaElement(units, new IMapper<IJavaElement, IJavaElement>(){
+		return IJavaElementAnalyzer.expandJavaElement(units, new IMapper<IJavaElement, IJavaElement>(){
 			@Override
 			public List<IJavaElement> map(IJavaElement t)
 					throws Exception {

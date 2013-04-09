@@ -17,7 +17,7 @@ public class RefactoringCheckersRepository {
 	private RefactoringCheckersRepository()
 	{
 		this.checkerSets = new XArrayList<RefactoringCheckerSet>();
-		checkerSets.add(new RenameClassCheckers());
+		checkerSets.add(new RenameClassCheckerSet());
 	}
 	
 	private static RefactoringCheckersRepository instance;

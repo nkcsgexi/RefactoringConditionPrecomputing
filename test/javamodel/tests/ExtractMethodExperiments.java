@@ -29,7 +29,7 @@ import dlf.refactoring.precondition.ASTAnalyzers.CompilationUnitAnalyzer;
 import dlf.refactoring.precondition.ASTAnalyzers.MethodDeclarationAnalyzer;
 import dlf.refactoring.precondition.ASTAnalyzers.TypeDeclarationAnalyzer;
 import dlf.refactoring.precondition.JavaModelAnalyzers.ICompilationUnitAnalyzer;
-import dlf.refactoring.precondition.JavaModelAnalyzers.IJavaElementAnalyzers;
+import dlf.refactoring.precondition.JavaModelAnalyzers.IJavaElementAnalyzer;
 import dlf.refactoring.precondition.JavaModelAnalyzers.IJavaModelAnalyzer;
 import dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentAnalyzer;
 import dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentRootAnalyzer;

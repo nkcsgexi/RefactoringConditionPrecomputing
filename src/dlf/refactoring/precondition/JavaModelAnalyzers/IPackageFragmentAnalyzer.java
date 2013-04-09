@@ -10,12 +10,14 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.core.JavaElement;
 
+import dlf.refactoring.precondition.util.XArrayList;
+
 public class IPackageFragmentAnalyzer {
 
-	public static List<IJavaElement> getICompilationUnits(IJavaElement pack) throws 
+	public static XArrayList<IJavaElement> getICompilationUnits(IJavaElement pack) throws 
 		JavaModelException
 	{	
-		List<IJavaElement> elements = new ArrayList<IJavaElement>();
+		XArrayList<IJavaElement> elements = new XArrayList<IJavaElement>();
 		ICompilationUnit[] units = ((IPackageFragment) pack).getCompilationUnits(); 		
 		for(IJavaElement unit : units)
 		{
