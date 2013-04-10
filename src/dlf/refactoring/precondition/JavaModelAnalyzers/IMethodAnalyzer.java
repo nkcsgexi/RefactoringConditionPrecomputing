@@ -11,6 +11,11 @@ public class IMethodAnalyzer {
 	public static List<IJavaElement> getParameters(IJavaElement m) throws Exception
 	{
 		IMethod method = (IMethod)m;
-		return IJavaElementAnalyzer.convertArray2List(method.getParameters());
+		return IJavaElementAnalyzer.convertArray2XArrayList(method.getParameters());
+	}
+
+	public static boolean isConstructor(IJavaElement t) throws Exception {
+		IMethod method = (IMethod)t;
+		return method.isConstructor();
 	}
 }

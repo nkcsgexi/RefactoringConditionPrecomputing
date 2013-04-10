@@ -11,6 +11,7 @@ import org.eclipse.jdt.core.JavaModelException;
 
 import dlf.refactoring.precondition.util.ExpandOperations;
 import dlf.refactoring.precondition.util.ListOperations;
+import dlf.refactoring.precondition.util.XArrayList;
 import dlf.refactoring.precondition.util.interfaces.IMapper;
 import dlf.refactoring.precondition.util.interfaces.IPredicate;
 
@@ -18,9 +19,9 @@ import dlf.refactoring.precondition.util.interfaces.IPredicate;
 
 public class IJavaElementAnalyzer {
 
-	public static List<IJavaElement> convertArray2List(IJavaElement[] elements)
+	public static XArrayList<IJavaElement> convertArray2XArrayList(IJavaElement[] elements)
 	{
-		ArrayList<IJavaElement> list = new ArrayList<IJavaElement>();
+		XArrayList<IJavaElement> list = new XArrayList<IJavaElement>();
 		list.addAll(Arrays.asList(elements));
 		return list;
 	}

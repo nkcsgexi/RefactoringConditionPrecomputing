@@ -10,35 +10,37 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.ITypeHierarchy;
 import org.eclipse.jdt.core.JavaModelException;
 
+import dlf.refactoring.precondition.util.XArrayList;
+
 
 public class ITypeAnalyzer {
 	
-	public static List<IJavaElement> getMethods(IJavaElement type) throws JavaModelException
+	public static XArrayList<IJavaElement> getMethods(IJavaElement type) throws Exception
 	{
-		return IJavaElementAnalyzer.convertArray2List(((IType) type).getMethods());
+		return IJavaElementAnalyzer.convertArray2XArrayList(((IType) type).getMethods());
 	}
 	
-	public static List<IJavaElement> getFields(IJavaElement type) throws JavaModelException
+	public static XArrayList<IJavaElement> getFields(IJavaElement type) throws Exception
 	{
 		
-		return IJavaElementAnalyzer.convertArray2List(((IType) type).getFields());
+		return IJavaElementAnalyzer.convertArray2XArrayList(((IType) type).getFields());
 	}
 
-	public static List<IJavaElement> getSubTypes(IJavaElement type) throws JavaModelException
+	public static XArrayList<IJavaElement> getSubTypes(IJavaElement type) throws Exception
 	{
 		ITypeHierarchy h = ((IType) type).newTypeHierarchy(null);
-		return IJavaElementAnalyzer.convertArray2List(h.getSubclasses((IType) type));
+		return IJavaElementAnalyzer.convertArray2XArrayList(h.getSubclasses((IType) type));
 	}
 	
-	public static List<IJavaElement> getSuperTypes(IJavaElement type) throws JavaModelException
+	public static XArrayList<IJavaElement> getSuperTypes(IJavaElement type) throws Exception
 	{
 		ITypeHierarchy h = ((IType) type).newTypeHierarchy(null);
-		return IJavaElementAnalyzer.convertArray2List(h.getSupertypes((IType) type));
+		return IJavaElementAnalyzer.convertArray2XArrayList(h.getSupertypes((IType) type));
 	}
 
-	public static List<IJavaElement> getSuperInterfaces(IJavaElement type) throws JavaModelException
+	public static XArrayList<IJavaElement> getSuperInterfaces(IJavaElement type) throws Exception
 	{	
 		ITypeHierarchy h = ((IType) type).newTypeHierarchy(null);
-		return IJavaElementAnalyzer.convertArray2List(h.getSuperInterfaces((IType) type));
+		return IJavaElementAnalyzer.convertArray2XArrayList(h.getSuperInterfaces((IType) type));
 	}
 }

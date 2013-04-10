@@ -69,7 +69,7 @@ public class JavaModelTests {
 		
 		// Get the packages for source code and assert there is at least one.
 		List<IJavaElement> sourcePackageRoots = TestUtils.getSourcePackageRoots
-				(IJavaElementAnalyzer.convertArray2List(packageRoots));
+				(IJavaElementAnalyzer.convertArray2XArrayList(packageRoots));
 		Assert.isTrue(sourcePackageRoots.size() > 0);
 		
 		

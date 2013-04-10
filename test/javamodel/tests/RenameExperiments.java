@@ -65,7 +65,7 @@ public class RenameExperiments {
 		this.project = IJavaModelAnalyzer.getCurrentJavaProjects()[projectIndex];
 		IPackageFragmentRoot[] packageRoots = IProjectAnalyzer.getPackageFragmentRoots
 				((IJavaProject) project);
-		sourcePackageRoots = TestUtils.getSourcePackageRoots(IJavaElementAnalyzer.convertArray2List
+		sourcePackageRoots = TestUtils.getSourcePackageRoots(IJavaElementAnalyzer.convertArray2XArrayList
 				(packageRoots));
 		for(IJavaElement fragment : sourcePackageRoots)
 		{

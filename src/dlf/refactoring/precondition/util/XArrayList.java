@@ -19,13 +19,13 @@ public class XArrayList<T> extends ArrayList<T> {
 	public XArrayList()
 	{
 		super();
-		listOp = new ListOperations<T>();
+		this.listOp = new ListOperations<T>();
 	}
 	
 	public XArrayList(Collection<T> list)
 	{
 		super();
-		listOp = new ListOperations<T>();
+		this.listOp = new ListOperations<T>();
 		this.addAll(list);
 	}
 	
@@ -73,8 +73,6 @@ public class XArrayList<T> extends ArrayList<T> {
 		}
 		return new XArrayList<S>(tempList);
 	}
-	
-	
 	
 	public XArrayList<T> orderBy(Comparator<T> comparator)
 	{

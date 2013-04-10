@@ -52,7 +52,7 @@ public class RefactoringExperiment {
 		IPackageFragmentRoot[] packageRoots = IProjectAnalyzer.getPackageFragmentRoots
 				((IJavaProject) project);
 		this.sourcePackageRoots = TestUtils.getSourcePackageRoots(IJavaElementAnalyzer.
-				convertArray2List(packageRoots));
+				convertArray2XArrayList(packageRoots));
 		for(IJavaElement fragment : sourcePackageRoots)
 		{
 			Collection<IJavaElement> packages = IPackageFragmentRootAnalyzer.getSourcePackages 
