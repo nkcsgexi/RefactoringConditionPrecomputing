@@ -31,7 +31,6 @@ public class PullPushExperiment extends RefactoringExperiment {
 	
 	public PullPushExperiment()
 	{
-		this.logger = XLoggerFactory.GetLogger(this.getClass());
 		this.projectIndex = 0;
 		this.javaElementListOperations = new ListOperations<IJavaElement>();
 		this.javaElementExpandOperations = new ExpandOperations<IJavaElement, IJavaElement>();

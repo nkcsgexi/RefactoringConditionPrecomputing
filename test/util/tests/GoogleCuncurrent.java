@@ -1,5 +1,6 @@
 package util.tests;
 
+import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadFactory;
 
@@ -14,8 +15,10 @@ import com.google.common.util.concurrent.ServiceManager;
 import com.google.common.util.concurrent.AbstractService;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.google.common.collect.LinkedHashMultimap;
 
 import dlf.refactoring.precondition.util.WorkQueue;
+import dlf.refactoring.precondition.util.XArrayList;
 
 
 public class GoogleCuncurrent {
@@ -52,7 +55,12 @@ public class GoogleCuncurrent {
 	@Test
 	public void method3()
 	{
-		CacheBuilder<Object, Object> builder = CacheBuilder.newBuilder();
-		
+		List<String> l = new XArrayList<String>();
+		for(String s : l)
+		{
+			System.out.println(s);
+		}
+		LinkedHashMultimap<Integer, Integer> multimap = LinkedHashMultimap.create();
+		multimap.put(1, 1);
 	}
 }

@@ -81,7 +81,6 @@ public class ExtractMethodExperiments extends RefactoringExperiment{
 		this.JavaElementListOperations = new ListOperations<IJavaElement>();
 		
 		this.projectIndex = 0;
-		this.logger = XLoggerFactory.GetLogger(this.getClass());
 		this.monitor = new NullProgressMonitor();
 	}
 	

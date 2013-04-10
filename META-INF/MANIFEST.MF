@@ -17,3 +17,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: org.eclipse.jdt.internal.corext.refactoring.rename,
  org.eclipse.jdt.internal.corext.util,
  org.eclipse.jdt.ui.refactoring
+Bundle-ClassPath: .,
+ lib/guava-14.0.1.jar,
+ lib/junit-4.10.jar,
+ lib/log4j-1.2.17.jar

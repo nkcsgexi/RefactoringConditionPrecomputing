@@ -123,6 +123,18 @@ public class XArrayList<T> extends ArrayList<T> {
 	{
 		return this.size() > 0;
 	}
+	
+	public int count(IPredicate<T> pre) throws Exception
+	{
+		int count = 0; 
+		for(T t : this)
+		{
+			if(pre.IsTrue(t)){
+				count ++;
+			}
+		}
+		return count;
+	}
 }
 
 

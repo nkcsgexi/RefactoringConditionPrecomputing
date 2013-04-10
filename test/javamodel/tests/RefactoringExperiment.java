@@ -21,6 +21,7 @@ import dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentRootAnaly
 import dlf.refactoring.precondition.JavaModelAnalyzers.IProjectAnalyzer;
 import dlf.refactoring.precondition.util.ExpandOperations;
 import dlf.refactoring.precondition.util.MathUtils;
+import dlf.refactoring.precondition.util.XLoggerFactory;
 import dlf.refactoring.precondition.util.interfaces.IMapper;
 
 
@@ -28,8 +29,7 @@ import dlf.refactoring.precondition.util.interfaces.IMapper;
 public class RefactoringExperiment {
 	
 	protected final NullProgressMonitor monitor;
-	
-	protected Logger logger;
+	protected final Logger logger;
 	protected int projectIndex;
 	protected IJavaElement project;
 	protected List<IJavaElement> sourcePackageRoots;
@@ -40,6 +40,7 @@ public class RefactoringExperiment {
 	public RefactoringExperiment()
 	{
 		this.monitor = new NullProgressMonitor();
+		this.logger = XLoggerFactory.GetLogger(this.getClass());
 	}
 	
 	

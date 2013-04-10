@@ -14,5 +14,11 @@ public abstract class StringRefactoringInput implements IRefactoringInput{
 		String other = ((StringRefactoringInput)arg).input;
 		return this.input.compareTo(other);
 	}
+	
+	@Override
+	public String toString()
+	{
+		return "String input: " + input;
+	}
 
 }

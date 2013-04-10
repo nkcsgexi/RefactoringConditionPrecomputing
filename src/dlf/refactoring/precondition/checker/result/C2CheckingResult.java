@@ -5,6 +5,7 @@ import java.util.List;
 
 import dlf.refactoring.precondition.checker.environments.IRefactoringInput;
 import dlf.refactoring.precondition.util.XArrayList;
+import dlf.refactoring.precondition.util.interfaces.IOperation;
 import dlf.refactoring.precondition.util.interfaces.IPredicate;
 
 
@@ -38,5 +39,22 @@ public abstract class C2CheckingResult implements ICheckingResult {
 			public boolean IsTrue(IRefactoringInput t) throws Exception {
 				return input.compareTo(t) == 0;
 			}});
+	}
+	
+	public String toString()
+	{
+		final StringBuilder builder = new StringBuilder();
+		builder.append("C2 result blacklist:\n");
+		try {
+			illegalInputs.operateOnElement(new IOperation<IRefactoringInput>(){
+				@Override
+				public void perform(IRefactoringInput t) throws Exception {
+					builder.append(t);
+					builder.append('\n');
+				}});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return builder.toString();
 	}
 }

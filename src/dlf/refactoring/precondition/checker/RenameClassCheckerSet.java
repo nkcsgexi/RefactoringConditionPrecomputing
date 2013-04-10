@@ -3,8 +3,10 @@ package dlf.refactoring.precondition.checker;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IPackageFragment;
 
 import dlf.refactoring.enums.ConditionType;
 import dlf.refactoring.enums.InputType;
@@ -20,6 +22,7 @@ import dlf.refactoring.precondition.checker.environments.StringRefactoringInput;
 import dlf.refactoring.precondition.checker.result.C2CheckingResult;
 import dlf.refactoring.precondition.checker.result.ICheckingResult;
 import dlf.refactoring.precondition.util.XArrayList;
+import dlf.refactoring.precondition.util.XLoggerFactory;
 import dlf.refactoring.precondition.util.interfaces.IConvertor;
 import dlf.refactoring.precondition.util.interfaces.IMapper;
 import dlf.refactoring.precondition.util.interfaces.IOperation;
@@ -67,19 +70,18 @@ public class RenameClassCheckerSet extends RefactoringCheckerSet{
 	
 	private class ClassNameCollisionChecker implements IConditionChecker
 	{
+		
+		Logger logger = XLoggerFactory.GetLogger(this.getClass());
+		
 		@Override
 		public ICheckingResult performChecking(IRefactoringEnvironment environment) throws Exception {
 			final C2CheckingResult result = new ClassNameCollisionResult();
 			IJavaElement classUnderRename = ((RenameClassEnvironment) environment).getJavaElement();	
 			IJavaElement pack = IJavaElementAnalyzer.getAncestorsByType(classUnderRename, 
 					IJavaElement.PACKAGE_FRAGMENT).get(0);
-			IPackageFragmentAnalyzer.getICompilationUnits(pack).select(new IMapper<IJavaElement, 
-				IJavaElement>(){
-				@Override
-				public List<IJavaElement> map(IJavaElement t)
-						throws Exception {
-					return IPackageFragmentAnalyzer.getICompilationUnits(t);
-				}}).select(new IMapper<IJavaElement, IJavaElement>(){
+			
+			IPackageFragmentAnalyzer.getICompilationUnits(pack).select(
+				new IMapper<IJavaElement, IJavaElement>(){
 					@Override
 					public List<IJavaElement> map(IJavaElement t)
 							throws Exception {

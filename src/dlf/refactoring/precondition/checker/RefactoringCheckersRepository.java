@@ -17,6 +17,8 @@ public class RefactoringCheckersRepository {
 	private RefactoringCheckersRepository()
 	{
 		this.checkerSets = new XArrayList<RefactoringCheckerSet>();
+		
+		// add new refactoring checker set here.
 		checkerSets.add(new RenameClassCheckerSet());
 	}
 	
@@ -43,10 +45,10 @@ public class RefactoringCheckersRepository {
 						RefactoringEnvironmentResults>(){
 					@Override
 					public RefactoringEnvironmentResults convert(IRefactoringEnvironment env) throws 
-						Exception {
+							Exception {
 						RefactoringEnvironmentResults results = new RefactoringEnvironmentResults
 								(env);
-						results.addMultiCheckingResult(checkers.performAllChecking(env));
+						results.addMultiCheckingResults(checkers.performAllChecking(env));
 						return results;
 					}});
 				

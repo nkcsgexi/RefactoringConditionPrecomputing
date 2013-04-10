@@ -1,5 +1,6 @@
 package dlf.refactoring.precondition.checker.environments;
 
+import java.util.Collection;
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
@@ -15,9 +16,14 @@ public class RefactoringContext {
 		units = new XArrayList<IJavaElement>();
 	}
 	
-	public void AddCompilationUnit(ICompilationUnit unit)
+	public void AddCompilationUnit(IJavaElement unit)
 	{
 		units.add(unit);
+	}
+	
+	public void AddMultiCompilationUnits(Collection<IJavaElement> us)
+	{
+		units.addAll(us);
 	}
 	
 	public Iterator<IJavaElement> getCompilationUnits()
