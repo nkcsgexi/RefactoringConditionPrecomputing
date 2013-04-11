@@ -76,6 +76,10 @@ public class ExtractMethodCheckerSet extends RefactoringCheckerSet {
 		@Override
 		public ICheckingResult performChecking(IRefactoringEnvironment environment) throws Exception 
 		{
+			IJavaElement method = ((SingleELementRefacatoringEnvironment) environment).
+					getJavaElement();
+			
+			
 			return null;
 		}
 		
@@ -87,26 +91,29 @@ public class ExtractMethodCheckerSet extends RefactoringCheckerSet {
 			}	
 		}
 		
-		private class StartEndStatementInput implements IRefactoringInput
+		private class SelectionInput implements IRefactoringInput
 		{
 			int start;
 			int end;
 			
+			protected SelectionInput(int start, int end)
+			{
+				this.start = start;
+				this.end = end;
+			}
+			
 			@Override
-			public int compareTo(Object arg) {
-				
-				int otherStart = ((StartEndStatementInput)arg).start;
-				int otherEnd = ((StartEndStatementInput)arg).end;
+			public int compareTo(Object arg) {		
+				int otherStart = ((SelectionInput)arg).start;
+				int otherEnd = ((SelectionInput)arg).end;
 				if(start != otherStart)
 					return start - otherStart;
-				if(end != otherEnd)
-					return end - otherEnd;
-				return 0;
+				return end - otherEnd;
 			}
 
 			@Override
 			public InputType getInputType() {
-				return null;
+				return InputType.SELECTION;
 			}	
 		}
 	}

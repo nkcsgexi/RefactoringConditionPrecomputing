@@ -47,7 +47,6 @@ public class GoogleCuncurrent {
 		q.execute(new Runnable(){
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				
 			}});
 	}
@@ -62,5 +61,10 @@ public class GoogleCuncurrent {
 		}
 		LinkedHashMultimap<Integer, Integer> multimap = LinkedHashMultimap.create();
 		multimap.put(1, 1);
+	}
+	
+	@Test
+	public void method4()
+	{
 	}
 }
