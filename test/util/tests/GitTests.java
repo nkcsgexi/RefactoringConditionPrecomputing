@@ -21,8 +21,8 @@ import dlf.refactoring.precondition.util.FileUtils;
 public class GitTests {
 
 	private static String directory = "C:\\Users\\xige\\Desktop\\test";
-    private static String projectName = "bootstrap"; 
-    private static String remotePath = "git://github.com/twitter/bootstrap.git";
+    private static String projectName = "GhostFactor"; 
+    private static String remotePath = "git://github.com/nkcsgexi/GhostFactor2.git";
     
     @BeforeClass
     public static void clean()

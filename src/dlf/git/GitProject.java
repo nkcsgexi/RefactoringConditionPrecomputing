@@ -13,6 +13,8 @@ import org.eclipse.jgit.api.errors.TransportException;
 import org.eclipse.jgit.errors.CorruptObjectException;
 import org.eclipse.jgit.errors.IncorrectObjectTypeException;
 import org.eclipse.jgit.errors.MissingObjectException;
+import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevFlagSet;
@@ -61,28 +63,30 @@ public class GitProject {
 	public void walkRepo() throws Exception
 	{	
 		RevWalk walk = new RevWalk(repo);
+		walk.markStart(walk.parseCommit(repo.resolve("HEAD")));
 		Iterator<RevCommit> it = walk.iterator();
-		
-		for(;it.hasNext();)
+		while(it.hasNext())
 		{
+			RevCommit revision = it.next();
 			TreeWalk tree = new TreeWalk(repo);
-			RevCommit commit = it.next();
-			
-			tree.addTree(commit.getTree());
-		    for(RevCommit parent : commit.getParents())
-		    {
-		    	tree.addTree(parent);
+			tree.addTree(revision.getTree());
+		    for(RevCommit parent : revision.getParents())
+		    {	
+		    	tree.addTree(parent.getTree());
 		    }
 		    tree.setFilter(TreeFilter.ANY_DIFF);
+		    tree.setRecursive(true);
 		    visitTree(tree);
-		    logger.info(commit.getFullMessage());
-		}
+		}	
 	}
 
 	private void visitTree(TreeWalk tree) throws Exception
 	{	
+		logger.info("Tree counts: " + tree.getTreeCount());
+		
 		while(tree.next())
 		{
+			logger.info(tree.getNameString());	
 		}
 	}
 	
