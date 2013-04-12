@@ -78,7 +78,7 @@ public class GitProject {
 		    tree.setPostOrderTraversal(false);
 		    tree.setFilter(TreeFilter.ANY_DIFF);
 		    tree.setRecursive(true);
-		    strategy.visitDiffTree(tree);
+		    strategy.visitDiffTrees(tree);
 		}	
 	}
 }
