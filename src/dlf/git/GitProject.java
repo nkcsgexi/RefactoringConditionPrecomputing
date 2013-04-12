@@ -60,7 +60,8 @@ public class GitProject {
     	this.logger = XLoggerFactory.GetLogger(this.getClass());
 	}
 	
-	public void walkRepo() throws Exception
+	// Walk throught each revision from the very head of this repo.
+	public void walkRevisionDiffs(IVisitRevisionDiffStrategy strategy) throws Exception
 	{	
 		RevWalk walk = new RevWalk(repo);
 		walk.markStart(walk.parseCommit(repo.resolve("HEAD")));
@@ -74,20 +75,10 @@ public class GitProject {
 		    {	
 		    	tree.addTree(parent.getTree());
 		    }
+		    tree.setPostOrderTraversal(false);
 		    tree.setFilter(TreeFilter.ANY_DIFF);
 		    tree.setRecursive(true);
-		    visitTree(tree);
+		    strategy.visitDiffTree(tree);
 		}	
 	}
-
-	private void visitTree(TreeWalk tree) throws Exception
-	{	
-		logger.info("Tree counts: " + tree.getTreeCount());
-		
-		while(tree.next())
-		{
-			logger.info(tree.getNameString());	
-		}
-	}
-	
 }
