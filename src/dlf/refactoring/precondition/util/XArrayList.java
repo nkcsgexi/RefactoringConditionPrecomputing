@@ -22,7 +22,7 @@ public class XArrayList<T> extends ArrayList<T> {
 		this.listOp = new ListOperations<T>();
 	}
 	
-	public XArrayList(Collection<T> list)
+	public XArrayList(Collection<? extends T> list)
 	{
 		super();
 		this.listOp = new ListOperations<T>();

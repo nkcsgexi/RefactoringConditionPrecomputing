@@ -21,6 +21,7 @@ import dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentRootAnaly
 import dlf.refactoring.precondition.JavaModelAnalyzers.IProjectAnalyzer;
 import dlf.refactoring.precondition.util.ExpandOperations;
 import dlf.refactoring.precondition.util.MathUtils;
+import dlf.refactoring.precondition.util.XArrayList;
 import dlf.refactoring.precondition.util.XLoggerFactory;
 import dlf.refactoring.precondition.util.interfaces.IMapper;
 
@@ -32,10 +33,10 @@ public class RefactoringExperiment {
 	protected final Logger logger;
 	protected int projectIndex;
 	protected IJavaElement project;
-	protected List<IJavaElement> sourcePackageRoots;
-	protected List<IJavaElement> sourcePackages;
-	protected List<IJavaElement> compilationUnits;
-	protected List<IJavaElement> types;
+	protected XArrayList<IJavaElement> sourcePackageRoots;
+	protected XArrayList<IJavaElement> sourcePackages;
+	protected XArrayList<IJavaElement> compilationUnits;
+	protected XArrayList<IJavaElement> types;
 	
 	public RefactoringExperiment()
 	{
@@ -47,39 +48,28 @@ public class RefactoringExperiment {
 	@Before
 	public void createEnvironment() throws Exception
 	{
-		this.sourcePackages = new ArrayList<IJavaElement>();
 		this.project = IJavaModelAnalyzer.getCurrentJavaProjects()[projectIndex];
-		IPackageFragmentRoot[] packageRoots = IProjectAnalyzer.getPackageFragmentRoots
-				((IJavaProject) project);
-		this.sourcePackageRoots = TestUtils.getSourcePackageRoots(IJavaElementAnalyzer.
-				convertArray2XArrayList(packageRoots));
-		for(IJavaElement fragment : sourcePackageRoots)
-		{
-			Collection<IJavaElement> packages = IPackageFragmentRootAnalyzer.getSourcePackages 
-					((IPackageFragmentRoot) fragment);
-			this.sourcePackages.addAll(packages);
-		}
+		this.sourcePackageRoots = IProjectAnalyzer.getSourcePackageFragmentRoots(project);
+		this.sourcePackages = this.sourcePackageRoots.select(new IMapper<IJavaElement, IJavaElement>(){
+			@Override
+			public List<IJavaElement> map(IJavaElement t) throws Exception {
+				return IPackageFragmentRootAnalyzer.getSourcePackages ((IPackageFragmentRoot) t);
+			}});
 		
-		compilationUnits = (new ExpandOperations<IJavaElement, IJavaElement>()).expand
-			(sourcePackages, new IMapper<IJavaElement, IJavaElement>(){
+		this.compilationUnits = this.sourcePackages.select(new IMapper<IJavaElement, IJavaElement>(){
 				@Override
 				public List<IJavaElement> map(IJavaElement t) throws Exception {
 					return IPackageFragmentAnalyzer.getICompilationUnits(t);
 				}
 		});
-		this.types = getAllTypes(this.compilationUnits);
-	}
-	
-	
-	protected List<IJavaElement> getAllTypes(List<IJavaElement> units) throws Exception
-	{
-		return IJavaElementAnalyzer.expandJavaElement(units, new IMapper<IJavaElement, IJavaElement>(){
+		this.types = this.compilationUnits.select(new IMapper<IJavaElement, IJavaElement>(){
 			@Override
-			public List<IJavaElement> map(IJavaElement t)
-					throws Exception {
+			public List<IJavaElement> map(IJavaElement t) throws Exception {
 				return ICompilationUnitAnalyzer.getTypes(t);
 			}});
 	}
+	
+	
 	
 	protected List<IJavaElement> getRandomUnits(int count)
 	{
