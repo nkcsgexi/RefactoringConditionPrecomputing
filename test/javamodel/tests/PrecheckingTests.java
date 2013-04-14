@@ -2,6 +2,7 @@ package javamodel.tests;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jdt.core.IJavaElement;
 import org.junit.Before;
@@ -13,11 +14,15 @@ import dlf.refactoring.precondition.checker.environments.RefactoringContext;
 import dlf.refactoring.precondition.checker.result.C2CheckingResult;
 import dlf.refactoring.precondition.checker.result.RefactoringEnvironmentResults;
 import dlf.refactoring.precondition.util.XArrayList;
+import dlf.refactoring.precondition.util.XLoggerFactory;
+import dlf.refactoring.precondition.util.XWorkQueue;
 import dlf.refactoring.precondition.util.interfaces.IOperation;
 
 public class PrecheckingTests extends RefactoringExperiment{
 
 	private RefactoringContext context;
+	private final XWorkQueue queue = XWorkQueue.createSingleThreadWorkQueue();
+	
 	
 	@Before
 	public void setUp()
@@ -27,9 +32,41 @@ public class PrecheckingTests extends RefactoringExperiment{
 		context.AddMultiCompilationUnits(contextUnits);
 	}
 	
+	private class RefactoringCheckingRunnable implements Runnable
+	{
+		private final Logger logger;
+		private final RefactoringContext context;
+
+		protected RefactoringCheckingRunnable(RefactoringContext context)
+		{
+			this.context = context;
+			this.logger = XLoggerFactory.GetLogger(this.getClass());
+		}
+		
+		@Override
+		public void run() {
+			try{
+				RefactoringCheckersRepository repository = RefactoringCheckersRepository.
+						getInstance();
+				XArrayList<RefactoringEnvironmentResults> results = repository.performChecking
+						(context);
+			}catch(Exception e)
+			{
+				logger.fatal(e);
+			}
+		}		
+	}
 	
 	@Test
 	public void method1() throws Exception
+	{
+		this.queue.execute(new RefactoringCheckingRunnable(context));
+		Thread.sleep(Integer.MAX_VALUE);
+	}
+	
+	
+//	@Test
+	public void method2() throws Exception
 	{	
 		RefactoringCheckersRepository repository = RefactoringCheckersRepository.getInstance();
 		XArrayList<RefactoringEnvironmentResults> results = repository.performChecking(context);
@@ -37,8 +74,7 @@ public class PrecheckingTests extends RefactoringExperiment{
 		logger.info("Count of results: " + results.size());
 		results.operateOnElement(new IOperation<RefactoringEnvironmentResults>(){
 			@Override
-			public void perform(RefactoringEnvironmentResults t)
-					throws Exception {
+			public void perform(RefactoringEnvironmentResults t) throws Exception {
 				logger.info("Working on refactoring environment");
 				Assert.isTrue(t.getReusltsCount() > 0);
 				Assert.isTrue(t.getC1Results().empty());

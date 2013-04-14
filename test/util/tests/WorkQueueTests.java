@@ -14,7 +14,7 @@ public class WorkQueueTests {
 	@Test
 	public void method1() throws InterruptedException
 	{
-		XWorkQueue queue = XWorkQueue.GetSingleThreadWorkQueue();
+		XWorkQueue queue = XWorkQueue.createSingleThreadWorkQueue();
 		final XBox<Boolean> b = new XBox<Boolean>();
 		b.stuff = false;
 		queue.execute(new Runnable(){
@@ -30,7 +30,7 @@ public class WorkQueueTests {
 	@Test
 	public void method2() throws InterruptedException
 	{
-		XWorkQueue queue = XWorkQueue.GetSingleThreadWorkQueue();
+		XWorkQueue queue = XWorkQueue.createSingleThreadWorkQueue();
 		queue.execute(new Runnable() {
 			@Override
 			public void run() {

@@ -34,7 +34,7 @@ public class ExtractMethodCheckerSet extends RefactoringCheckerSet {
 	}
 
 	@Override
-	public XArrayList<IRefactoringEnvironment> getAllRefactoringEnvironments(RefactoringContext 
+	protected XArrayList<IRefactoringEnvironment> getAllRefactoringEnvironments(RefactoringContext 
 			context) throws Exception {
 		XArrayList<IRefactoringEnvironment> allEnvironments = new XArrayList
 				<IRefactoringEnvironment>();
@@ -56,6 +56,11 @@ public class ExtractMethodCheckerSet extends RefactoringCheckerSet {
 					}}));
 		}
 		return allEnvironments;
+	}
+	
+	@Override
+	public RefactoringType getRefactoringType() {
+		return RefactoringType.EXTRACT_METHOD;
 	}
 	
 	private class ExtractMethodEnvironment extends SingleELementRefacatoringEnvironment {
@@ -146,5 +151,8 @@ public class ExtractMethodCheckerSet extends RefactoringCheckerSet {
 			}	
 		}
 	}
+
+
+
 
 }

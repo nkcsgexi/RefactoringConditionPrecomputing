@@ -2,11 +2,16 @@ package dlf.refactoring.precondition.util;
 
 import java.util.LinkedList;
 
+import org.apache.log4j.Logger;
+
+import dlf.refactoring.precondition.util.interfaces.IOperation;
+
 public class XWorkQueue
 {
     private final int nThreads;
     private final PoolWorker[] threads;
     private final LinkedList<Runnable> queue;
+    private final XArrayList<XWorkItemListener> listeners;
 
     private XWorkQueue(int nThreads)
     {
@@ -18,9 +23,11 @@ public class XWorkQueue
             threads[i] = new PoolWorker();
             threads[i].start();
         }
+        
+        this.listeners = new XArrayList<XWorkItemListener>();
     }
 
-    public static XWorkQueue GetSingleThreadWorkQueue()
+    public static XWorkQueue createSingleThreadWorkQueue()
     {
     	return new XWorkQueue(1);
     }
@@ -32,8 +39,17 @@ public class XWorkQueue
         }
     }
     
-
+    
+    public void addWorkItemListener(XWorkItemListener lis)
+    {
+    	synchronized(this.listeners){
+    		this.listeners.add(lis);
+    	}
+    }
+    
     private class PoolWorker extends Thread {
+    	Logger logger = XLoggerFactory.GetLogger(this.getClass());
+    	
         public void run() {
             Runnable r;
 
@@ -46,6 +62,7 @@ public class XWorkQueue
                         }
                         catch (InterruptedException ignored)
                         {
+                        	logger.fatal(ignored);
                         }
                     }
 
@@ -55,10 +72,22 @@ public class XWorkQueue
                 // If we don't catch RuntimeException, 
                 // the pool could leak threads
                 try {
-                    r.run();
+                	synchronized(listeners){
+                		for(XWorkItemListener l : listeners)
+                		{
+                			l.beforeRunning(r);
+                		}
+                		
+                		r.run();
+                		
+                		for(XWorkItemListener l : listeners)
+                		{
+                			l.afterRunning(r);
+                		}
+                	}
                 }
-                catch (RuntimeException e) {
-                    // You might want to log something here
+                catch (Exception e) {
+                    logger.fatal(e);
                 }
             }
         }

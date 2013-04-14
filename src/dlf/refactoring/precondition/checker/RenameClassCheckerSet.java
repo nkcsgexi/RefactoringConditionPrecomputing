@@ -37,7 +37,7 @@ public class RenameClassCheckerSet extends RefactoringCheckerSet{
 	}
 
 	@Override
-	public XArrayList<IRefactoringEnvironment> getAllRefactoringEnvironments(
+	protected XArrayList<IRefactoringEnvironment> getAllRefactoringEnvironments(
 		RefactoringContext context) throws Exception 
 	{
 		XArrayList<IRefactoringEnvironment> environments = new XArrayList<IRefactoringEnvironment>(); 
@@ -54,6 +54,12 @@ public class RenameClassCheckerSet extends RefactoringCheckerSet{
 		}
 		return environments;
 	}
+	
+	@Override
+	public RefactoringType getRefactoringType() {
+		return RefactoringType.RENAME_CLASS;
+	}
+	
 	
 	private class RenameClassEnvironment extends SingleELementRefacatoringEnvironment
 	{
@@ -111,4 +117,7 @@ public class RenameClassCheckerSet extends RefactoringCheckerSet{
 				}};
 		}
 	}
+
+
+	
 }
