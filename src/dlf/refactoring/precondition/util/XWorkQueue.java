@@ -13,23 +13,24 @@ public class XWorkQueue
     private final LinkedList<Runnable> queue;
     private final XArrayList<XWorkItemListener> listeners;
 
-    private XWorkQueue(int nThreads)
+    private XWorkQueue(int nThreads, int priority)
     {
         this.nThreads = nThreads;
         queue = new LinkedList<Runnable>();
         threads = new PoolWorker[nThreads];
-
+       
         for (int i=0; i<nThreads; i++) {
             threads[i] = new PoolWorker();
+            threads[i].setPriority(priority);
             threads[i].start();
         }
         
         this.listeners = new XArrayList<XWorkItemListener>();
     }
 
-    public static XWorkQueue createSingleThreadWorkQueue()
+    public static XWorkQueue createSingleThreadWorkQueue(int priority)
     {
-    	return new XWorkQueue(1);
+    	return new XWorkQueue(1, priority);
     }
     
     public void execute(Runnable r) {
@@ -49,7 +50,7 @@ public class XWorkQueue
     
     private class PoolWorker extends Thread {
     	Logger logger = XLoggerFactory.GetLogger(this.getClass());
-    	
+  	
         public void run() {
             Runnable r;
 

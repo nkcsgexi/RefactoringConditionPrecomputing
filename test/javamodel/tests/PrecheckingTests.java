@@ -21,13 +21,13 @@ import dlf.refactoring.precondition.util.interfaces.IOperation;
 public class PrecheckingTests extends RefactoringExperiment{
 
 	private RefactoringContext context;
-	private final XWorkQueue queue = XWorkQueue.createSingleThreadWorkQueue();
+	private final XWorkQueue queue = XWorkQueue.createSingleThreadWorkQueue(Thread.MIN_PRIORITY);
 	
 	
 	@Before
 	public void setUp()
 	{
-		List<IJavaElement> contextUnits = this.getRandomUnits(1);
+		List<IJavaElement> contextUnits = this.getRandomUnits(10);
 		this.context = new RefactoringContext();
 		context.AddMultiCompilationUnits(contextUnits);
 	}
@@ -50,6 +50,19 @@ public class PrecheckingTests extends RefactoringExperiment{
 						getInstance();
 				XArrayList<RefactoringEnvironmentResults> results = repository.performChecking
 						(context);
+				logger.info("Count of results: " + results.size());
+				results.operateOnElement(new IOperation<RefactoringEnvironmentResults>(){
+					@Override
+					public void perform(RefactoringEnvironmentResults t) throws Exception {
+						logger.info("Working on refactoring environment");
+						Assert.isTrue(t.getReusltsCount() > 0);
+						Assert.isTrue(t.getC1Results().empty());
+						XArrayList<C2CheckingResult> c2Results = t.getC2ResultByInputType
+								(InputType.NEW_NAME);
+						Assert.isTrue(c2Results.size() > 0);
+						C2CheckingResult result = c2Results.get(0);
+						logger.info("A result: " + result.toString());
+					}});
 			}catch(Exception e)
 			{
 				logger.fatal(e);
@@ -62,27 +75,5 @@ public class PrecheckingTests extends RefactoringExperiment{
 	{
 		this.queue.execute(new RefactoringCheckingRunnable(context));
 		Thread.sleep(Integer.MAX_VALUE);
-	}
-	
-	
-//	@Test
-	public void method2() throws Exception
-	{	
-		RefactoringCheckersRepository repository = RefactoringCheckersRepository.getInstance();
-		XArrayList<RefactoringEnvironmentResults> results = repository.performChecking(context);
-		Assert.isTrue(!results.isEmpty());
-		logger.info("Count of results: " + results.size());
-		results.operateOnElement(new IOperation<RefactoringEnvironmentResults>(){
-			@Override
-			public void perform(RefactoringEnvironmentResults t) throws Exception {
-				logger.info("Working on refactoring environment");
-				Assert.isTrue(t.getReusltsCount() > 0);
-				Assert.isTrue(t.getC1Results().empty());
-				XArrayList<C2CheckingResult> c2Results = t.getC2ResultByInputType
-						(InputType.NEW_NAME);
-				Assert.isTrue(c2Results.size() > 0);
-				C2CheckingResult result = c2Results.get(0);
-				logger.info("A result: " + result.toString());
-			}});
 	}
 }
