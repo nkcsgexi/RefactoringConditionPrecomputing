@@ -1,13 +1,20 @@
 package javamodel.tests;
 
+import java.util.Collection;
 import java.util.List;
+
+import javaEventing.interfaces.Event;
+import javaEventing.interfaces.GenericEventListener;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jgit.treewalk.TreeWalk;
 import org.junit.Before;
 import org.junit.Test;
 
+import dlf.git.GitProject;
+import dlf.git.IVisitRevisionDiffStrategy;
 import dlf.refactoring.enums.InputType;
 import dlf.refactoring.precondition.checker.RefactoringCheckersRepository;
 import dlf.refactoring.precondition.checker.environments.RefactoringContext;
@@ -17,19 +24,43 @@ import dlf.refactoring.precondition.util.XArrayList;
 import dlf.refactoring.precondition.util.XLoggerFactory;
 import dlf.refactoring.precondition.util.XWorkQueue;
 import dlf.refactoring.precondition.util.interfaces.IOperation;
+import dlf.refactoring.precondition.util.interfaces.IPredicate;
 
 public class PrecheckingTests extends RefactoringExperiment{
 
-	private RefactoringContext context;
+	private static String directory = "C:\\Users\\xige\\Desktop\\test";
 	private final XWorkQueue queue = XWorkQueue.createSingleThreadWorkQueue(Thread.MIN_PRIORITY);
 	
-	
-	@Before
-	public void setUp()
+	private class DiffVisitor implements IVisitRevisionDiffStrategy
 	{
-		List<IJavaElement> contextUnits = this.getRandomUnits(10);
-		this.context = new RefactoringContext();
-		context.AddMultiCompilationUnits(contextUnits);
+		private final Logger logger = XLoggerFactory.GetLogger(this.getClass());
+		private int revisionNumber = 0;
+		
+		private XArrayList<IJavaElement> getICompilationUnitsByNames(final Collection<String> names) 
+				throws Exception {
+			return compilationUnits.where(new IPredicate<IJavaElement>(){
+				@Override
+				public boolean IsTrue(IJavaElement t) throws Exception {
+					//logger.info(t.getElementName());
+					return names.contains(t.getElementName());
+				}});	
+		}
+		
+		@Override
+		public void visitDiffTrees(TreeWalk tree) throws Exception {
+//			logger.info("Revision number: " + revisionNumber++);	
+			XArrayList<String> nameList = new XArrayList<String>();
+			while(tree.next())
+			{
+				if(tree.getNameString().endsWith(".java")) {
+					nameList.add(tree.getNameString());
+				}
+			}
+			RefactoringContext context = new RefactoringContext();
+			context.AddMultiCompilationUnits(getICompilationUnitsByNames(nameList));
+//			logger.info("CU count:" + context.getCompilationUnitsCount());
+			queue.execute(new RefactoringCheckingRunnable(context));
+		}	
 	}
 	
 	private class RefactoringCheckingRunnable implements Runnable
@@ -50,18 +81,17 @@ public class PrecheckingTests extends RefactoringExperiment{
 						getInstance();
 				XArrayList<RefactoringEnvironmentResults> results = repository.performChecking
 						(context);
-				logger.info("Count of results: " + results.size());
 				results.operateOnElement(new IOperation<RefactoringEnvironmentResults>(){
 					@Override
 					public void perform(RefactoringEnvironmentResults t) throws Exception {
-						logger.info("Working on refactoring environment");
+						// logger.info("Working on refactoring environment");
 						Assert.isTrue(t.getReusltsCount() > 0);
 						Assert.isTrue(t.getC1Results().empty());
 						XArrayList<C2CheckingResult> c2Results = t.getC2ResultByInputType
 								(InputType.NEW_NAME);
 						Assert.isTrue(c2Results.size() > 0);
 						C2CheckingResult result = c2Results.get(0);
-						logger.info("A result: " + result.toString());
+						// logger.info("A result: " + result.toString());
 					}});
 			}catch(Exception e)
 			{
@@ -73,7 +103,8 @@ public class PrecheckingTests extends RefactoringExperiment{
 	@Test
 	public void method1() throws Exception
 	{
-		this.queue.execute(new RefactoringCheckingRunnable(context));
+		GitProject project = new GitProject(directory, "prechecking");
+		project.walkRevisionDiffs(new DiffVisitor());
 		Thread.sleep(Integer.MAX_VALUE);
 	}
 }

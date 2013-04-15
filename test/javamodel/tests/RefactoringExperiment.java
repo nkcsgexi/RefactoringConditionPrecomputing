@@ -36,7 +36,7 @@ public class RefactoringExperiment {
 	protected XArrayList<IJavaElement> sourcePackageRoots;
 	protected XArrayList<IJavaElement> sourcePackages;
 	protected XArrayList<IJavaElement> compilationUnits;
-	protected XArrayList<IJavaElement> types;
+	protected XArrayList<IJavaElement> typesElement;
 	
 	public RefactoringExperiment()
 	{
@@ -50,25 +50,26 @@ public class RefactoringExperiment {
 	{
 		this.project = IJavaModelAnalyzer.getCurrentJavaProjects()[projectIndex];
 		this.sourcePackageRoots = IProjectAnalyzer.getSourcePackageFragmentRoots(project);
-		this.sourcePackages = this.sourcePackageRoots.select(new IMapper<IJavaElement, IJavaElement>(){
+		this.sourcePackages = this.sourcePackageRoots.select(new IMapper<IJavaElement, 
+				IJavaElement>(){
 			@Override
 			public List<IJavaElement> map(IJavaElement t) throws Exception {
 				return IPackageFragmentRootAnalyzer.getSourcePackages ((IPackageFragmentRoot) t);
 			}});
 		
-		this.compilationUnits = this.sourcePackages.select(new IMapper<IJavaElement, IJavaElement>(){
+		this.compilationUnits = this.sourcePackages.select(new IMapper<IJavaElement, 
+				IJavaElement>(){
 				@Override
 				public List<IJavaElement> map(IJavaElement t) throws Exception {
 					return IPackageFragmentAnalyzer.getICompilationUnits(t);
 				}
 		});
-		this.types = this.compilationUnits.select(new IMapper<IJavaElement, IJavaElement>(){
+		this.typesElement = this.compilationUnits.select(new IMapper<IJavaElement, IJavaElement>(){
 			@Override
 			public List<IJavaElement> map(IJavaElement t) throws Exception {
 				return ICompilationUnitAnalyzer.getTypes(t);
 			}});
 	}
-	
 	
 	
 	protected List<IJavaElement> getRandomUnits(int count)

@@ -16,7 +16,7 @@ import com.google.common.util.concurrent.AbstractService;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.LinkedHashMultimap;
-
+import com.google.common.base.Function;
 import dlf.refactoring.precondition.util.WorkQueue;
 import dlf.refactoring.precondition.util.XArrayList;
 
@@ -66,5 +66,19 @@ public class GoogleCuncurrent {
 	@Test
 	public void method4()
 	{
+		
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

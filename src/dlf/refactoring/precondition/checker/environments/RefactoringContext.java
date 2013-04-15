@@ -31,6 +31,11 @@ public class RefactoringContext {
 		return units.iterator();
 	}
 	
+	public int getCompilationUnitsCount()
+	{
+		return units.size();
+	}
+	
 	public boolean isEmpty()
 	{
 		return units.size() == 0;

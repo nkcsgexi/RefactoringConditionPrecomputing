@@ -63,10 +63,8 @@ public class RenameExperiments {
 	public void createEnvironment() throws Exception
 	{
 		this.project = IJavaModelAnalyzer.getCurrentJavaProjects()[projectIndex];
-		IPackageFragmentRoot[] packageRoots = IProjectAnalyzer.getPackageFragmentRoots
-				((IJavaProject) project);
-		sourcePackageRoots = TestUtils.getSourcePackageRoots(IJavaElementAnalyzer.convertArray2XArrayList
-				(packageRoots));
+		this.sourcePackageRoots = IProjectAnalyzer.getSourcePackageFragmentRoots
+				(project);
 		for(IJavaElement fragment : sourcePackageRoots)
 		{
 			Collection<IJavaElement> packages = IPackageFragmentRootAnalyzer.getSourcePackages 

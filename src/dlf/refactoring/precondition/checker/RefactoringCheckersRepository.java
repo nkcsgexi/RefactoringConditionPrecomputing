@@ -83,19 +83,7 @@ public class RefactoringCheckersRepository {
 			@Override
 			public List<RefactoringEnvironmentResults> map(final RefactoringCheckerSet checkers)
 					throws Exception {
-				XArrayList<IRefactoringEnvironment> environments = checkers.
-						computeRefactoringEnvironments(context);
-				return environments.convert(new IConvertor<IRefactoringEnvironment, 
-						RefactoringEnvironmentResults>(){
-					@Override
-					public RefactoringEnvironmentResults convert(IRefactoringEnvironment env) throws 
-							Exception {
-						RefactoringEnvironmentResults results = new RefactoringEnvironmentResults
-								(env);
-						results.addMultiCheckingResults(checkers.performAllChecking(env));
-						return results;
-					}});
-				
+				return checkers.checkingRefactoringContext(context);
 		}});
 	}
 	

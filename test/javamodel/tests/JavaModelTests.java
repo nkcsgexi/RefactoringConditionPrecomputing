@@ -39,6 +39,7 @@ import dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentRootAnaly
 import dlf.refactoring.precondition.JavaModelAnalyzers.IProjectAnalyzer;
 import dlf.refactoring.precondition.JavaModelAnalyzers.ITypeAnalyzer;
 import dlf.refactoring.precondition.util.ListOperations;
+import dlf.refactoring.precondition.util.XArrayList;
 import dlf.refactoring.precondition.util.XLoggerFactory;
 import dlf.refactoring.precondition.util.interfaces.IPredicate;
 
@@ -63,13 +64,13 @@ public class JavaModelTests {
 	public void prepareCompilationUnit() throws Exception
 	{
 		IJavaProject project = IJavaModelAnalyzer.getCurrentJavaProjects()[0];
-		IPackageFragmentRoot[] packageRoots = IProjectAnalyzer.getPackageFragmentRoots(project);
+		XArrayList<IJavaElement> packageRoots = IProjectAnalyzer.getPackageFragmentRoots(project);
 		Assert.isNotNull(packageRoots);
-		Assert.isTrue(packageRoots.length > 0);
+		Assert.isTrue(packageRoots.size() > 0);
 		
 		// Get the packages for source code and assert there is at least one.
-		List<IJavaElement> sourcePackageRoots = TestUtils.getSourcePackageRoots
-				(IJavaElementAnalyzer.convertArray2XArrayList(packageRoots));
+		List<IJavaElement> sourcePackageRoots = IProjectAnalyzer.getSourcePackageFragmentRoots
+				(project);
 		Assert.isTrue(sourcePackageRoots.size() > 0);
 		
 		

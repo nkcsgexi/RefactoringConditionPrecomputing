@@ -39,14 +39,14 @@ public class PullPushExperiment extends RefactoringExperiment {
 	@Before
 	public void getMembers() throws Exception
 	{
-		this.methods = this.javaElementExpandOperations.expand(this.types, new IMapper
+		this.methods = this.javaElementExpandOperations.expand(this.typesElement, new IMapper
 				<IJavaElement, IJavaElement>(){
 			@Override
 			public List<IJavaElement> map(IJavaElement t) throws Exception {
 				return ITypeAnalyzer.getMethods(t);
 			}});
 		
-		this.fields = this.javaElementExpandOperations.expand(this.types, new IMapper
+		this.fields = this.javaElementExpandOperations.expand(this.typesElement, new IMapper
 				<IJavaElement, IJavaElement>(){
 			@Override
 			public List<IJavaElement> map(IJavaElement t) throws Exception {

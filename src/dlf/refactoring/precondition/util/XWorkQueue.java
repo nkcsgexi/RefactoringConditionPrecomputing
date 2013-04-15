@@ -2,9 +2,13 @@ package dlf.refactoring.precondition.util;
 
 import java.util.LinkedList;
 
+import javaEventing.EventManager;
+import javaEventing.EventObject;
+import javaEventing.interfaces.Event;
+import javaEventing.interfaces.GenericEventListener;
+
 import org.apache.log4j.Logger;
 
-import dlf.refactoring.precondition.util.interfaces.IOperation;
 
 public class XWorkQueue
 {
@@ -12,7 +16,7 @@ public class XWorkQueue
     private final PoolWorker[] threads;
     private final LinkedList<Runnable> queue;
     private final XArrayList<XWorkItemListener> listeners;
-
+ 
     private XWorkQueue(int nThreads, int priority)
     {
         this.nThreads = nThreads;
@@ -48,6 +52,8 @@ public class XWorkQueue
     	}
     }
     
+
+    
     private class PoolWorker extends Thread {
     	Logger logger = XLoggerFactory.GetLogger(this.getClass());
   	
@@ -59,7 +65,7 @@ public class XWorkQueue
                     while (queue.isEmpty()) {
                         try
                         {
-                            queue.wait();
+                        	queue.wait();
                         }
                         catch (InterruptedException ignored)
                         {

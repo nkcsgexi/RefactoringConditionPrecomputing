@@ -11,6 +11,7 @@ import dlf.refactoring.enums.interfaces.IHasRefactoringType;
 import dlf.refactoring.precondition.checker.environments.IRefactoringEnvironment;
 import dlf.refactoring.precondition.checker.environments.RefactoringContext;
 import dlf.refactoring.precondition.checker.result.ICheckingResult;
+import dlf.refactoring.precondition.checker.result.RefactoringEnvironmentResults;
 import dlf.refactoring.precondition.util.XArrayList;
 import dlf.refactoring.precondition.util.interfaces.IConvertor;
 import dlf.refactoring.precondition.util.interfaces.IMapper;
@@ -19,9 +20,12 @@ import dlf.refactoring.precondition.util.interfaces.IMapper;
 public abstract class RefactoringCheckerSet implements IHasRefactoringType{
 	
 	protected abstract XArrayList<IConditionChecker> getAllConditionCheckers();
+	protected abstract XArrayList<IRefactoringEnvironment> getAllRefactoringEnvironments(
+			RefactoringContext context) throws Exception;
 	
-	public final XArrayList<IRefactoringEnvironment> computeRefactoringEnvironments(RefactoringContext
-		context) throws Exception
+	
+	private final XArrayList<IRefactoringEnvironment> computeRefactoringEnvironments(
+			RefactoringContext context) throws Exception
 	{
 		EventManager.triggerEvent(this, new calculateEnvironmentsStart());
 		XArrayList<IRefactoringEnvironment> result = getAllRefactoringEnvironments(context);
@@ -29,15 +33,9 @@ public abstract class RefactoringCheckerSet implements IHasRefactoringType{
 		return result;
 	}
 	
-	
-	protected abstract XArrayList<IRefactoringEnvironment> getAllRefactoringEnvironments(
-			RefactoringContext context) throws Exception;
-	
-	
-	public final XArrayList<ICheckingResult> performAllChecking(final IRefactoringEnvironment 
-			environment) throws Exception
+	private final XArrayList<ICheckingResult> checkingRefactoringEnvironment(final 
+			IRefactoringEnvironment environment) throws Exception
 	{
-		EventManager.triggerEvent(this, new checkingStartEvent());
 		final XArrayList<IConditionChecker> checkers = getAllConditionCheckers();
 		XArrayList<ICheckingResult> results = checkers.convert(new IConvertor<IConditionChecker, 
 				ICheckingResult>(){
@@ -45,9 +43,33 @@ public abstract class RefactoringCheckerSet implements IHasRefactoringType{
 			public ICheckingResult convert(final IConditionChecker c)throws Exception {
 				return c.performChecking(environment);
 			}});
+		return results;
+	}
+	
+	
+	public final XArrayList<RefactoringEnvironmentResults> checkingRefactoringContext(
+			RefactoringContext context) throws Exception
+	{
+		EventManager.triggerEvent(this, new checkingStartEvent());
+		
+		// Get the environment first
+		XArrayList<IRefactoringEnvironment> environments = this.computeRefactoringEnvironments
+				(context);
+		
+		// For each environment, calculate the checking results associated with it.
+		XArrayList<RefactoringEnvironmentResults> results = environments.convert(new IConvertor
+				<IRefactoringEnvironment, RefactoringEnvironmentResults>(){
+			@Override
+			public RefactoringEnvironmentResults convert(IRefactoringEnvironment env) throws 
+					Exception {
+				RefactoringEnvironmentResults envRes = new RefactoringEnvironmentResults (env);
+				envRes.addMultiCheckingResults(checkingRefactoringEnvironment(env));
+				return envRes;
+			}});
 		EventManager.triggerEvent(this, new checkingEndEvent());
 		return results;
 	}
+	
 	
 	private class calculateEnvironmentsStart extends EventObject{}
 	private class calculateEnvironmentsEnd extends EventObject{}
