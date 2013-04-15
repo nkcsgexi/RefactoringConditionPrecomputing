@@ -29,6 +29,7 @@ public class RefactoringCheckersRepository {
 
 		// add new refactoring checker set here.
 		checkerSets.add(addRefactoringCheckerSetListner(new RenameClassCheckerSet()));
+		checkerSets.add(addRefactoringCheckerSetListner(new PushDownMethodCheckerSet()));
 	}
 	
 	public RefactoringCheckerSet addRefactoringCheckerSetListner(RefactoringCheckerSet set)

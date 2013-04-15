@@ -33,7 +33,7 @@ public class PushDownMethodCheckerSet extends RefactoringCheckerSet{
 	@Override
 	protected XArrayList<IConditionChecker> getAllConditionCheckers() {
 		XArrayList<IConditionChecker> checkers = new XArrayList<IConditionChecker>();
-		checkers.add(new PushableMethod());
+		checkers.add(new PushableMethodChecker());
 		return checkers;
 	}
 
@@ -42,15 +42,14 @@ public class PushDownMethodCheckerSet extends RefactoringCheckerSet{
 			context) throws Exception {
 		XArrayList<IRefactoringEnvironment> allEnvs = new XArrayList<IRefactoringEnvironment>();
 		Iterator<IJavaElement> iterator = context.getCompilationUnits();
-		while(iterator.hasNext())
-		{
+		while(iterator.hasNext()) {
 			IJavaElement unit = iterator.next();
 			allEnvs.addAll(ICompilationUnitAnalyzer.getTypes(unit).select(new IMapper<IJavaElement,
-					IJavaElement>(){
+					IJavaElement>() {
 				@Override
 				public List<IJavaElement> map(IJavaElement t) throws Exception {
 					return ITypeAnalyzer.getMethods(t);
-				}}).convert(new IConvertor<IJavaElement, IRefactoringEnvironment>(){
+				}}).convert(new IConvertor<IJavaElement, IRefactoringEnvironment>() {
 					@Override
 					public PushDownMethodEnvironment convert(IJavaElement t) throws Exception {
 						return new PushDownMethodEnvironment(t);
@@ -59,8 +58,7 @@ public class PushDownMethodCheckerSet extends RefactoringCheckerSet{
 		return allEnvs;
 	}
 	
-	private class PushDownMethodEnvironment extends SingleELementRefacatoringEnvironment
-	{
+	private class PushDownMethodEnvironment extends SingleELementRefacatoringEnvironment {
 
 		public PushDownMethodEnvironment(IJavaElement element) {
 			super(element);
@@ -74,8 +72,7 @@ public class PushDownMethodCheckerSet extends RefactoringCheckerSet{
 	}
 	
 	
-	private class PushableMethod implements IConditionChecker
-	{
+	private class PushableMethodChecker implements IConditionChecker {
 		@Override
 		public ICheckingResult performChecking(IRefactoringEnvironment environment) throws 
 			Exception {
@@ -86,8 +83,7 @@ public class PushDownMethodCheckerSet extends RefactoringCheckerSet{
 			return new PushableMethodResult(result.isOK(), environment);
 		}
 		
-		private class PushableMethodResult extends C1CheckingResult
-		{
+		private class PushableMethodResult extends C1CheckingResult {
 			public PushableMethodResult(boolean isOK, IRefactoringEnvironment environment) {
 				super(isOK, environment);
 			}
