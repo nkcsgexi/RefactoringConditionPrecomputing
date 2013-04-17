@@ -3,6 +3,8 @@ package javamodel.tests;
 import java.util.Collection;
 import java.util.List;
 
+import javaEventing.EventManager;
+import javaEventing.EventObject;
 import javaEventing.interfaces.Event;
 import javaEventing.interfaces.GenericEventListener;
 
@@ -12,6 +14,8 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jgit.treewalk.TreeWalk;
 import org.junit.Before;
 import org.junit.Test;
+
+import util.tests.WorkQueueTests.WorkFinishEvent;
 
 import dlf.git.GitProject;
 import dlf.git.IVisitRevisionDiffStrategy;
@@ -87,11 +91,18 @@ public class PrecheckingTests extends RefactoringExperiment{
 		}		
 	}
 	
+	private class FinishWorkEvent extends EventObject{}
+	
 	@Test
 	public void method1() throws Exception
 	{
 		GitProject project = new GitProject(directory, "prechecking");
 		project.walkRevisionDiffs(new DiffVisitor());
-		Thread.sleep(Integer.MAX_VALUE);
+		queue.addEmptyQueueEventListener(new GenericEventListener(){
+			@Override
+			public void eventTriggered(Object arg0, Event arg1) {
+				EventManager.triggerEvent(arg0, new FinishWorkEvent());
+			}});
+		EventManager.waitUntilTriggered(FinishWorkEvent.class, Integer.MAX_VALUE);
 	}
 }
