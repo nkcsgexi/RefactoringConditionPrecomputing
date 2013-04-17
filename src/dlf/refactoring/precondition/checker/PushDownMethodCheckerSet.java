@@ -71,7 +71,6 @@ public class PushDownMethodCheckerSet extends RefactoringCheckerSet{
 		
 	}
 	
-	
 	private class PushableMethodChecker implements IConditionChecker {
 		@Override
 		public ICheckingResult performChecking(IRefactoringEnvironment environment) throws 

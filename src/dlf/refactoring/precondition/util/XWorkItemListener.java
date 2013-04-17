@@ -1,6 +1,5 @@
 package dlf.refactoring.precondition.util;
 
 public interface XWorkItemListener {
-	void beforeRunning(Runnable runnable);
-	void afterRunning(Runnable runnable);
+	void runnableFinished(Runnable runnable);
 }

@@ -48,7 +48,6 @@ public class PrecheckingTests extends RefactoringExperiment{
 		
 		@Override
 		public void visitDiffTrees(TreeWalk tree) throws Exception {
-//			logger.info("Revision number: " + revisionNumber++);	
 			XArrayList<String> nameList = new XArrayList<String>();
 			while(tree.next())
 			{
@@ -58,7 +57,6 @@ public class PrecheckingTests extends RefactoringExperiment{
 			}
 			RefactoringContext context = new RefactoringContext();
 			context.AddMultiCompilationUnits(getICompilationUnitsByNames(nameList));
-//			logger.info("CU count:" + context.getCompilationUnitsCount());
 			queue.execute(new RefactoringCheckingRunnable(context));
 		}	
 	}
@@ -81,18 +79,7 @@ public class PrecheckingTests extends RefactoringExperiment{
 						getInstance();
 				XArrayList<RefactoringEnvironmentResults> results = repository.performChecking
 						(context);
-				results.operateOnElement(new IOperation<RefactoringEnvironmentResults>(){
-					@Override
-					public void perform(RefactoringEnvironmentResults t) throws Exception {
-						// logger.info("Working on refactoring environment");
-						Assert.isTrue(t.getReusltsCount() > 0);
-						Assert.isTrue(t.getC1Results().empty());
-						XArrayList<C2CheckingResult> c2Results = t.getC2ResultByInputType
-								(InputType.NEW_NAME);
-						Assert.isTrue(c2Results.size() > 0);
-						C2CheckingResult result = c2Results.get(0);
-						// logger.info("A result: " + result.toString());
-					}});
+				logger.info("==================================================");
 			}catch(Exception e)
 			{
 				logger.fatal(e);

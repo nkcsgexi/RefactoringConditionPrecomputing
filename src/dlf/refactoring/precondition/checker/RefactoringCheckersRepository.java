@@ -60,8 +60,8 @@ public class RefactoringCheckersRepository {
 			@Override
 			public void calculateEnvironmentEnd(RefactoringCheckerSet set) {
 				this.calculatingDuration = System.currentTimeMillis() - this.calculatingStart;
-				logger.info("Calculating environments for " + set.getRefactoringType().name() + ":" 
-						+ this.calculatingDuration);
+			//	logger.info("Calculating environments for " + set.getRefactoringType().name() + ":" 
+			//			+ this.calculatingDuration);
 			}});
 		return set;
 	}

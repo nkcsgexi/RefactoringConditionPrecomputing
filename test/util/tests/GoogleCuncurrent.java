@@ -17,7 +17,6 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.base.Function;
-import dlf.refactoring.precondition.util.WorkQueue;
 import dlf.refactoring.precondition.util.XArrayList;
 
 
@@ -40,16 +39,6 @@ public class GoogleCuncurrent {
 		Assert.isTrue(s.state() == State.RUNNING);
 	}
 	
-	@Test
-	public void method2()
-	{
-		WorkQueue q = new WorkQueue(1);
-		q.execute(new Runnable(){
-			@Override
-			public void run() {
-				
-			}});
-	}
 	
 	@Test
 	public void method3()

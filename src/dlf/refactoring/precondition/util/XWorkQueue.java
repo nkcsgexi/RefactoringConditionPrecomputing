@@ -10,12 +10,20 @@ import javaEventing.interfaces.GenericEventListener;
 import org.apache.log4j.Logger;
 
 
-public class XWorkQueue
+
+public final class XWorkQueue
 {
     private final int nThreads;
     private final PoolWorker[] threads;
     private final LinkedList<Runnable> queue;
-    private final XArrayList<XWorkItemListener> listeners;
+    
+    public final class EmptyWorkQueueEvent extends EventObject{}
+    
+    private class WorkItemEnd extends EventObject
+    {
+    	public final Runnable r;
+    	protected WorkItemEnd(Runnable r){this.r = r;}
+    }
  
     private XWorkQueue(int nThreads, int priority)
     {
@@ -28,8 +36,6 @@ public class XWorkQueue
             threads[i].setPriority(priority);
             threads[i].start();
         }
-        
-        this.listeners = new XArrayList<XWorkItemListener>();
     }
 
     public static XWorkQueue createSingleThreadWorkQueue(int priority)
@@ -45,18 +51,34 @@ public class XWorkQueue
     }
     
     
-    public void addWorkItemListener(XWorkItemListener lis)
-    {
-    	synchronized(this.listeners){
-    		this.listeners.add(lis);
-    	}
+    public void addWorkItemListener(final XWorkItemListener listener)
+    {  	
+    	EventManager.registerEventListener(new GenericEventListener(){
+			@Override
+			public void eventTriggered(Object arg0, Event arg1) {
+				if(containsWorker((PoolWorker) arg0)) {
+					listener.runnableFinished(((WorkItemEnd)arg1).r);
+				}
+			}}, WorkItemEnd.class);
     }
     
-
+    
+    private boolean containsWorker(PoolWorker worker)
+    {
+    	for(PoolWorker t : threads)
+    	{
+    		if(t == worker)
+    		{
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
     
     private class PoolWorker extends Thread {
-    	Logger logger = XLoggerFactory.GetLogger(this.getClass());
-  	
+    	private final Logger logger = XLoggerFactory.GetLogger(this.getClass());
+	
         public void run() {
             Runnable r;
 
@@ -65,6 +87,7 @@ public class XWorkQueue
                     while (queue.isEmpty()) {
                         try
                         {
+                        	EventManager.triggerEvent(this, new EmptyWorkQueueEvent());
                         	queue.wait();
                         }
                         catch (InterruptedException ignored)
@@ -79,19 +102,8 @@ public class XWorkQueue
                 // If we don't catch RuntimeException, 
                 // the pool could leak threads
                 try {
-                	synchronized(listeners){
-                		for(XWorkItemListener l : listeners)
-                		{
-                			l.beforeRunning(r);
-                		}
-                		
                 		r.run();
-                		
-                		for(XWorkItemListener l : listeners)
-                		{
-                			l.afterRunning(r);
-                		}
-                	}
+                		EventManager.triggerEvent(this, new WorkItemEnd(r));
                 }
                 catch (Exception e) {
                     logger.fatal(e);

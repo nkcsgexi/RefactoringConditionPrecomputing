@@ -78,31 +78,39 @@ public abstract class RefactoringCheckerSet implements IHasRefactoringType{
 	private class checkingEndEvent extends EventObject{}
 	
 	public final void addCheckingSetListener(final RefactoringCheckerSetListener lis)
-	{
-		final RefactoringCheckerSet set = this;
+	{	
+		final RefactoringCheckerSet thisChecker = this;
 		
 		EventManager.registerEventListener(new GenericEventListener(){
 			@Override
 			public void eventTriggered(Object arg0, Event arg1) {
-				lis.calculateEnvironmentStart(set);
+				if(arg0 == thisChecker) {
+					lis.calculateEnvironmentStart((RefactoringCheckerSet) arg0);
+				}
 			}}, calculateEnvironmentsStart.class);
 		
 		EventManager.registerEventListener(new GenericEventListener(){
 			@Override
 			public void eventTriggered(Object arg0, Event arg1) {
-				lis.calculateEnvironmentEnd(set);
+				if(arg0 == thisChecker) {
+					lis.calculateEnvironmentEnd((RefactoringCheckerSet) arg0);
+				}
 			}}, calculateEnvironmentsEnd.class);
 		
 		EventManager.registerEventListener(new GenericEventListener(){
 			@Override
 			public void eventTriggered(Object arg0, Event arg1) {
-				lis.performCheckingStart(set);
+				if(arg0 == thisChecker) {
+					lis.performCheckingStart((RefactoringCheckerSet) arg0);
+				}
 			}}, checkingStartEvent.class);
 		
 		EventManager.registerEventListener(new GenericEventListener(){
 			@Override
 			public void eventTriggered(Object arg0, Event arg1) {
-				lis.performCheckingEnd(set);
+				if(arg0 == thisChecker) {
+					lis.performCheckingEnd((RefactoringCheckerSet) arg0);
+				}
 			}}, checkingEndEvent.class);
 	}
 	
