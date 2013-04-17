@@ -1,6 +1,7 @@
 package util.tests;
 
 import javaEventing.EventManager;
+import javaEventing.EventObject;
 import javaEventing.interfaces.Event;
 import javaEventing.interfaces.GenericEventListener;
 
@@ -12,7 +13,6 @@ import dlf.refactoring.precondition.util.XBox;
 import dlf.refactoring.precondition.util.XLoggerFactory;
 import dlf.refactoring.precondition.util.XWorkItemListener;
 import dlf.refactoring.precondition.util.XWorkQueue;
-import dlf.refactoring.precondition.util.XWorkQueue.EmptyWorkQueueEvent;
 
 public class WorkQueueTests {
 
@@ -62,11 +62,20 @@ public class WorkQueueTests {
 		}
 	}
 	
+	private class WorkFinishEvent extends EventObject{}
+	
 	@Test
 	public void method3() throws Exception
 	{
 		XWorkQueue queue = XWorkQueue.createSingleThreadWorkQueue(Thread.MIN_PRIORITY);
 		final Thread current = Thread.currentThread();
+		
+		queue.addEmptyQueueEventListener(new GenericEventListener(){
+			@Override
+			public void eventTriggered(Object arg0, Event arg1) {
+				logger.info("Work queue is empty.");
+				EventManager.triggerEvent(this, new WorkFinishEvent());
+			}});
 		queue.addWorkItemListener(new XWorkItemListener(){
 			@Override
 			public void runnableFinished(Runnable runnable) {
@@ -76,6 +85,6 @@ public class WorkQueueTests {
 		for(int i= 0; i<100; i++) {
 			queue.execute( new TestRunnable(i));
 		}
-		EventManager.waitUntilTriggered(EmptyWorkQueueEvent.class, Integer.MAX_VALUE);
+		EventManager.waitUntilTriggered(WorkFinishEvent.class, Integer.MAX_VALUE);
 	}
 }

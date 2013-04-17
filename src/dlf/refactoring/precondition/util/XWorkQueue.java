@@ -17,9 +17,9 @@ public final class XWorkQueue
     private final PoolWorker[] threads;
     private final LinkedList<Runnable> queue;
     
-    public final class EmptyWorkQueueEvent extends EventObject{}
+    private final class EmptyWorkQueueEvent extends EventObject{}
     
-    private class WorkItemEnd extends EventObject
+    private final class WorkItemEnd extends EventObject
     {
     	public final Runnable r;
     	protected WorkItemEnd(Runnable r){this.r = r;}
@@ -50,6 +50,18 @@ public final class XWorkQueue
         }
     }
     
+    
+    public void addEmptyQueueEventListener(final GenericEventListener listener)
+    {
+    	final XWorkQueue workQueue = this;
+    	EventManager.registerEventListener(new GenericEventListener(){
+			@Override
+			public void eventTriggered(Object arg0, Event arg1) {
+				if(containsWorker((PoolWorker) arg0)) {
+					listener.eventTriggered(workQueue, arg1);
+				}
+			}}, EmptyWorkQueueEvent.class);
+    }
     
     public void addWorkItemListener(final XWorkItemListener listener)
     {  	
