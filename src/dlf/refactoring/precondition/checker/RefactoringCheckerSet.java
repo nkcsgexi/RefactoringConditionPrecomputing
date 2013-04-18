@@ -10,6 +10,7 @@ import javaEventing.interfaces.GenericEventListener;
 import dlf.refactoring.enums.interfaces.IHasRefactoringType;
 import dlf.refactoring.precondition.checker.environments.IRefactoringEnvironment;
 import dlf.refactoring.precondition.checker.environments.RefactoringContext;
+import dlf.refactoring.precondition.checker.listeners.RefactoringCheckerSetListener;
 import dlf.refactoring.precondition.checker.result.ICheckingResult;
 import dlf.refactoring.precondition.checker.result.RefactoringEnvironmentResults;
 import dlf.refactoring.precondition.util.XArrayList;

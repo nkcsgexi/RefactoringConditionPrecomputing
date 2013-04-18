@@ -1,4 +1,6 @@
-package dlf.refactoring.precondition.checker;
+package dlf.refactoring.precondition.checker.listeners;
+
+import dlf.refactoring.precondition.checker.RefactoringCheckerSet;
 
 public interface RefactoringCheckerSetListener {
 	public void performCheckingStart(RefactoringCheckerSet set);

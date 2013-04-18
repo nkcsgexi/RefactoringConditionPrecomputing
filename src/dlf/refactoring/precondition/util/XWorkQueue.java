@@ -9,26 +9,27 @@ import javaEventing.interfaces.GenericEventListener;
 
 import org.apache.log4j.Logger;
 
+import dlf.refactoring.precondition.util.interfaces.IRunnable;
+
 
 
 public final class XWorkQueue
 {
     private final int nThreads;
     private final PoolWorker[] threads;
-    private final LinkedList<Runnable> queue;
+    private final LinkedList<IRunnable> queue;
     
     private final class EmptyWorkQueueEvent extends EventObject{}
     
-    private final class WorkItemEnd extends EventObject
-    {
-    	public final Runnable r;
-    	protected WorkItemEnd(Runnable r){this.r = r;}
-    }
+    private final class WorkItemEnd extends TimedEventObject<IRunnable>{
+		public WorkItemEnd(IRunnable information) {
+			super(information);
+		}}
  
     private XWorkQueue(int nThreads, int priority)
     {
         this.nThreads = nThreads;
-        queue = new LinkedList<Runnable>();
+        queue = new LinkedList<IRunnable>();
         threads = new PoolWorker[nThreads];
        
         for (int i=0; i<nThreads; i++) {
@@ -43,7 +44,7 @@ public final class XWorkQueue
     	return new XWorkQueue(1, priority);
     }
     
-    public void execute(Runnable r) {
+    public void execute(IRunnable r) {
         synchronized(queue) {
             queue.addLast(r);
             queue.notify();
@@ -69,7 +70,7 @@ public final class XWorkQueue
 			@Override
 			public void eventTriggered(Object arg0, Event arg1) {
 				if(containsWorker((PoolWorker) arg0)) {
-					listener.runnableFinished(((WorkItemEnd)arg1).r);
+					listener.runnableFinished(((WorkItemEnd)arg1).getInformation());
 				}
 			}}, WorkItemEnd.class);
     }
@@ -92,7 +93,7 @@ public final class XWorkQueue
     	private final Logger logger = XLoggerFactory.GetLogger(this.getClass());
 	
         public void run() {
-            Runnable r;
+        	IRunnable r;
 
             while (true) {
                 synchronized(queue) {
@@ -108,7 +109,7 @@ public final class XWorkQueue
                         }
                     }
 
-                    r = (Runnable) queue.removeFirst();
+                    r = (IRunnable) queue.removeFirst();
                 }
 
                 // If we don't catch RuntimeException, 

@@ -19,15 +19,18 @@ import org.junit.Test;
 import dlf.git.GitProject;
 import dlf.git.IVisitRevisionDiffStrategy;
 import dlf.refactoring.enums.InputType;
-import dlf.refactoring.precondition.checker.RefactoringCheckersRepository;
+import dlf.refactoring.precondition.checker.RefactoringCheckerSetRepository;
 import dlf.refactoring.precondition.checker.environments.RefactoringContext;
+import dlf.refactoring.precondition.checker.listeners.RefactoringCheckerSetRepositoryListener;
 import dlf.refactoring.precondition.checker.result.C2CheckingResult;
 import dlf.refactoring.precondition.checker.result.RefactoringEnvironmentResults;
+import dlf.refactoring.precondition.util.TimedEventObject;
 import dlf.refactoring.precondition.util.XArrayList;
 import dlf.refactoring.precondition.util.XLoggerFactory;
 import dlf.refactoring.precondition.util.XWorkQueue;
 import dlf.refactoring.precondition.util.interfaces.IOperation;
 import dlf.refactoring.precondition.util.interfaces.IPredicate;
+import dlf.refactoring.precondition.util.interfaces.IRunnable;
 
 public class PrecheckingTests extends RefactoringExperiment{
 
@@ -64,7 +67,7 @@ public class PrecheckingTests extends RefactoringExperiment{
 		}	
 	}
 	
-	private class RefactoringCheckingRunnable implements Runnable
+	private class RefactoringCheckingRunnable implements IRunnable
 	{
 		private final Logger logger;
 		private final RefactoringContext context;
@@ -76,25 +79,39 @@ public class PrecheckingTests extends RefactoringExperiment{
 		}
 		
 		@Override
-		public void run() {
-			try{
-				RefactoringCheckersRepository repository = RefactoringCheckersRepository.
+		public void run() throws Exception {
+				RefactoringCheckerSetRepository repository = RefactoringCheckerSetRepository.
 						getInstance();
 				XArrayList<RefactoringEnvironmentResults> results = repository.performChecking
 						(context);
 				logger.info("==================================================");
-			}catch(Exception e)
-			{
-				logger.fatal(e);
-			}
 		}		
 	}
 	
 	private class FinishWorkEvent extends EventObject{}
 	
+	private void addRepositoryListener()
+	{
+		RefactoringCheckerSetRepository.getInstance().addRefactoringCheckerSetRepositoryListener(
+			new RefactoringCheckerSetRepositoryListener() {
+				private long start;
+				private long end;
+				@Override
+				public void startCheckingContext(TimedEventObject event) {
+					this.start = event.getCreationTime();
+				}
+	
+				@Override
+				public void endCheckingContext(TimedEventObject event) {
+					this.end = event.getCreationTime();
+					logger.info("Finish a refactoring context:" + (end-start));
+				}});
+	}
+	
 	@Test
 	public void method1() throws Exception
 	{
+		addRepositoryListener();
 		GitProject project = new GitProject(directory, "prechecking");
 		project.walkRevisionDiffs(new DiffVisitor());
 		queue.addEmptyQueueEventListener(new GenericEventListener(){
