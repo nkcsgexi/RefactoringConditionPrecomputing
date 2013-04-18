@@ -13,6 +13,7 @@ import dlf.refactoring.precondition.util.XBox;
 import dlf.refactoring.precondition.util.XLoggerFactory;
 import dlf.refactoring.precondition.util.XWorkItemListener;
 import dlf.refactoring.precondition.util.XWorkQueue;
+import dlf.refactoring.precondition.util.interfaces.IRunnable;
 
 public class WorkQueueTests {
 
@@ -24,7 +25,7 @@ public class WorkQueueTests {
 		XWorkQueue queue = XWorkQueue.createSingleThreadWorkQueue(Thread.MIN_PRIORITY);
 		final XBox<Boolean> b = new XBox<Boolean>();
 		b.stuff = false;
-		queue.execute(new Runnable(){
+		queue.execute(new IRunnable(){
 			@Override
 			public void run() {
 				b.stuff = true;
@@ -38,7 +39,7 @@ public class WorkQueueTests {
 	public void method2() throws InterruptedException
 	{
 		XWorkQueue queue = XWorkQueue.createSingleThreadWorkQueue(Thread.MIN_PRIORITY);
-		queue.execute(new Runnable() {
+		queue.execute(new IRunnable() {
 			@Override
 			public void run() {
 				
@@ -47,7 +48,7 @@ public class WorkQueueTests {
 	}
 	
 	
-	private class TestRunnable implements Runnable
+	private class TestRunnable implements IRunnable
 	{	
 		public final int number;
 		
@@ -78,13 +79,38 @@ public class WorkQueueTests {
 			}});
 		queue.addWorkItemListener(new XWorkItemListener(){
 			@Override
-			public void runnableFinished(Runnable runnable) {
+			public void runnableFinished(IRunnable runnable) {
 				int number = ((TestRunnable)runnable).number;
 				logger.info("After:" + number);
 			}});
 		for(int i= 0; i<100; i++) {
-			queue.execute( new TestRunnable(i));
+			queue.execute(new TestRunnable(i));
 		}
 		EventManager.waitUntilTriggered(WorkFinishEvent.class, Integer.MAX_VALUE);
 	}
+	
+	private class event1 extends EventObject{}
+	private class event2 extends EventObject{}
+	
+	@Test
+	public void method4() throws Exception
+	{
+		logger.info("Start thread is:" + Thread.currentThread().getId());
+		
+		EventManager.registerEventListener(new GenericEventListener(){
+			@Override
+			public void eventTriggered(Object arg0, Event arg1) {
+				logger.info("Handling event 1 thread:" + Thread.currentThread().getId());
+			}}, event1.class);
+		EventManager.registerEventListener(new GenericEventListener(){
+			@Override
+			public void eventTriggered(Object arg0, Event arg1) {
+				logger.info("Handling event 2 thread:" + Thread.currentThread().getId());
+			}}, event2.class);
+		for(int i = 0; i< 100; i++) {
+			EventManager.triggerEvent(this, new event1());
+			EventManager.triggerEvent(this, new event2());
+		}
+	}
+	
 }

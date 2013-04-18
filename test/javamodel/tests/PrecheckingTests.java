@@ -63,7 +63,8 @@ public class PrecheckingTests extends RefactoringExperiment{
 			}
 			RefactoringContext context = new RefactoringContext();
 			context.AddMultiCompilationUnits(getICompilationUnitsByNames(nameList));
-			queue.execute(new RefactoringCheckingRunnable(context));
+			// queue.execute(new RefactoringCheckingRunnable(context));
+			new RefactoringCheckingRunnable(context).run();
 		}	
 	}
 	
