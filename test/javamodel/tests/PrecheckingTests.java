@@ -15,7 +15,6 @@ import org.eclipse.jgit.treewalk.TreeWalk;
 import org.junit.Before;
 import org.junit.Test;
 
-import util.tests.WorkQueueTests.WorkFinishEvent;
 
 import dlf.git.GitProject;
 import dlf.git.IVisitRevisionDiffStrategy;

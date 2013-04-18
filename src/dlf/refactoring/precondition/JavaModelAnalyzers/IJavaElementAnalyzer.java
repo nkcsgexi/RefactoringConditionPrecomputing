@@ -42,10 +42,10 @@ public class IJavaElementAnalyzer {
 	}
 	
 	
-	public static List<IJavaElement> getAncestors(IJavaElement element, IPredicate<IJavaElement> 
+	public static XArrayList<IJavaElement> getAncestors(IJavaElement element, IPredicate<IJavaElement> 
 		predicate) throws Exception
 	{
-		ArrayList<IJavaElement> results = new ArrayList<IJavaElement>();
+		XArrayList<IJavaElement> results = new XArrayList<IJavaElement>();
 		for(IJavaElement parent = element.getParent(); parent != null ;parent = parent.getParent())
 		{
 			if(predicate.IsTrue(parent))
@@ -56,8 +56,8 @@ public class IJavaElementAnalyzer {
 		return results;
 	}
 	
-	public static List<IJavaElement> getAncestorsByType(IJavaElement element, final int type) throws 
-		Exception
+	public static XArrayList<IJavaElement> getAncestorsByType(IJavaElement element, final int type) 
+			throws Exception
 	{
 		return getAncestors(element, new IPredicate<IJavaElement>(){
 			@Override
