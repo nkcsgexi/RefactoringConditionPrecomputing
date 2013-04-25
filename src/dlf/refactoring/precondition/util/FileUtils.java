@@ -45,14 +45,16 @@ public class FileUtils {
 	
 	public static String getDesktopPath()
 	{
-		return "C:\\Users\\xige\\Desktop\\test";
+		return "C:\\Users\\xige\\Desktop";
 	}
 	
 	public static void createFileIfNotExist(String path) throws Exception
 	{
 		File f = new File(path);
 		if(!f.exists()) {
-			f.mkdirs(); 
+			if(!f.getParentFile().exists()) {
+				f.getParentFile().mkdirs();
+			}
 			f.createNewFile();
 		}
 	}

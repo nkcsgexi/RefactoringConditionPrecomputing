@@ -2,6 +2,9 @@ package dlf.refactoring.enums;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 import dlf.refactoring.precondition.util.FileUtils;
@@ -25,9 +28,18 @@ public class RefactoringTypeMessageManager {
 		for(RefactoringType type : RefactoringType.values()) {
 			String path = this.directory + "\\" + type.name() + ".log";
 			FileUtils.createFileIfNotExist(path);
-			this.writers.put(type, new BufferedWriter(new FileWriter(path, true)));
+			BufferedWriter writer = new BufferedWriter(new FileWriter(path, true));
+			writer.append("Record started at: " + getCurrentDateTime() + "\n");
+			this.writers.put(type, writer);
 		}
 	}
+	
+	private String getCurrentDateTime() {
+			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+			Date date = new Date();
+			return dateFormat.format(date);
+	}
+	
 	
 	public void finalize() throws Exception {
 		for(BufferedWriter w : writers.values()) {
@@ -38,6 +50,7 @@ public class RefactoringTypeMessageManager {
 	public void recordMessage(RefactoringType type, String message) throws Exception {
 		writers.get(type).append(message);
 		writers.get(type).newLine();
+		writers.get(type).flush();
 	}
 	
 }

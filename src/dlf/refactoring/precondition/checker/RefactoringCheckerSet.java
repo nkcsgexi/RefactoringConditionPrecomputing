@@ -93,7 +93,6 @@ public abstract class RefactoringCheckerSet implements IHasRefactoringType{
 	}
 	
 	
-
 	
 	public final void addCheckingSetListener(final RefactoringCheckerSetListener lis)
 	{	
