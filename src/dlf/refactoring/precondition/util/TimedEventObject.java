@@ -9,7 +9,7 @@ abstract public class TimedEventObject<T> extends EventObject{
 	
 	public TimedEventObject(T information)
 	{
-		creationTime = System.currentTimeMillis();
+		this.creationTime = System.currentTimeMillis();
 		this.information = information;
 	}
 	

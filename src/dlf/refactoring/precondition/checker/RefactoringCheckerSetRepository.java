@@ -9,6 +9,7 @@ import javaEventing.EventObject;
 import javaEventing.interfaces.Event;
 import javaEventing.interfaces.GenericEventListener;
 
+import dlf.refactoring.enums.RefactoringTypeMessageManager;
 import dlf.refactoring.precondition.checker.environments.IRefactoringEnvironment;
 import dlf.refactoring.precondition.checker.environments.RefactoringContext;
 import dlf.refactoring.precondition.checker.listeners.RefactoringCheckerSetListener;
@@ -48,27 +49,31 @@ public class RefactoringCheckerSetRepository {
 			private long calculatingDuration;
 			
 			@Override
-			public void performCheckingStart(RefactoringCheckerSet set) {
+			public void performCheckingStart(TimedEventObject<RefactoringCheckerSet> event) {
 				this.checkingStart = System.currentTimeMillis();
 			}
 
 			@Override
-			public void performCheckingEnd(RefactoringCheckerSet set) {
-				this.checkingDuration = System.currentTimeMillis() - this.checkingStart;
-				logger.info("Checking conditions for " + set.getRefactoringType().name() + ":" + 
-						this.checkingDuration);
+			public void performCheckingEnd(TimedEventObject<RefactoringCheckerSet> event) {
+				this.checkingDuration = event.getCreationTime() - this.checkingStart;
+				logger.info("Checking conditions for " + event.getInformation().getRefactoringType().
+						name() + ":" + this.checkingDuration);
+				try {
+					RefactoringTypeMessageManager.getInstance().recordMessage(event.getInformation().
+							getRefactoringType(), String.valueOf(this.checkingDuration));
+				} catch (Exception e) {
+					logger.fatal(e);
+				}
+			}
+			
+			@Override
+			public void calculateEnvironmentStart(TimedEventObject<RefactoringCheckerSet> event) {
+				this.calculatingStart = event.getCreationTime();
 			}
 
 			@Override
-			public void calculateEnvironmentStart(RefactoringCheckerSet set) {
-				this.calculatingStart = System.currentTimeMillis();
-			}
-
-			@Override
-			public void calculateEnvironmentEnd(RefactoringCheckerSet set) {
-				this.calculatingDuration = System.currentTimeMillis() - this.calculatingStart;
-			//	logger.info("Calculating environments for " + set.getRefactoringType().name() + ":" 
-			//			+ this.calculatingDuration);
+			public void calculateEnvironmentEnd(TimedEventObject<RefactoringCheckerSet> event) {
+				this.calculatingDuration = event.getCreationTime() - this.calculatingStart;
 			}});
 		return set;
 	}

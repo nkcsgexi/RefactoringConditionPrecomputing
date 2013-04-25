@@ -37,7 +37,7 @@ import dlf.refactoring.precondition.util.interfaces.IRunnable;
 
 public class PrecheckingTests extends RefactoringExperiment{
 
-	private static String directory = "C:\\Users\\xige\\Desktop\\test";
+	private static String directory = FileUtils.getDesktopPath();
 	private final XWorkQueue queue = XWorkQueue.createSingleThreadWorkQueue(Thread.MIN_PRIORITY);
 	
 	private class DiffVisitor implements IVisitRevisionDiffStrategy

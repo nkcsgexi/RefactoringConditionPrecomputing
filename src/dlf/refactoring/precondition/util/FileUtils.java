@@ -1,18 +1,20 @@
 package dlf.refactoring.precondition.util;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import org.apache.commons.io.FileDeleteStrategy;
 
 public class FileUtils {
 
-	public static void deleteFolder(File folder) {
+	public static void deleteDirectory(File folder) {
 	    File[] files = folder.listFiles();
 	    if(files!=null) { //some JVMs return null for empty dirs
 	        for(File f: files) {
 	            if(f.isDirectory()) {
-	                deleteFolder(f);
+	                deleteDirectory(f);
 	            } else {
 	                f.delete();
 	            }
@@ -33,4 +35,26 @@ public class FileUtils {
 		    FileDeleteStrategy.FORCE.delete(file);
 		}   
 	}
+	
+	public static void append2File(String path, String text) throws Exception
+	{
+		BufferedWriter output = new BufferedWriter(new FileWriter(path, true));
+		output.append(text);
+		output.close();
+	}
+	
+	public static String getDesktopPath()
+	{
+		return "C:\\Users\\xige\\Desktop\\test";
+	}
+	
+	public static void createFileIfNotExist(String path) throws Exception
+	{
+		File f = new File(path);
+		if(!f.exists()) {
+			f.mkdirs(); 
+			f.createNewFile();
+		}
+	}
+	
 }

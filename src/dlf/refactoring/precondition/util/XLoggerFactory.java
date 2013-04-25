@@ -18,7 +18,6 @@ public class XLoggerFactory {
 		console.setThreshold(Level.FATAL);
 		console.activateOptions();
 		Logger.getRootLogger().addAppender(console);
-
 		AddFileAppender(deskTopDirectory + "/all.log", Level.DEBUG, "AllFileLogger");
 		AddFileAppender(deskTopDirectory + "/fatal.log", Level.FATAL, "FatalFileLogger");
 	}
