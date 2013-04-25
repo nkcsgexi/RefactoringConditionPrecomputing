@@ -1,6 +1,9 @@
 package dlf.refactoring.precondition.util;
 
 import java.io.File;
+import java.io.IOException;
+
+import org.apache.commons.io.FileDeleteStrategy;
 
 public class FileUtils {
 
@@ -21,5 +24,13 @@ public class FileUtils {
 	public static File getFile(String path)
 	{
 		return new File(path);
+	}
+	
+	public static void removeFilesInDirectory(String directory) throws Exception
+	{
+		File fin = new File(directory);
+		for (File file : fin.listFiles()) {
+		    FileDeleteStrategy.FORCE.delete(file);
+		}   
 	}
 }

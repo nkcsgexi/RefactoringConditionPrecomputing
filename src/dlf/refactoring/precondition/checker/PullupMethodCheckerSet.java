@@ -13,6 +13,7 @@ import dlf.refactoring.StructuralRefactoringAPIs;
 import dlf.refactoring.enums.ConditionType;
 import dlf.refactoring.enums.RefactoringType;
 import dlf.refactoring.precondition.JavaModelAnalyzers.ICompilationUnitAnalyzer;
+import dlf.refactoring.precondition.JavaModelAnalyzers.IMemberAnalyzer;
 import dlf.refactoring.precondition.JavaModelAnalyzers.ITypeAnalyzer;
 import dlf.refactoring.precondition.checker.environments.IRefactoringEnvironment;
 import dlf.refactoring.precondition.checker.environments.RefactoringContext;
@@ -67,19 +68,25 @@ public class PullupMethodCheckerSet extends RefactoringCheckerSet{
 		public ICheckingResult performChecking(IRefactoringEnvironment environment) throws Exception {
 			IMember member = (IMember) ((PullupMethodEnvironment)environment).getJavaElement();
 			Refactoring refactoring = StructuralRefactoringAPIs.createPullUpRefactoring(new 
-					IMember[]{member});
-			RefactoringStatus result = refactoring.checkAllConditions(new NullProgressMonitor());
-			return new C1CheckingResult(result.isOK(), environment){
+					IMember[]{member}, getImmediateSuperType(member));
+			return new C1CheckingResult(StructuralRefactoringAPIs.isAllConditionOK(refactoring), 
+					environment) {
 				@Override
 				public ConditionType getConditionType() {
 					return ConditionType.PULLABLE_METHOD;
 				}};
 		}
+		
+		private IJavaElement getImmediateSuperType(IJavaElement member) throws Exception
+		{
+			IJavaElement type = IMemberAnalyzer.getContainingType(member);
+			return ITypeAnalyzer.getSuperTypes(type).size() > 0 ? ITypeAnalyzer.
+					getSuperTypes(type).get(0) : type;
+		}
 	}
 	
 	private class PullupMethodEnvironment extends SingleELementRefacatoringEnvironment
 	{
-
 		public PullupMethodEnvironment(IJavaElement element) {
 			super(element);
 		}

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import junit.framework.TestCase;
+
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IJavaElement;
@@ -24,7 +26,6 @@ import dlf.refactoring.precondition.util.MathUtils;
 import dlf.refactoring.precondition.util.XArrayList;
 import dlf.refactoring.precondition.util.XLoggerFactory;
 import dlf.refactoring.precondition.util.interfaces.IMapper;
-
 
 
 public class RefactoringExperiment {

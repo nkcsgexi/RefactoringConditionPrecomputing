@@ -12,7 +12,9 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jgit.treewalk.TreeWalk;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 
@@ -24,6 +26,7 @@ import dlf.refactoring.precondition.checker.environments.RefactoringContext;
 import dlf.refactoring.precondition.checker.listeners.RefactoringCheckerSetRepositoryListener;
 import dlf.refactoring.precondition.checker.result.C2CheckingResult;
 import dlf.refactoring.precondition.checker.result.RefactoringEnvironmentResults;
+import dlf.refactoring.precondition.util.FileUtils;
 import dlf.refactoring.precondition.util.TimedEventObject;
 import dlf.refactoring.precondition.util.XArrayList;
 import dlf.refactoring.precondition.util.XLoggerFactory;
@@ -109,11 +112,19 @@ public class PrecheckingTests extends RefactoringExperiment{
 				}});
 	}
 	
+	private static GitProject project;
+	
+	@BeforeClass
+	public static void downloadGitProject() throws Exception
+	{
+		project = new GitProject(directory, "elasticsearch");
+		// "git://github.com/elasticsearch/elasticsearch.git");
+	}
+	
 	@Test
 	public void method1() throws Exception
 	{
 		addRepositoryListener();
-		GitProject project = new GitProject(directory, "prechecking");
 		project.walkRevisionDiffs(new DiffVisitor());
 		queue.addEmptyQueueEventListener(new GenericEventListener(){
 			@Override
@@ -122,4 +133,5 @@ public class PrecheckingTests extends RefactoringExperiment{
 			}});
 		EventManager.waitUntilTriggered(FinishWorkEvent.class, Integer.MAX_VALUE);
 	}
+
 }

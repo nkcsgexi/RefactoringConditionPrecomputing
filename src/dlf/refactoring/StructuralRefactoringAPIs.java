@@ -1,6 +1,10 @@
 package dlf.refactoring;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMember;
@@ -20,10 +24,16 @@ import org.eclipse.jdt.internal.corext.refactoring.reorg.JavaMoveProcessor;
 import org.eclipse.jdt.internal.corext.refactoring.reorg.ReorgDestinationFactory;
 import org.eclipse.jdt.internal.corext.refactoring.reorg.ReorgPolicyFactory;
 import org.eclipse.ltk.core.refactoring.Refactoring;
+import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.ltk.core.refactoring.participants.MoveRefactoring;
 import org.eclipse.ltk.core.refactoring.participants.ProcessorBasedRefactoring;
 
+import dlf.refactoring.precondition.JavaModelAnalyzers.IJavaElementAnalyzer;
+import dlf.refactoring.precondition.util.XLoggerFactory;
+
 public class StructuralRefactoringAPIs {
+	
+	private static Logger logger = XLoggerFactory.GetLogger(StructuralRefactoringAPIs.class);
 	
 	public static ExtractMethodRefactoring createExtractMethodRefactoring(ICompilationUnit iu, int 
 			start, int length)
@@ -37,10 +47,11 @@ public class StructuralRefactoringAPIs {
 	}
 	
 	
-	public static Refactoring createPullUpRefactoring(IMember[] members)
+	public static Refactoring createPullUpRefactoring(IMember[] members, IJavaElement type)
 	{
 		CodeGenerationSettings settings = createCodeGenerationSettings();
 		PullUpRefactoringProcessor processor = new PullUpRefactoringProcessor(members, settings);
+		processor.setDestinationType((IType) type);
 		return new ProcessorBasedRefactoring(processor);
 	}
 
@@ -73,6 +84,18 @@ public class StructuralRefactoringAPIs {
 		moveProcessor.setReorgQueries(new MockReorgQueries());
 		MoveRefactoring refactoring = new MoveRefactoring(moveProcessor);
 		return refactoring;
+	}
+	
+	
+	public static boolean isAllConditionOK(Refactoring refactoring) throws Exception
+	{
+		try {
+			RefactoringStatus result = refactoring.checkAllConditions(new NullProgressMonitor());
+			return result.isOK();
+		} catch (Exception e) {
+			logger.fatal(refactoring.getName() + '\n' + e);
+			return false;
+		} 
 	}
 
 	

@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import dlf.refactoring.StructuralRefactoringAPIs;
+import dlf.refactoring.precondition.JavaModelAnalyzers.IMemberAnalyzer;
 import dlf.refactoring.precondition.JavaModelAnalyzers.ITypeAnalyzer;
 import dlf.refactoring.precondition.util.ExpandOperations;
 import dlf.refactoring.precondition.util.ListOperations;
@@ -79,10 +80,16 @@ public class PullPushExperiment extends RefactoringExperiment {
 			@Override
 			public void perform(IJavaElement t) throws Exception {
 				Refactoring refactoring = StructuralRefactoringAPIs.createPullUpRefactoring(new 
-						IMember[]{(IMember) t});
+						IMember[]{(IMember) t}, getImmediateSuperType(t));
 				pullUpExperiment(t.getElementName(), refactoring);
 			}
 		});
+	}
+	
+	private IJavaElement getImmediateSuperType(IJavaElement member) throws Exception
+	{
+		IJavaElement type = IMemberAnalyzer.getContainingType(member);
+		return ITypeAnalyzer.getSubTypes(type).get(0);
 	}
 	
 	private void pushDownElements(List<IJavaElement> elements) throws Exception
