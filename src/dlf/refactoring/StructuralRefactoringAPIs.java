@@ -14,6 +14,7 @@ import org.eclipse.jdt.internal.corext.codemanipulation.CodeGenerationSettings;
 import org.eclipse.jdt.internal.corext.refactoring.JavaRefactoringArguments;
 import org.eclipse.jdt.internal.corext.refactoring.code.ExtractMethodRefactoring;
 import org.eclipse.jdt.internal.corext.refactoring.code.InlineMethodRefactoring;
+import org.eclipse.jdt.internal.corext.refactoring.structure.ExtractClassRefactoring;
 import org.eclipse.jdt.internal.corext.refactoring.structure.PullUpRefactoringProcessor;
 import org.eclipse.jdt.internal.corext.refactoring.structure.PushDownRefactoringProcessor;
 import org.eclipse.jdt.internal.corext.refactoring.structure.ExtractInterfaceProcessor;
@@ -63,20 +64,22 @@ public class StructuralRefactoringAPIs {
 		return settings;
 	}
 	
-	public static Refactoring createPushDownRefactoring(IMember[] members)
-	{
+	public static Refactoring createPushDownRefactoring(IMember[] members) {
 		PushDownRefactoringProcessor processor = new PushDownRefactoringProcessor(members);
 		return new ProcessorBasedRefactoring(processor);
 	}
 	
-	public static ExtractInterfaceProcessor createExtractInterfaceProcessor(IType type)
-	{
-		return new ExtractInterfaceProcessor(type, createCodeGenerationSettings());
+	public static Refactoring createExtractInterfaceRefactoring(IJavaElement type, IMember[] 
+			members) throws Exception {
+		ExtractInterfaceProcessor processor = new ExtractInterfaceProcessor((IType) type, 
+				createCodeGenerationSettings());
+		processor.setExtractedMembers(members);
+		return new ProcessorBasedRefactoring(processor);
 	}
 	
+	
 	public static MoveRefactoring createMoveRefactoring(IJavaElement element, IJavaElement 
-			destination) throws Exception
-	{
+			destination) throws Exception {
 		IMovePolicy movePolicy= ReorgPolicyFactory.createMovePolicy(new IResource[]{}, 
 				new IJavaElement[]{element});
 		JavaMoveProcessor moveProcessor = new JavaMoveProcessor(movePolicy);
@@ -85,6 +88,7 @@ public class StructuralRefactoringAPIs {
 		MoveRefactoring refactoring = new MoveRefactoring(moveProcessor);
 		return refactoring;
 	}
+	
 	
 	
 	public static boolean isAllConditionOK(Refactoring refactoring) throws Exception

@@ -224,7 +224,7 @@ public class ExtractMethodExperiments extends RefactoringExperiment{
 			@Override
 			public void perform(IJavaElement t) throws Exception {
 				ExtractInterfaceProcessor processor = StructuralRefactoringAPIs.
-						createExtractInterfaceProcessor((IType)t);
+						createExtractInterfaceRefactoring((IType)t);
 				ProcessorBasedRefactoring refactoring = new ProcessorBasedRefactoring(processor);
 				long start;
 				long end;

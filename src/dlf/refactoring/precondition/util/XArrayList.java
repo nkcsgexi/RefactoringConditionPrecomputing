@@ -1,6 +1,7 @@
 package dlf.refactoring.precondition.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -27,6 +28,12 @@ public class XArrayList<T> extends ArrayList<T> {
 		super();
 		this.listOp = new ListOperations<T>();
 		this.addAll(list);
+	}
+	
+	public XArrayList(T[] elements) {
+		super();
+		this.listOp = new ListOperations<T>();
+		this.addAll(Arrays.asList(elements));
 	}
 	
 	

@@ -134,7 +134,7 @@ public class JavaModelTests {
 		IType type = units[0].getTypes()[0];
 		Assert.isNotNull(type);
 		ExtractInterfaceProcessor processor = StructuralRefactoringAPIs.
-				createExtractInterfaceProcessor(type);
+				createExtractInterfaceRefactoring(type);
 		Assert.isNotNull(processor);
 		RefactoringStatus results = processor.checkInitialConditions(new NullProgressMonitor());
 		Assert.isTrue(results.isOK());

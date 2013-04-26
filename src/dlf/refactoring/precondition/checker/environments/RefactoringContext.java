@@ -7,6 +7,7 @@ import org.eclipse.jdt.core.IJavaElement;
 
 import dlf.refactoring.precondition.JavaModelAnalyzers.ICompilationUnitAnalyzer;
 import dlf.refactoring.precondition.util.XArrayList;
+import dlf.refactoring.precondition.util.interfaces.IPredicate;
 
 public class RefactoringContext {
 	private final XArrayList<IJavaElement> units;
@@ -53,6 +54,12 @@ public class RefactoringContext {
 			}
 		}
 		return packages;
+	}
+	
+	public XArrayList<IJavaElement> getJavaElement(IPredicate<IJavaElement> filter) {
+		
+		units.
+		
 	}
 	
 	public IJavaElement getJavaProject()
