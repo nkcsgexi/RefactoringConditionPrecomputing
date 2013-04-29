@@ -140,6 +140,15 @@ public class XArrayList<T> extends ArrayList<T> {
 		}
 		return count;
 	}
+	
+	public Double sum(IConvertor<T, Double> convertor) throws Exception
+	{
+		Double all = 0.0;
+		for(T t : this) {
+			all += convertor.convert(t);
+		}
+		return all;
+	}
 }
 
 

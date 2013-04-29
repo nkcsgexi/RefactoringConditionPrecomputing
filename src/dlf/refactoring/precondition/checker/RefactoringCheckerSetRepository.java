@@ -38,6 +38,7 @@ public class RefactoringCheckerSetRepository {
 		checkerSets.add(addRefactoringCheckerSetListner(new PushDownMethodCheckerSet()));
 		checkerSets.add(addRefactoringCheckerSetListner(new RenameMethodCheckerSet()));
 		checkerSets.add(addRefactoringCheckerSetListner(new PullupMethodCheckerSet()));
+		checkerSets.add(addRefactoringCheckerSetListner(new ExtractInterfaceCheckerSet()));
 	}
 	
 	private RefactoringCheckerSet addRefactoringCheckerSetListner(RefactoringCheckerSet set)
