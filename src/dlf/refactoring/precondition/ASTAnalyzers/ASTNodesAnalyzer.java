@@ -6,10 +6,10 @@ import java.util.List;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 
-import dlf.refactoring.precondition.util.Pair;
 import dlf.refactoring.precondition.util.Tree;
 import dlf.refactoring.precondition.util.TreeBuilder;
 import dlf.refactoring.precondition.util.interfaces.IPredicate;
+import dlf.refactoring.precondition.util.interfaces.Pair;
 
 
 public class ASTNodesAnalyzer {

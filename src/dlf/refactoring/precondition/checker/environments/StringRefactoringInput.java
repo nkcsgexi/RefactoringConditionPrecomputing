@@ -1,5 +1,7 @@
 package dlf.refactoring.precondition.checker.environments;
 
+import dlf.refactoring.precondition.checker.result.IRefactoringInput;
+
 public abstract class StringRefactoringInput implements IRefactoringInput{
 
 	String input;

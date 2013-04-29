@@ -59,7 +59,7 @@ public class IJavaElementAnalyzer {
 				{ancestor}).where(lookChildren);
 		while(!needChildren.empty()) {
 			XArrayList<IJavaElement> newChildren = needChildren.select(new IMapper<IJavaElement, 
-					IJavaElement>(){
+					IJavaElement>() {
 				@Override
 				public List<IJavaElement> map(IJavaElement t) throws Exception {
 					return getChildren(t);
@@ -68,6 +68,14 @@ public class IJavaElementAnalyzer {
 			needChildren = newChildren.where(lookChildren);
 		}
 		return allChildren;
+	}
+	
+	public static XArrayList<IJavaElement> getDecendents(IJavaElement ancestor) throws Exception {
+		return getDecendents(ancestor, new IPredicate<IJavaElement>(){
+			@Override
+			public boolean IsTrue(IJavaElement t) throws Exception {
+				return true;
+			}});
 	}
 	
 

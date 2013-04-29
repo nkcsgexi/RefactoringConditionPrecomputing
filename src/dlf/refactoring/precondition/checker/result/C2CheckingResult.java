@@ -3,7 +3,6 @@ package dlf.refactoring.precondition.checker.result;
 import java.util.ArrayList;
 import java.util.List;
 
-import dlf.refactoring.precondition.checker.environments.IRefactoringInput;
 import dlf.refactoring.precondition.util.XArrayList;
 import dlf.refactoring.precondition.util.interfaces.IOperation;
 import dlf.refactoring.precondition.util.interfaces.IPredicate;

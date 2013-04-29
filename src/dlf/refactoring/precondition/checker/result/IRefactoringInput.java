@@ -1,4 +1,4 @@
-package dlf.refactoring.precondition.checker.environments;
+package dlf.refactoring.precondition.checker.result;
 
 import dlf.refactoring.enums.interfaces.IHasConditionType;
 import dlf.refactoring.enums.interfaces.IHasInputType;

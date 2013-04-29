@@ -10,12 +10,12 @@ import org.eclipse.jdt.core.dom.Statement;
 
 import dlf.refactoring.precondition.util.ExpandOperations;
 import dlf.refactoring.precondition.util.ListOperations;
-import dlf.refactoring.precondition.util.Pair;
 import dlf.refactoring.precondition.util.Tree;
 import dlf.refactoring.precondition.util.TreeBuilder;
 import dlf.refactoring.precondition.util.interfaces.IConvertor;
 import dlf.refactoring.precondition.util.interfaces.IMapper;
 import dlf.refactoring.precondition.util.interfaces.IPredicate;
+import dlf.refactoring.precondition.util.interfaces.Pair;
 
 
 

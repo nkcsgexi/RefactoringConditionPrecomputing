@@ -1,4 +1,4 @@
-package dlf.refactoring.precondition.util;
+package dlf.refactoring.precondition.util.interfaces;
 
 public class Pair<A, B> {
     private A first;

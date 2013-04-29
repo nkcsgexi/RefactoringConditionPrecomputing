@@ -24,6 +24,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.corext.refactoring.rename.JavaRenameProcessor;
 import org.eclipse.jdt.internal.corext.refactoring.structure.ExtractInterfaceProcessor;
+import org.eclipse.ltk.core.refactoring.Refactoring;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.ltk.core.refactoring.participants.CheckConditionsContext;
 import org.junit.Before;
@@ -133,13 +134,12 @@ public class JavaModelTests {
 	{
 		IType type = units[0].getTypes()[0];
 		Assert.isNotNull(type);
-		ExtractInterfaceProcessor processor = StructuralRefactoringAPIs.
-				createExtractInterfaceRefactoring(type);
-		Assert.isNotNull(processor);
-		RefactoringStatus results = processor.checkInitialConditions(new NullProgressMonitor());
+		Refactoring refactoring = StructuralRefactoringAPIs.
+				createExtractInterfaceRefactoring(type, null);
+		Assert.isNotNull(refactoring);
+		RefactoringStatus results = refactoring.checkInitialConditions(new NullProgressMonitor());
 		Assert.isTrue(results.isOK());
-		results = processor.checkFinalConditions(new NullProgressMonitor(), new 
-				CheckConditionsContext());
+		results = refactoring.checkFinalConditions(new NullProgressMonitor());
 		Assert.isTrue(results.hasFatalError());
 		String message = results.getMessageMatchingSeverity(RefactoringStatus.FATAL);
 		logger.fatal(message);

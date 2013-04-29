@@ -8,11 +8,11 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.Assert;
 import org.junit.Test;
 
-import dlf.refactoring.precondition.util.Pair;
 import dlf.refactoring.precondition.util.Tree;
 import dlf.refactoring.precondition.util.TreeBuilder;
 import dlf.refactoring.precondition.util.XLoggerFactory;
 import dlf.refactoring.precondition.util.interfaces.IPredicate;
+import dlf.refactoring.precondition.util.interfaces.Pair;
 
 
 

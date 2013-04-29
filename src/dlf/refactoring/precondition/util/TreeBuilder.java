@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import dlf.refactoring.precondition.util.interfaces.IPredicate;
+import dlf.refactoring.precondition.util.interfaces.Pair;
 
 
 

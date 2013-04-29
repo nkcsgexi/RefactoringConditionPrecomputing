@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dlf.refactoring.precondition.checker.environments.IRefactoringEnvironment;
-import dlf.refactoring.precondition.checker.environments.IRefactoringInput;
 import dlf.refactoring.precondition.util.ListOperations;
 import dlf.refactoring.precondition.util.XArrayList;
 import dlf.refactoring.precondition.util.interfaces.IConvertor;

@@ -17,6 +17,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.internal.corext.refactoring.code.ExtractMethodRefactoring;
 import org.eclipse.jdt.internal.corext.refactoring.structure.ExtractInterfaceProcessor;
+import org.eclipse.ltk.core.refactoring.Refactoring;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.ltk.core.refactoring.participants.MoveRefactoring;
 import org.eclipse.ltk.core.refactoring.participants.ProcessorBasedRefactoring;
@@ -223,9 +224,8 @@ public class ExtractMethodExperiments extends RefactoringExperiment{
 				 <IJavaElement>(){
 			@Override
 			public void perform(IJavaElement t) throws Exception {
-				ExtractInterfaceProcessor processor = StructuralRefactoringAPIs.
-						createExtractInterfaceRefactoring((IType)t);
-				ProcessorBasedRefactoring refactoring = new ProcessorBasedRefactoring(processor);
+				Refactoring refactoring = StructuralRefactoringAPIs.
+						createExtractInterfaceRefactoring((IType)t, null);
 				long start;
 				long end;
 				try{

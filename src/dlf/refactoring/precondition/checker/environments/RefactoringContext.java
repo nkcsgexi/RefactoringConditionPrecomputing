@@ -55,12 +55,7 @@ public class RefactoringContext {
 		}
 		return packages;
 	}
-	
-	public XArrayList<IJavaElement> getJavaElement(IPredicate<IJavaElement> filter) {
-		
-		units.
-		
-	}
+
 	
 	public IJavaElement getJavaProject()
 	{
