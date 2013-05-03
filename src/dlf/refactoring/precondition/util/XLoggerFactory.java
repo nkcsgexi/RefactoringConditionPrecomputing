@@ -34,13 +34,13 @@ public class XLoggerFactory {
 		fa.setThreshold(threshold);
 		fa.setAppend(true);
 		fa.activateOptions();
+		fa.setBufferSize(1024);
 		Logger.getRootLogger().addAppender(fa);
 	}
 	
 	public static Logger GetLogger(Class c)
 	{
-		if (c == null)
-		{
+		if (c == null) {
 			return Logger.getRootLogger();
 		}
 		return Logger.getLogger(c);

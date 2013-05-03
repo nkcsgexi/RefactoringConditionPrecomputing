@@ -45,7 +45,7 @@ public class FileUtils {
 	
 	public static String getDesktopPath()
 	{
-		return "C:\\Users\\xige\\Desktop";
+		return "C:\\Users\\xige\\Desktop\\";
 	}
 	
 	public static void createFileIfNotExist(String path) throws Exception
