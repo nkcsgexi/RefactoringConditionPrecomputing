@@ -3,6 +3,7 @@ package dlf.refactoring.precondition.checker;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMember;
@@ -20,6 +21,7 @@ import dlf.refactoring.precondition.checker.environments.SingleELementRefacatori
 import dlf.refactoring.precondition.checker.result.C1CheckingResult;
 import dlf.refactoring.precondition.checker.result.ICheckingResult;
 import dlf.refactoring.precondition.util.XArrayList;
+import dlf.refactoring.precondition.util.XLoggerFactory;
 import dlf.refactoring.precondition.util.interfaces.IConvertor;
 import dlf.refactoring.precondition.util.interfaces.IMapper;
 
@@ -72,14 +74,23 @@ public class PushDownMethodCheckerSet extends RefactoringCheckerSet{
 	}
 	
 	private class PushableMethodChecker implements IConditionChecker {
+		
+		Logger logger = XLoggerFactory.GetLogger(this.getClass());
+		
 		@Override
 		public ICheckingResult performChecking(IRefactoringEnvironment environment) throws 
 			Exception {
 			IJavaElement method = ((PushDownMethodEnvironment) environment).getJavaElement();
 			Refactoring refactoring = StructuralRefactoringAPIs.createPushDownRefactoring(new 
 					IMember[]{(IMember) method});
-			RefactoringStatus result = refactoring.checkAllConditions(new NullProgressMonitor());
-			return new PushableMethodResult(result.isOK(), environment);
+			try{
+				RefactoringStatus result = refactoring.checkAllConditions(new NullProgressMonitor());
+				return new PushableMethodResult(result.isOK(), environment);
+			} catch(Exception e) {
+				logger.fatal("Push down checking fails.");
+				return new PushableMethodResult(false, environment);
+			}
+			
 		}
 		
 		private class PushableMethodResult extends C1CheckingResult {

@@ -37,7 +37,7 @@ import dlf.refactoring.precondition.util.interfaces.IRunnable;
 
 public class PrecheckingTests extends RefactoringExperiment{
 
-	private static String directory = FileUtils.getDesktopPath() + "\\test";
+	private static String directory = FileUtils.getDesktopPath() + "\\test\\";
 	private final XWorkQueue queue = XWorkQueue.createSingleThreadWorkQueue(Thread.MIN_PRIORITY);
 	
 	private class DiffVisitor implements IVisitRevisionDiffStrategy
@@ -117,8 +117,7 @@ public class PrecheckingTests extends RefactoringExperiment{
 	@BeforeClass
 	public static void downloadGitProject() throws Exception
 	{
-		project = new GitProject(directory, "elasticsearch");
-		// "git://github.com/elasticsearch/elasticsearch.git");
+		project = new GitProject(directory, "facebook", "git://github.com/facebook/facebook-android-sdk.git");
 	}
 	
 	@Test

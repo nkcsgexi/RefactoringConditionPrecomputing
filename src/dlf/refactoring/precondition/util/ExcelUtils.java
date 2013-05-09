@@ -32,12 +32,16 @@ public class ExcelUtils {
 		public final int column;
 		public final int row;
 		public final String content;
+		public final boolean isNumber;
 		
-		public CellContent(int row, int column, String content) {
+		public CellContent(int row, int column, String content, boolean isNumber) {
 			this.column = column;
 			this.row = row;
 			this.content = content;
+			this.isNumber = isNumber;
 		}
+		
+		
 	}
 	
 	private static class InternalExcelCreator {
@@ -68,7 +72,11 @@ public class ExcelUtils {
 			contents.operateOnElement(new IOperation<CellContent>(){
 				@Override
 				public void perform(CellContent t) throws Exception {
-					addLabel(firstSheet, t.column, t.row, t.content);
+					if(t.isNumber) {
+						addNumber(firstSheet, t.column, t.row, Integer.parseInt(t.content));
+					} else {
+						addLabel(firstSheet, t.column, t.row, t.content);
+					}
 				}});
 			
 			workbook.write();

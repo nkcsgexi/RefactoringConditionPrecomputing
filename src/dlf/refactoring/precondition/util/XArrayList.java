@@ -134,5 +134,17 @@ public class XArrayList<T> extends ArrayList<T> {
 			iteration.iterate(this.get(i), i);
 		}
 	}
+	
+	public String toString(String delimit) {
+		StringBuilder sb = new StringBuilder();
+		for(T t : this) {
+			sb.append(t.toString());
+			sb.append(delimit);
+		}
+		return sb.toString();
+	}
 
+	public String toString() {
+		return toString("\r\n");
+	}
 }

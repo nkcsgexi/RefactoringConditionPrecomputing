@@ -25,7 +25,7 @@ public class GitProject {
 	private final Repository repo;
 	private final Logger logger;
 	
-	public GitProject(String directory, String projectName,String remotePath) throws Exception
+	public GitProject(String directory, String projectName, String remotePath) throws Exception
 	{
 		this.projectName = projectName;
 		this.directory = directory;
