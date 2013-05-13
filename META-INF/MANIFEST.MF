@@ -12,12 +12,17 @@ Require-Bundle: org.eclipse.ui,
  org.apache.log4j,
  org.eclipse.ltk.core.refactoring,
  org.eclipse.jdt.ui,
- org.eclipse.jgit
+ org.eclipse.jgit,
+ org.eclipse.mylyn.bugzilla.core,
+ org.eclipse.mylyn.commons.net,
+ org.eclipse.mylyn.tasks.core,
+ org.eclipse.mylyn.monitor.core
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: org.eclipse.jdt.internal.corext.refactoring.rename,
  org.eclipse.jdt.internal.corext.util,
- org.eclipse.jdt.ui.refactoring
+ org.eclipse.jdt.ui.refactoring,
+ org.eclipse.mylyn.internal.context.core
 Bundle-ClassPath: .,
  lib/guava-14.0.1.jar,
  lib/junit-4.10.jar,

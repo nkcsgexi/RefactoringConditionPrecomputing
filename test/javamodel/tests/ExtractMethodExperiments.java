@@ -219,7 +219,7 @@ public class ExtractMethodExperiments extends RefactoringExperiment{
 	
 	public void extractMethodExperiment() throws Exception
 	{
-		 List<IJavaElement> allTypes = this.typesElement;
+		 List<IJavaElement> allTypes = this.typeElements;
 		 this.JavaElementListOperations.operationOnElements(allTypes, new IOperation
 				 <IJavaElement>(){
 			@Override

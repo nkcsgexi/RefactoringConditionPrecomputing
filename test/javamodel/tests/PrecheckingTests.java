@@ -117,7 +117,10 @@ public class PrecheckingTests extends RefactoringExperiment{
 	@BeforeClass
 	public static void downloadGitProject() throws Exception
 	{
-		project = new GitProject(directory, "facebook", "git://github.com/facebook/facebook-android-sdk.git");
+		// project = new GitProject(directory, "facebook", "git://github.com/facebook/facebook-android-sdk.git");
+		//project = new GitProject(directory, "junit", "git://github.com/junit-team/junit.git");
+		project = new GitProject(directory, "elasticsearch", "git://github.com/elasticsearch/elasticsearch.git");
+
 	}
 	
 	@Test

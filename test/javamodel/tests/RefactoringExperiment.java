@@ -37,7 +37,7 @@ public class RefactoringExperiment {
 	protected XArrayList<IJavaElement> sourcePackageRoots;
 	protected XArrayList<IJavaElement> sourcePackages;
 	protected XArrayList<IJavaElement> compilationUnits;
-	protected XArrayList<IJavaElement> typesElement;
+	protected XArrayList<IJavaElement> typeElements;
 	
 	public RefactoringExperiment()
 	{
@@ -65,7 +65,7 @@ public class RefactoringExperiment {
 					return IPackageFragmentAnalyzer.getICompilationUnits(t);
 				}
 		});
-		this.typesElement = this.compilationUnits.select(new IMapper<IJavaElement, IJavaElement>(){
+		this.typeElements = this.compilationUnits.select(new IMapper<IJavaElement, IJavaElement>(){
 			@Override
 			public List<IJavaElement> map(IJavaElement t) throws Exception {
 				return ICompilationUnitAnalyzer.getTypes(t);

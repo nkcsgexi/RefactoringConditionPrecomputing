@@ -147,4 +147,7 @@ public class XArrayList<T> extends ArrayList<T> {
 	public String toString() {
 		return toString("\r\n");
 	}
+	
+	
+	
 }

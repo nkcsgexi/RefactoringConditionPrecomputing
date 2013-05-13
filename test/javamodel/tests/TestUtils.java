@@ -10,15 +10,10 @@ import dlf.refactoring.precondition.JavaModelAnalyzers.IPackageFragmentRootAnaly
 import dlf.refactoring.precondition.util.ListOperations;
 import dlf.refactoring.precondition.util.interfaces.IPredicate;
 
-
-
-
 public class TestUtils {
 	
-	
 	public static List<IJavaElement> getPackagesWithCompilationUnits(List<IJavaElement> 
-			allPacks) throws Exception
-	{
+			allPacks) throws Exception {
 		ListOperations<IJavaElement> selector = new ListOperations<IJavaElement>();
 		return selector.Select(allPacks, new IPredicate<IJavaElement>(){
 			@Override
@@ -29,8 +24,7 @@ public class TestUtils {
 	
 	
 	public static List<IJavaElement> getSourcePackageRoots(List<IJavaElement> packages) 
-			throws Exception
-	{
+			throws Exception {
 		ListOperations<IJavaElement> selector = new ListOperations<IJavaElement>();
 		return selector.Select(packages, new IPredicate<IJavaElement>(){
 			@Override

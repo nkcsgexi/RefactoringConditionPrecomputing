@@ -42,26 +42,23 @@ public class LogFileAnalysis{
 		XArrayList<Integer> times = getTimes(allTimeContains);
 		times = ruleOutSmallTime(times, 100);
 		createExcel("time.xls", "Overall", 0, times);
-		
-		times = getTimes(getContainedString(RefactoringType.PULL_UP_METHOD));
+				
+		extractExcelofRefactoringType(RefactoringType.PULL_UP_METHOD);
+		extractExcelofRefactoringType(RefactoringType.PUSH_DOWN_METHOD);
+		extractExcelofRefactoringType(RefactoringType.RENAME_METHOD);
+		extractExcelofRefactoringType(RefactoringType.RENAME_CLASS);
+	
+	}
+
+	private void extractExcelofRefactoringType(RefactoringType type) throws Exception {
+		XArrayList<Integer> times;
+		times = getTimes(getContainedString(type));
 		times = ruleOutSmallTime(times, 10);
-		createExcel("pullUp.xls", RefactoringType.PULL_UP_METHOD.toString(), 0, times);
-		
-		times = getTimes(getContainedString(RefactoringType.PUSH_DOWN_METHOD));
-		times = ruleOutSmallTime(times, 10);
-		createExcel("pushDown.xls", RefactoringType.PUSH_DOWN_METHOD.toString(), 0, times);
-		
-		times = getTimes(getContainedString(RefactoringType.RENAME_METHOD));
-		times = ruleOutSmallTime(times, 10);
-		createExcel("reMethod.xls", RefactoringType.RENAME_METHOD.toString(), 0, times);
-		
-		times = getTimes(getContainedString(RefactoringType.RENAME_CLASS));
-		times = ruleOutSmallTime(times, 10);
-		createExcel("reClass.xls", RefactoringType.RENAME_CLASS.toString(), 0, times);
+		createExcel(type.toString() + ".xls", type.toString(), 0, times);
 	}
 
 
-	private XArrayList<Integer> getTimes(String contains) throws Exception, IOException {
+	private XArrayList<Integer> getTimes(String contains) throws Exception {
 		XArrayList<Integer> times = new XArrayList<Integer>();
 		BufferedReader reader = XLoggerFactory.getAllLogReader();
 		Assert.isNotNull(reader);
