@@ -52,7 +52,7 @@ import dlf.refactoring.precondition.util.XLoggerFactory;
 
 public class BugzillaAnalyzer {
 	
-	private static final Date START_DATE = startOfYesterday();                                                    
+	private static final Date START_DATE = startDate(-100);                                                    
 
 	static final String URL = "https://bugs.eclipse.org/bugs/";
 	static final String PRODUCT = "Mylyn";
@@ -98,9 +98,9 @@ public class BugzillaAnalyzer {
 		} 
 	}
 	
-	private static Date startOfYesterday() {
+	private static Date startDate(int daysOffset) {
 		Calendar c = Calendar.getInstance(TimeZone.getTimeZone("America/Los_Angeles"));
-		c.add(Calendar.DATE, -1000);
+		c.add(Calendar.DATE, daysOffset);
 		c.set(Calendar.HOUR_OF_DAY,0);
 		c.set(Calendar.MINUTE,0);
 		c.set(Calendar.SECOND,0);
@@ -189,7 +189,7 @@ public class BugzillaAnalyzer {
 			if(ed.after(endTime))
 				endTime = ed;
 		}
-		return endTime.getTime() - startTime.getTime();
+		return (endTime.getTime() - startTime.getTime()) / 1000;
 	}
 	
 	
