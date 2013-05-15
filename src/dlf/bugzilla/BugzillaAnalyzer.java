@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.zip.ZipInputStream;
@@ -51,7 +52,7 @@ import dlf.refactoring.precondition.util.XLoggerFactory;
 
 public class BugzillaAnalyzer {
 	
-	private static final Date START_DATE = startOfYesterday();
+	private static final Date START_DATE = startOfYesterday();                                                    
 
 	static final String URL = "https://bugs.eclipse.org/bugs/";
 	static final String PRODUCT = "Mylyn";
@@ -90,18 +91,8 @@ public class BugzillaAnalyzer {
 		}
 
 		try {
-			
 			Set<Integer> bugsChangedSinceYesterday = bugsChangedSince(repository, connector);	
-			
-			logger.info("Since " + START_DATE + ",");
-			logger.info("the following bugs in " + repository.getRepositoryUrl() + " have changed: ");
-			
-			for(int bugId : bugsChangedSinceYesterday){
-				logger.info(bugId);
-			}
-			
-			printElementsIn(repository, connector, client, bugsChangedSinceYesterday);
-			
+			getAttachment(repository, connector, client, bugsChangedSinceYesterday);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
@@ -109,7 +100,7 @@ public class BugzillaAnalyzer {
 	
 	private static Date startOfYesterday() {
 		Calendar c = Calendar.getInstance(TimeZone.getTimeZone("America/Los_Angeles"));
-		c.add(Calendar.DATE, -10);
+		c.add(Calendar.DATE, -1000);
 		c.set(Calendar.HOUR_OF_DAY,0);
 		c.set(Calendar.MINUTE,0);
 		c.set(Calendar.SECOND,0);
@@ -152,6 +143,57 @@ public class BugzillaAnalyzer {
 		query.setSummary(name);
 		return query;
 	}
+	
+	static void getAttachment(final TaskRepository repository, BugzillaRepositoryConnector connector,
+			BugzillaClient client, Set<Integer> bugIds) throws Exception {
+		for(Integer bugId : bugIds) {
+			TaskData taskData = connector.getTaskData(repository, bugId.toString(), null);
+			BugzillaTaskAttachmentHandler attachmentHandler = (BugzillaTaskAttachmentHandler) connector
+					.getTaskAttachmentHandler();
+			for(Entry<String, TaskAttribute> entry : taskData.getRoot().getAttributes().entrySet()) {
+				if(entry.getKey().startsWith("task.common.attachment-")){
+					TaskAttachmentMapper taskMapper = TaskAttachmentMapper.createFrom(entry.getValue());
+					Date date = taskMapper.getCreationDate();
+					String description = taskMapper.getDescription();
+					
+					if(date != null && description != null && date.after(START_DATE) && description.
+							equals("mylyn/context/zip")) {
+						InputStream is = attachmentHandler.getContent(
+								repository, new TaskTask(repository
+										.getConnectorKind(), repository
+										.getUrl(), bugId.toString()), entry
+										.getValue(), new NullProgressMonitor());
+				         ZipInputStream zis = new ZipInputStream(is);
+				         zis.getNextEntry();
+				         
+				         
+				         long duration = getDuration(zis);
+			        	 logger.info("Find duration: " + duration);
+			        	 
+			             zis.close();
+				         is.close();	
+					}
+				}
+			}
+		}
+	}
+
+	private static long getDuration(ZipInputStream zis) {
+		Date startTime =  new Date(Long.MAX_VALUE);
+		Date endTime = new Date(Long.MIN_VALUE);
+		for(InteractionEvent event : eventsIn(zis)) {
+			Date sd = event.getDate();
+			Date ed = event.getEndDate();
+			if(sd.before(startTime))
+				startTime = sd;
+			if(ed.after(endTime))
+				endTime = ed;
+		}
+		return endTime.getTime() - startTime.getTime();
+	}
+	
+	
+	
 	
 	static void printElementsIn(final TaskRepository repository,
 			BugzillaRepositoryConnector connector,
